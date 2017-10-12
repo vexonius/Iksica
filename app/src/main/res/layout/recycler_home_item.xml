@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_recycler_home_item"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    android:stateListAnimator="@animator/lift_on_touch"
+    android:layout_margin="1dp"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:src="@drawable/muffin_back"/>
+
+    <TextView
+        android:id="@+id/relative_recycler_home_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#929292"
+        android:textSize="18dp"
+        android:textAlignment="center"
+        android:text="MENZA"/>
+
+</RelativeLayout>

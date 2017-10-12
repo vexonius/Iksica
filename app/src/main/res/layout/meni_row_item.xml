@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="4dp"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:id="@+id/meni_naslov"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/light_grey"
+            android:textSize="25dp"
+            android:text="Meni" />
+
+        <TextView
+            android:id="@+id/jela_popis"
+            android:layout_below="@+id/meni_naslov"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/light_grey"
+            android:textSize="16dp"
+            android:text="Meni" />
+
+        <TextView
+            android:id="@+id/meni_cijena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/jela_popis"
+            android:layout_margin="15dp"
+            android:textAlignment="textEnd"
+            android:textStyle="bold"
+            android:textColor="@color/light_grey"
+            android:textSize="20dp"
+            android:text="Meni" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
