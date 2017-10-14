@@ -9,7 +9,7 @@ import io.realm.RealmObject;
 public class MeniItem extends RealmObject {
 
     public String meniNaslov;
-    public List<String> jela;
+    public String jela;
     public String cijena;
     public String vrstaObroka;
 
@@ -17,7 +17,7 @@ public class MeniItem extends RealmObject {
         this.meniNaslov = meniNaslov;
     }
 
-    public void setJela(List<String> jela) {
+    public void setJela(String jela) {
         this.jela = jela;
     }
 
@@ -33,7 +33,7 @@ public class MeniItem extends RealmObject {
         return meniNaslov;
     }
 
-    public List<String> getJela() {
+    public String getJela() {
         return jela;
     }
 

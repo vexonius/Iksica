@@ -48,10 +48,10 @@ public class CardFragment extends Fragment {
             View view = inflater.inflate(R.layout.iksica_layout,
                     container, false);
 
-            Realm mRealm = Realm.getDefaultInstance();
-            User user = mRealm.where(User.class).findFirst();
-
-            fetchData(user.getuMail().toString(), user.getuPassword().toString());
+       //     Realm mRealm = Realm.getDefaultInstance();
+       //     User user = mRealm.where(User.class).findFirst();
+//
+       //     fetchData(user.getuMail().toString(), user.getuPassword().toString());
 
             return view;
         }
