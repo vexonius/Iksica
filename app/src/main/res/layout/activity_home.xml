@@ -1,81 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_relative_home"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#f6f6f6"
-    tools:context="com.tstudioz.menze.Activities.HomeActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <FrameLayout
+        android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="5">
+        android:paddingBottom="@dimen/bottom_navigation_height">
 
-        <RelativeLayout
-            android:id="@+id/ikica_relative"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="20dp"
-            android:layout_weight="2">
+    </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/iksica_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <RelativeLayout
-                android:id="@+id/log_in_relative"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 
-                <TextView
-                    android:id="@+id/login_info_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_grey"
-                    android:textSize="14dp"
-                    android:text="Prijavite se za pregled stanja x-ice"
-                    />
-
-                <Button
-                    android:id="@+id/login_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="PRIJAVA"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:layout_below="@+id/login_info_text"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/button_background"/>
-
-            </RelativeLayout>
-
-            </FrameLayout>
-
-
-        </RelativeLayout>
-
-        <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="0dp" android:orientation="vertical"
-           android:layout_weight="3">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_home"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </android.support.v7.widget.RecyclerView>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

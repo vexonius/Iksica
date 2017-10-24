@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Menze</string>
+    <string name="app_name">Iksica</string>
     <string name="prijava">button_login</string>
     <string name="title_activity_login">LoginActivity</string>
 </resources>

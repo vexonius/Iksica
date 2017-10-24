@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dirty_white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/user_info_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" >
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/circularImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/korisnik_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp"
+            app:civ_shadow="false" />
+
+        <TextView
+            android:id="@+id/name_surename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/circularImageView"
+            android:layout_marginTop="10dp"
+            android:textSize="18dp"
+            android:textColor="@color/light_grey"
+            android:textAlignment="center"
+            android:text="Ime Prezime"/>
+
+        <TextView
+            android:id="@+id/user_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_surename"
+            android:layout_marginTop="3dp"
+            android:textSize="14dp"
+            android:textColor="@color/lighter_grey"
+            android:textAlignment="center"
+            android:text="student"/>
+
+        <Button
+            android:id="@+id/button_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_desc"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="ODJAVA"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_below="@+id/button_logout">
+        </View>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_info_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/user_info_relative">
+    </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

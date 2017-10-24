@@ -6,6 +6,11 @@
 
     //Home layout colors
     <color name="light_grey">#555555</color>
-    <color name="lighter_grey">#ebd6d6d6</color>
+    <color name="lighter_grey">#eb5e5e5e</color>
     <color name="white">#ffffff</color>
+    <color name="dirty_white">#fafafa</color>
+
+    //Bottom navigation colors
+    <color name="icon_active">#333333</color>
+    <color name="icon_inactive">#cccccc</color>
 </resources>

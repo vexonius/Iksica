@@ -3,29 +3,22 @@ package com.tstudioz.menze.Activities;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+
 import com.tstudioz.menze.R;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.CookieJar;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -42,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
 
             setMenzaTextBold();
 
-            getMeni("Fesb_vrh");
+            // getMeni("Fesb_vrh");
 
         }
 
@@ -67,8 +60,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
             Request request = new Request.Builder()
-                    .url("http://www.scst.unist.hr/jelovnik/")
-                    .addHeader("tab", "Fesb_vrh")
+                    .url("http://sc.dbtouch.com/menu/api.php/?place=kampus")
                     .get()
                     .build();
 
@@ -83,29 +75,36 @@ public class DetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        Document doc = Jsoup.parse(response.body().string());
+
+                  //      Document document = Jsoup.parse(response.body().string());
+//
+                  //      String body = document.select("body").text();
+//
+                  //      Log.e("body", body);
+//
+                  //      Type type = new TypeToken<JsonObject>() {}.getType();
+//
+                  //      Gson gson = new GsonBuilder().serializeNulls().create();
+                  //      JsonObject object = gson.fromJson(body, JsonObject.class);
+//
+                  //      Log.e("gson", String.valueOf(object.values[7].toString()));
 
 
-                        Element element = doc.getElementById(menzaUrl);
 
-                        // Element mainBody = element.getElementById("maincontent");
 
-                        Element rucakTable = element.getElementById("rucakFESB_VRH");
+                  //      int i;
+                  //      int j;
+                  //      for (i=0; i<object.values.length; i++){
+                  //          Log.e("linija broj", String.valueOf(i) + String.valueOf(object.values[i].toString()));
+                  //          try {
+                  //              String[] items = gson.fromJson(object.values[i].toString(), String[].class);
+//
+                  //          }catch (JsonParseException e) {
+                  //              Log.e("gson exception", e.toString());
+                  //          }
+                  //      }
 
-                        Elements tableRows = rucakTable.getElementsByClass("tablerow");
 
-                        for (Element row : tableRows){
-
-                            if(row.hasClass("tableheader")){
-                                continue;
-                            }
-
-                            Elements podatci = row.getElementsByClass("tabledata");
-
-                            for (Element podatak : podatci){
-                                Log.d("jela", podatak.text());
-                            }
-                        }
 
                             }
                         });

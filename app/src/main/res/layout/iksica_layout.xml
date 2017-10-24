@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iksica_root_relative"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:gravity="center"
-    >
+    android:background="@color/dirty_white">
 
     <FrameLayout
+        android:id="@+id/iksica_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_height="wrap_content">
 
 
         <RelativeLayout
             android:id="@+id/iksica_card_layout"
             android:layout_width="match_parent"
             android:layout_height="190dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="25dp"
             android:elevation="6dp"
             android:background="@drawable/iksica_artwork"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="601983 21 03768372996 4"
                 android:textSize="12dp"
-                android:textColor="@color/lighter_grey"
+                android:textColor="@color/icon_inactive"
                 android:layout_marginLeft="30dp" />
 
             <TextView
@@ -69,5 +69,39 @@
             android:visibility="visible"/>
 
     </FrameLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/iksica_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_margin="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:elevation="2dp"
+        android:background="@color/white">
+
+        <TextView
+        android:id="@+id/potroseno_danas_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Potrošeno danas"
+        android:padding="20dp"
+        android:textSize="16dp"
+        android:textColor="@color/light_grey" />
+
+        <TextView
+            android:id="@+id/potroseno_danas_value"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 0,00 kn"
+            android:padding="18dp"
+            android:textSize="20dp"
+            android:textColor="@color/colorAccent" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

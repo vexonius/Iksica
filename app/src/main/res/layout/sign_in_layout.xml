@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sign_in_relative"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,17 +9,27 @@
             android:id="@+id/sign_in_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/icon_banner"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/icon_banner"
+                android:scaleType="centerInside"
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true"/>
 
             <EditText
                 android:id="@+id/sign_in_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/icon_banner"
                 android:hint="EDU email"
                 android:textColor="@color/light_grey"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:inputType="text"
                 android:singleLine="true"/>
 
@@ -30,8 +41,8 @@
                 android:hint="Lozinka"
                 android:inputType="textPassword"
                 android:textColor="@color/light_grey"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:singleLine="true"/>
 
     <FrameLayout
@@ -41,7 +52,7 @@
         android:layout_below="@+id/sign_in_password">
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progressBarLoading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
@@ -51,8 +62,8 @@
 
         <Button
             android:id="@+id/sign_in_button"
-            android:layout_marginRight="70dp"
-            android:layout_marginLeft="70dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginLeft="80dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="PRIJAVA"
