@@ -41,13 +41,6 @@ public class SignInActivity extends AppCompatActivity {
 
         realm = Realm.getDefaultInstance();
 
-     //   realm.executeTransaction(new Realm.Transaction() {
-     //       @Override
-     //       public void execute(Realm realm) {
-     //           realm.deleteAll();
-     //       }
-     //   });
-
         checkUser();
 
     }
@@ -57,8 +50,12 @@ public class SignInActivity extends AppCompatActivity {
         Boolean prijavljen = sp.getBoolean("korisnik_prijavljen", false);
 
         if (prijavljen==true){
-            //Prikazivanje layouta s iksicom
-            startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+            User u = realm.where(User.class).findFirst();
+            if(u!=null) {
+                startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+            }else {
+                registerUser();
+            }
         } else {
             registerUser();
         }
@@ -87,6 +84,7 @@ public class SignInActivity extends AppCompatActivity {
                             editor.commit();
 
                             startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+                            finish();
                         }
                     });
                 } finally {

@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
                 getSupportActionBar().setTitle("Transakcije");
+                getSupportActionBar().setElevation(0);
                 break;
             case 1:
                 CardFragment cf = new CardFragment();
@@ -82,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
                 getSupportActionBar().setTitle("Iksica");
+                getSupportActionBar().setElevation(8);
                 break;
             case 2:
                 ProfileFragment pf = new ProfileFragment();
@@ -89,6 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
                 getSupportActionBar().setTitle("Korisnik");
+                getSupportActionBar().setElevation(8);
                 break;
         }
     }

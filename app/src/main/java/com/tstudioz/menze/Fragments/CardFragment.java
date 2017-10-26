@@ -127,6 +127,10 @@ public class CardFragment extends Fragment {
                 .get()
                 .build();
 
+        /* TODO check if user tap on home again
+           TODO check internet conn
+         */
+
         Call call = okHttpClient.newCall(rq);
         call.enqueue(new Callback() {
             @Override
@@ -141,7 +145,6 @@ public class CardFragment extends Fragment {
                 Element el = doc.getElementById("SAMLRequest");
                 String authToken = el.val();
 
-                Log.d("prvi_body", response.toString());
 
                 RequestBody formBody = new FormBody.Builder()
                         .add("submit", "Continue")

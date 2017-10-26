@@ -38,6 +38,7 @@
             android:layout_centerHorizontal="true"
             android:textSize="14dp"
             android:singleLine="true"
+            android:textStyle="bold"
             android:textColor="@color/light_grey"
             android:text="23.10." />
 

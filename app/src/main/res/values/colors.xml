@@ -13,4 +13,7 @@
     //Bottom navigation colors
     <color name="icon_active">#333333</color>
     <color name="icon_inactive">#cccccc</color>
+
+    //graph colors
+    <color name="line_color">#ff676f</color>
 </resources>
