@@ -269,7 +269,7 @@ public class CardFragment extends Fragment {
                                                         final String pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
                                                         final String potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
                                                         final String userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
-                                                        final  String slikaLink = document.getElementsByClass("slikastud").first().attr("src");
+                                                        final  String slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
 
 
                                                         getActivity().runOnUiThread(new Runnable() {
@@ -303,6 +303,7 @@ public class CardFragment extends Fragment {
                                                                     public void execute(Realm realm) {
                                                                         User mUser = mRealm.where(User.class).findFirst();
                                                                         mUser.setuName(userName);
+                                                                        mUser.setSrcLink(slikaLink);
 
                                                                         mRealm.copyToRealmOrUpdate(userInfoItem);
                                                                         mRealm.copyToRealmOrUpdate(userInfoItem2);
@@ -399,21 +400,24 @@ public class CardFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                String vrijeme = red.child(1).text();
-                                 final Transaction transaction = new Transaction();
-                                 transaction.setTimeID(vrijeme);
-                                 transaction.setRestoran(red.child(0).text());
-                                 transaction.setVrijeme(vrijeme.substring(11, vrijeme.length()-3));
-                                 transaction.setDatum(vrijeme.substring(0, 5));
-                                 transaction.setIznos(red.child(2).text());
-                                 transaction.setSubvencija(red.child(3).text());
+                                 String vrijeme = red.child(1).text();
+                                 if(!vrijeme.equals("Vrijeme računa")) {
+                                     final Transaction transaction = new Transaction();
+                                     transaction.setTimeID(vrijeme);
+                                     transaction.setRestoran(red.child(0).text());
+                                     transaction.setVrijeme(vrijeme.substring(11, vrijeme.length() - 3));
+                                     transaction.setDatum(vrijeme.substring(0, 5));
+                                     transaction.setIznos(red.child(2).text());
+                                     transaction.setSubvencija(red.child(3).text());
 
-                                mRealm.executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        mRealm.copyToRealmOrUpdate(transaction);
-                                    }
-                                });
+                                     mRealm.executeTransaction(new Realm.Transaction() {
+                                         @Override
+                                         public void execute(Realm realm) {
+                                             mRealm.copyToRealmOrUpdate(transaction);
+                                         }
+                                     });
+
+                                 }
 
                             }
                         });

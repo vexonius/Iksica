@@ -34,16 +34,12 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedBundleInstance){
         View view = inflater.inflate(R.layout.profile_layout, parent, false);
 
+        mRealm = Realm.getDefaultInstance();
         User user = mRealm.where(User.class).findFirst();
 
         CircularImageView image = (CircularImageView) view.findViewById(R.id.circularImageView);
 
         Glide.with(this).load(user.getSrcLink()).into(image);
-
-
-        mRealm = Realm.getDefaultInstance();
-
-
 
         TextView imeStudenta = (TextView)view.findViewById(R.id.name_surename);
         imeStudenta.setText(user.getuName());

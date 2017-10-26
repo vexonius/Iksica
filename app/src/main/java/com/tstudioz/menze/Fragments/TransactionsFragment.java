@@ -32,15 +32,6 @@ public class TransactionsFragment extends Fragment {
 
         mRealm = Realm.getDefaultInstance();
         tRv = (RecyclerView)view.findViewById(R.id.recycler_transactions);
-
-        final Transaction trans = mRealm.where(Transaction.class).findFirst();
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                trans.deleteFromRealm();
-            }
-        });
-
         showInfoRecyclerView();
 
         return view;
