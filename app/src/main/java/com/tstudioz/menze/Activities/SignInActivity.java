@@ -3,6 +3,8 @@ package com.tstudioz.menze.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -49,7 +51,8 @@ public class SignInActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("SHARED_PREFS", MODE_PRIVATE);
         Boolean prijavljen = sp.getBoolean("korisnik_prijavljen", false);
 
-        if (prijavljen==true){
+
+        if (prijavljen){
             User u = realm.where(User.class).findFirst();
             if(u!=null) {
                 startActivity(new Intent(SignInActivity.this, HomeActivity.class));
@@ -71,28 +74,44 @@ public class SignInActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            User user = realm.createObject(User.class);
-                            user.setuMail(editEmail.getText().toString());
-                            user.setuPassword(editPass.getText().toString());
+                if (isNetworkAvailable()) {
+                    try {
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                User user = realm.createObject(User.class);
+                                user.setuMail(editEmail.getText().toString());
+                                user.setuPassword(editPass.getText().toString());
 
-                            SharedPreferences sharedPreferences = getSharedPreferences("SHARED_PREFS", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("korisnik_prijavljen", true);
-                            editor.commit();
+                                SharedPreferences sharedPreferences = getSharedPreferences("SHARED_PREFS", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("korisnik_prijavljen", true);
+                                editor.commit();
 
-                            startActivity(new Intent(SignInActivity.this, HomeActivity.class));
-                            finish();
-                        }
-                    });
-                } finally {
-                    realm.close();
+                                startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+                                finish();
+                            }
+                        });
+                    } finally {
+                        realm.close();
+                    }
+                } else {
+                    showNetworkErrorSnack();
                 }
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        boolean isAvailable = false;
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 
     public void showNetworkErrorSnack(){
@@ -100,7 +119,7 @@ public class SignInActivity extends AppCompatActivity {
         snack.setAction("PONOVI", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkUser();
+                registerUser();
             }
         });
         snack.show();

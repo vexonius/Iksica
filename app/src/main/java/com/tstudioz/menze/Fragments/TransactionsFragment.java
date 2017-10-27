@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.db.chart.animation.Animation;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
 import com.tstudioz.menze.Adapter.AdapterInfo;
@@ -61,16 +62,17 @@ public class TransactionsFragment extends Fragment {
 
     public void inicijalizacijaPodataka(){
         RealmResults<Transaction> transakcije = mRealm.where(Transaction.class).findAll();
+        int max = transakcije.size();
         labelsY = new float[transakcije.size()];
         labelsX = new String[transakcije.size()];
 
 
-        int i = 0;
+        int i = max-1;
         for(Transaction t : transakcije){
-            String iznos = t.getSubvencija();
-            labelsY[i] = Float.parseFloat(iznos.replace(",", "."));
-            labelsX[i] = t.getDatum();
-            i++;
+                String iznos = t.getSubvencija();
+                labelsY[i] = Float.parseFloat(iznos.replace(",", "."));
+                labelsX[i] = t.getDatum();
+                i--;
         }
 
         inicijalizacijaCharta();
@@ -84,12 +86,13 @@ public class TransactionsFragment extends Fragment {
                 .setDotsRadius(10)
                 .setThickness(7);
 
+        Animation anim = new Animation(800);
         lineChart.addData(dataset);
         lineChart.setAxisColor(getResources().getColor(R.color.icon_inactive));
         lineChart.setYAxis(true);
         lineChart.setAxisBorderValues(0,30);
         lineChart.setStep(10);
-        lineChart.show();
+        lineChart.show(anim);
 
     }
 }

@@ -51,6 +51,7 @@ public class CardFragment extends Fragment {
     RelativeLayout relativeLayout;
     private Snackbar snack;
     public Realm mRealm;
+    public String studentUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +60,10 @@ public class CardFragment extends Fragment {
 
         loading = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.iksica_card_layout);
+        korisnik = (TextView) view.findViewById(R.id.user_name);
+        broj_kartice = (TextView) view.findViewById(R.id.card_number);
+        potrosenoDanasTextView = (TextView) view.findViewById(R.id.potroseno_danas_value);
+        saldo = (TextView) view.findViewById(R.id.pare);
 
         loading.setVisibility(View.VISIBLE);
         relativeLayout.setVisibility(View.INVISIBLE);
@@ -66,7 +71,7 @@ public class CardFragment extends Fragment {
         mRealm = Realm.getDefaultInstance();
         User user = mRealm.where(User.class).findFirst();
 
-        fetchData(user.getuMail().toString(), user.getuPassword().toString());
+        getRequestUrl(user.getuMail().toString(), user.getuPassword().toString());
 
         return view;
     }
@@ -124,6 +129,7 @@ public class CardFragment extends Fragment {
                 .addInterceptor(logging)
                 .build();
 
+
         Request rq = new Request.Builder()
                 .url("https://issp.srce.hr/isspaaieduhr/login.ashx")
                 .get()
@@ -139,10 +145,6 @@ public class CardFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
-                 if(response.request().url().toString().contains("https://issp.srce.hr/Student?")){
-                    fetchUserInfo(response.request().url().toString());
-                }
 
                 final Document doc = Jsoup.parse(response.body().string());
                 Element el = doc.getElementById("SAMLRequest");
@@ -163,7 +165,7 @@ public class CardFragment extends Fragment {
                 call1.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d(TAG, "Odgovor_neuspjesno", e);
+                        showErrorSnack();
                     }
 
                     @Override
@@ -250,6 +252,7 @@ public class CardFragment extends Fragment {
                                             public void onResponse(Call call, Response response) throws IOException {
 
                                                 fetchUserInfo(response.request().url().toString());
+                                                studentUrl = response.request().url().toString();
                                             }
 
                                         });
@@ -270,7 +273,7 @@ public class CardFragment extends Fragment {
     }
 
     public void fetchUserInfo(String url){
-        final Request request = new Request.Builder()
+         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
@@ -341,16 +344,10 @@ public class CardFragment extends Fragment {
 
                         String money = el.text();
                         String num = money.substring(17, money.length());
-                        saldo = (TextView) getActivity().findViewById(R.id.pare);
+                        
                         saldo.setText(num + " kn");
-
-                        korisnik = (TextView) getActivity().findViewById(R.id.user_name);
                         korisnik.setText(user.text());
-
-                        broj_kartice = (TextView) getActivity().findViewById(R.id.card_number);
                         broj_kartice.setText(number.text());
-
-                        potrosenoDanasTextView = (TextView) getActivity().findViewById(R.id.potroseno_danas_value);
                         potrosenoDanasTextView.setText("- " + potrosnjaDanas.substring(16, potrosnjaDanas.length()) + " kn");
 
                         loading.setVisibility(View.INVISIBLE);
@@ -428,6 +425,14 @@ public class CardFragment extends Fragment {
         });
     }
 
+    public void getRequestUrl(String username, String password){
+        if(studentUrl != null){
+            fetchUserInfo(studentUrl);
+        } else {
+            fetchData(username, password);
+        }
+    }
+
 
     @Override
     public void onStop() {
@@ -441,6 +446,5 @@ public class CardFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
     }
 }
