@@ -1,8 +1,10 @@
 package com.tstudioz.menze.Activities;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -11,10 +13,14 @@ import com.tstudioz.menze.Fragments.ProfileFragment;
 import com.tstudioz.menze.Fragments.TransactionsFragment;
 import com.tstudioz.menze.R;
 
+import java.util.Calendar;
+
 
 public class HomeActivity extends AppCompatActivity {
 
     AHBottomNavigation bNavigation;
+    public long back_pressed;
+    public Snackbar snack;
 
 
     @Override
@@ -24,7 +30,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         inicijalizacijaBottomNavigation();
-
         inicijalizacijaIksicaFragmenta();
     }
 
@@ -102,4 +107,21 @@ public class HomeActivity extends AppCompatActivity {
     public void onStop(){
         super.onStop();
     }
+
+    @Override
+    public void onBackPressed(){
+
+        if (back_pressed + 2000 > System.currentTimeMillis()){
+            finish();
+        } else {
+            showExitSnack();
+        }
+        back_pressed= System.currentTimeMillis();
+    }
+
+    public void showExitSnack(){
+        snack = Snackbar.make(findViewById(R.id.relative_home), "Ponovno pritisnite nazadan za izaći", Snackbar.LENGTH_LONG);
+        snack.show();
+    }
 }
+

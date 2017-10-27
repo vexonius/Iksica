@@ -57,14 +57,16 @@ public class CardFragment extends Fragment {
         View view = inflater.inflate(R.layout.iksica_layout,
                 container, false);
 
-        loading = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.iksica_card_layout);
+        loading = (ProgressBar) view.findViewById(R.id.progressBar);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.iksica_card_layout);
+
+        loading.setVisibility(View.VISIBLE);
+        relativeLayout.setVisibility(View.INVISIBLE);
 
         mRealm = Realm.getDefaultInstance();
         User user = mRealm.where(User.class).findFirst();
 
         fetchData(user.getuMail().toString(), user.getuPassword().toString());
-
 
         return view;
     }
@@ -127,19 +129,20 @@ public class CardFragment extends Fragment {
                 .get()
                 .build();
 
-        /* TODO check if user tap on home again
-           TODO check internet conn
-         */
 
         Call call = okHttpClient.newCall(rq);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "odgovor", e);
+                showErrorSnack();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
+                 if(response.request().url().toString().contains("https://issp.srce.hr/Student?")){
+                    fetchUserInfo(response.request().url().toString());
+                }
 
                 final Document doc = Jsoup.parse(response.body().string());
                 Element el = doc.getElementById("SAMLRequest");
@@ -246,105 +249,7 @@ public class CardFragment extends Fragment {
                                             @Override
                                             public void onResponse(Call call, Response response) throws IOException {
 
-                                                final Request request = new Request.Builder()
-                                                        .url(response.request().url())
-                                                        .get()
-                                                        .build();
-
-                                                Call call6 = okHttpClient.newCall(request);
-                                                call6.enqueue(new Callback() {
-                                                    @Override
-                                                    public void onFailure(Call call, IOException e) {
-                                                        Log.d(TAG, "Odgovor_neuspjesno", e);
-                                                    }
-
-                                                    @Override
-                                                    public void onResponse(Call call, Response response) throws IOException {
-
-                                                        final Document document = Jsoup.parse(response.body().string());
-                                                        final Element el = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(8) ").first();
-                                                        final Element user = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3 > strong").first();
-                                                        final Element number = document.select("body > div > div.container > div:nth-child(6) > div > table > tbody > tr:nth-child(2) > td:nth-child(1)").first();
-
-                                                        final String uciliste = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(4)").first().text();
-                                                        final String razinaPrava = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(5)").first().text();
-                                                        final String pravaOd = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(6)").first().text();
-                                                        final String pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
-                                                        final String potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
-                                                        final String userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
-                                                        final  String slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
-
-
-                                                        getActivity().runOnUiThread(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-
-                                                                final UserInfoItem userInfoItem = new UserInfoItem();
-                                                                userInfoItem.setindex(1);
-                                                                userInfoItem.setItemTitle("Fakultet");
-                                                                userInfoItem.setItemDesc(uciliste.substring(9, uciliste.length()));
-
-                                                                final UserInfoItem userInfoItem2 = new UserInfoItem();
-                                                                userInfoItem2.setindex(2);
-                                                                userInfoItem2.setItemTitle("Razina  prava");
-                                                                userInfoItem2.setItemDesc(razinaPrava.substring(13, razinaPrava.length()));
-
-                                                                final UserInfoItem userInfoItem3 = new UserInfoItem();
-                                                                userInfoItem3.setindex(3);
-                                                                userInfoItem3.setItemTitle("Prava vrijede od");
-                                                                userInfoItem3.setItemDesc(pravaOd.substring(9, pravaOd.length()));
-
-                                                                final UserInfoItem userInfoItem4 = new UserInfoItem();
-                                                                userInfoItem4.setindex(4);
-                                                                userInfoItem4.setItemTitle("Prava vrijede do");
-                                                                userInfoItem4.setItemDesc(pravaDo.substring(9, pravaDo.length()));
-
-
-
-                                                                mRealm.executeTransaction(new Realm.Transaction() {
-                                                                    @Override
-                                                                    public void execute(Realm realm) {
-                                                                        User mUser = mRealm.where(User.class).findFirst();
-                                                                        mUser.setuName(userName);
-                                                                        mUser.setSrcLink(slikaLink);
-
-                                                                        mRealm.copyToRealmOrUpdate(userInfoItem);
-                                                                        mRealm.copyToRealmOrUpdate(userInfoItem2);
-                                                                        mRealm.copyToRealmOrUpdate(userInfoItem3);
-                                                                        mRealm.copyToRealmOrUpdate(userInfoItem4);
-                                                                    }
-                                                                });
-
-                                                                String money = el.text();
-                                                                String num = money.substring(17, money.length());
-                                                                saldo = (TextView) getActivity().findViewById(R.id.pare);
-                                                                saldo.setText(num + " kn");
-
-                                                                korisnik = (TextView) getActivity().findViewById(R.id.user_name);
-                                                                korisnik.setText(user.text());
-
-                                                                broj_kartice = (TextView) getActivity().findViewById(R.id.card_number);
-                                                                broj_kartice.setText(number.text());
-
-                                                                potrosenoDanasTextView = (TextView) getActivity().findViewById(R.id.potroseno_danas_value);
-                                                                potrosenoDanasTextView.setText("- " + potrosnjaDanas.substring(16, potrosnjaDanas.length()) + " kn");
-
-                                                                loading = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-                                                                relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.iksica_card_layout);
-
-                                                                loading.setVisibility(View.INVISIBLE);
-                                                                relativeLayout.setVisibility(View.VISIBLE);
-
-                                                                getTransactions("https://issp.srce.hr" + document.getElementsByClass("btn-primary btn-lg").first().attr("href"));
-
-
-                                                            }
-                                                        });
-
-                                                    }
-                                                });
-
-
+                                                fetchUserInfo(response.request().url().toString());
                                             }
 
                                         });
@@ -360,6 +265,103 @@ public class CardFragment extends Fragment {
 
                     }
                 });
+            }
+        });
+    }
+
+    public void fetchUserInfo(String url){
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        Call call6 = okHttpClient.newCall(request);
+        call6.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "Odgovor_neuspjesno", e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final Document document = Jsoup.parse(response.body().string());
+                final Element el = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(8) ").first();
+                final Element user = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3 > strong").first();
+                final Element number = document.select("body > div > div.container > div:nth-child(6) > div > table > tbody > tr:nth-child(2) > td:nth-child(1)").first();
+
+                final String uciliste = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(4)").first().text();
+                final String razinaPrava = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(5)").first().text();
+                final String pravaOd = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(6)").first().text();
+                final String pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
+                final String potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
+                final String userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
+                final  String slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
+
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        final UserInfoItem userInfoItem = new UserInfoItem();
+                        userInfoItem.setindex(1);
+                        userInfoItem.setItemTitle("Fakultet");
+                        userInfoItem.setItemDesc(uciliste.substring(9, uciliste.length()));
+
+                        final UserInfoItem userInfoItem2 = new UserInfoItem();
+                        userInfoItem2.setindex(2);
+                        userInfoItem2.setItemTitle("Razina  prava");
+                        userInfoItem2.setItemDesc(razinaPrava.substring(13, razinaPrava.length()));
+
+                        final UserInfoItem userInfoItem3 = new UserInfoItem();
+                        userInfoItem3.setindex(3);
+                        userInfoItem3.setItemTitle("Prava vrijede od");
+                        userInfoItem3.setItemDesc(pravaOd.substring(9, pravaOd.length()));
+
+                        final UserInfoItem userInfoItem4 = new UserInfoItem();
+                        userInfoItem4.setindex(4);
+                        userInfoItem4.setItemTitle("Prava vrijede do");
+                        userInfoItem4.setItemDesc(pravaDo.substring(9, pravaDo.length()));
+
+
+
+                        mRealm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                User mUser = mRealm.where(User.class).findFirst();
+                                mUser.setuName(userName);
+                                mUser.setSrcLink(slikaLink);
+
+                                mRealm.copyToRealmOrUpdate(userInfoItem);
+                                mRealm.copyToRealmOrUpdate(userInfoItem2);
+                                mRealm.copyToRealmOrUpdate(userInfoItem3);
+                                mRealm.copyToRealmOrUpdate(userInfoItem4);
+                            }
+                        });
+
+                        String money = el.text();
+                        String num = money.substring(17, money.length());
+                        saldo = (TextView) getActivity().findViewById(R.id.pare);
+                        saldo.setText(num + " kn");
+
+                        korisnik = (TextView) getActivity().findViewById(R.id.user_name);
+                        korisnik.setText(user.text());
+
+                        broj_kartice = (TextView) getActivity().findViewById(R.id.card_number);
+                        broj_kartice.setText(number.text());
+
+                        potrosenoDanasTextView = (TextView) getActivity().findViewById(R.id.potroseno_danas_value);
+                        potrosenoDanasTextView.setText("- " + potrosnjaDanas.substring(16, potrosnjaDanas.length()) + " kn");
+
+                        loading.setVisibility(View.INVISIBLE);
+                        relativeLayout.setVisibility(View.VISIBLE);
+
+                        getTransactions("https://issp.srce.hr" + document.getElementsByClass("btn-primary btn-lg").first().attr("href"));
+
+
+                    }
+                });
+
             }
         });
     }
@@ -387,13 +389,6 @@ public class CardFragment extends Fragment {
 
 
                     final Element tablica = document.select("body > div > div.container > table").first();
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d("LOGAMO MALO", tablica.text());
-                        }
-                    });
 
 
                     final Elements redovi = tablica.select("tr");
@@ -440,6 +435,12 @@ public class CardFragment extends Fragment {
 
         if (okHttpClient != null)
             okHttpClient.dispatcher().cancelAll();
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
 
     }
 }

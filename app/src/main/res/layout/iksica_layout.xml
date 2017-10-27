@@ -21,8 +21,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="25dp"
             android:elevation="6dp"
-            android:background="@drawable/iksica_artwork"
-            android:visibility="invisible">
+            android:background="@drawable/iksica_artwork">
 
             <TextView
                 android:id="@+id/user_name"
@@ -65,8 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:indeterminate="true"
-            android:visibility="visible"/>
+            android:indeterminate="true" />
 
     </FrameLayout>
 

@@ -53,6 +53,7 @@ public class SignInActivity extends AppCompatActivity {
             User u = realm.where(User.class).findFirst();
             if(u!=null) {
                 startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+                finish();
             }else {
                 registerUser();
             }
