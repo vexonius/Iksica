@@ -1,10 +1,9 @@
 package com.tstudioz.menze.Activities;
 
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -12,8 +11,6 @@ import com.tstudioz.menze.Fragments.CardFragment;
 import com.tstudioz.menze.Fragments.ProfileFragment;
 import com.tstudioz.menze.Fragments.TransactionsFragment;
 import com.tstudioz.menze.R;
-
-import java.util.Calendar;
 
 
 public class HomeActivity extends AppCompatActivity {

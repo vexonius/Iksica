@@ -1,6 +1,5 @@
 package com.tstudioz.menze.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,14 +11,9 @@ import android.view.ViewGroup;
 import com.db.chart.animation.Animation;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
-import com.tstudioz.menze.Adapter.AdapterInfo;
 import com.tstudioz.menze.Adapter.AdapterTransactions;
 import com.tstudioz.menze.Model.Transaction;
-import com.tstudioz.menze.Model.UserInfoItem;
 import com.tstudioz.menze.R;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

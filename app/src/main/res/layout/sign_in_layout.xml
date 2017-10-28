@@ -3,31 +3,37 @@
     android:id="@+id/sign_in_relative"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:background="@drawable/food_cover">
+
+    <ImageView
+        android:id="@+id/icon_banner"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/app_icon"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"/>
 
         <RelativeLayout
             android:id="@+id/sign_in_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/icon_banner"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/icon_banner"
-                android:scaleType="centerInside"
-                android:layout_marginTop="50dp"
-                android:layout_centerHorizontal="true"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icon_banner"
+            android:visibility="visible"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="70dp"
+            >
 
             <EditText
                 android:id="@+id/sign_in_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/icon_banner"
                 android:hint="EDU email"
-                android:textColor="@color/light_grey"
-                android:layout_marginTop="40dp"
+                android:textColor="@color/dirty_white"
+                android:textColorHint="#c6c6c6"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:inputType="text"
@@ -40,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Lozinka"
                 android:inputType="textPassword"
-                android:textColor="@color/light_grey"
+                android:textColor="@color/dirty_white"
+                android:textColorHint="#c6c6c6"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:singleLine="true"/>

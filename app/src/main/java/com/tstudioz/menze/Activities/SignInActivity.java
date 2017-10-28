@@ -7,21 +7,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.tstudioz.menze.Fragments.CardFragment;
 import com.tstudioz.menze.Model.User;
 import com.tstudioz.menze.R;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by etino7 on 08-Oct-17.
