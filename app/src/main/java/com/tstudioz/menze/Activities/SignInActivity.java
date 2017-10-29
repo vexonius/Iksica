@@ -118,6 +118,7 @@ public class SignInActivity extends AppCompatActivity {
         snack.show();
     }
 
+
     public void onStop(){
         super.onStop();
 
