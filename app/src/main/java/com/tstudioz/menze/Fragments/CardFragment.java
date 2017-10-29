@@ -51,7 +51,6 @@ public class CardFragment extends Fragment {
     RelativeLayout relativeLayout;
     private Snackbar snack;
     public Realm mRealm;
-    public String studentUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -65,26 +64,28 @@ public class CardFragment extends Fragment {
         potrosenoDanasTextView = (TextView) view.findViewById(R.id.potroseno_danas_value);
         saldo = (TextView) view.findViewById(R.id.pare);
 
-        loading.setVisibility(View.VISIBLE);
-        relativeLayout.setVisibility(View.INVISIBLE);
-
-        mRealm = Realm.getDefaultInstance();
-        User user = mRealm.where(User.class).findFirst();
-
-        getRequestUrl(user.getuMail().toString(), user.getuPassword().toString());
+        showUserCard();
 
         return view;
     }
 
     public void showUserCard() {
 
+        loading.setVisibility(View.VISIBLE);
+        relativeLayout.setVisibility(View.INVISIBLE);
+
         if (isNetworkAvailable()) {
-            loading.setVisibility(View.INVISIBLE);
-            relativeLayout.setVisibility(View.VISIBLE);
+            getKorisnickePodatke();
         } else {
             showNetworkErrorSnack();
         }
 
+    }
+
+    public void getKorisnickePodatke(){
+        mRealm = Realm.getDefaultInstance();
+        User user = mRealm.where(User.class).findFirst();
+        fetchData(user.getuMail(), user.getuPassword());
     }
 
     public void showNetworkErrorSnack() {
@@ -129,12 +130,10 @@ public class CardFragment extends Fragment {
                 .addInterceptor(logging)
                 .build();
 
-
         Request rq = new Request.Builder()
                 .url("https://issp.srce.hr/isspaaieduhr/login.ashx")
                 .get()
                 .build();
-
 
         Call call = okHttpClient.newCall(rq);
         call.enqueue(new Callback() {
@@ -145,11 +144,10 @@ public class CardFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 final Document doc = Jsoup.parse(response.body().string());
+
                 Element el = doc.getElementById("SAMLRequest");
                 String authToken = el.val();
-
 
                 RequestBody formBody = new FormBody.Builder()
                         .add("submit", "Continue")
@@ -170,7 +168,6 @@ public class CardFragment extends Fragment {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-
                         Document document = Jsoup.parse(response.body().string());
 
                         String authState = document
@@ -193,7 +190,7 @@ public class CardFragment extends Fragment {
                         call4.enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                                Log.d(TAG, "Odgovor_neuspjesno", e);
+                               showErrorSnack();
                             }
 
                             @Override
@@ -204,63 +201,7 @@ public class CardFragment extends Fragment {
                                 Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
                                 final String loginToken = el.attr("value");
 
-                                Log.d("Login token", loginToken);
-
-                                RequestBody formBody = new FormBody.Builder()
-                                        .add("SAMLResponse", loginToken)
-                                        .add("submit", "Submit")
-                                        .build();
-
-                                final Request request = new Request.Builder()
-                                        .url("https://login.aaiedu.hr/ms/module.php/saml/sp/saml2-acs.php/default-sp")
-                                        .post(formBody)
-                                        .build();
-
-                                Call call5 = okHttpClient.newCall(request);
-                                call5.enqueue(new Callback() {
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
-                                        Log.d(TAG, "Odgovor_neuspjesno", e);
-                                    }
-
-                                    @Override
-                                    public void onResponse(Call call, Response response) throws IOException {
-
-                                        Document document = Jsoup.parse(response.body().string());
-
-                                        Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
-                                        final String afterToken = el.attr("value");
-
-                                        RequestBody formBody = new FormBody.Builder()
-                                                .add("SAMLResponse", afterToken)
-                                                .add("submit", "Submit")
-                                                .build();
-
-                                        final Request request = new Request.Builder()
-                                                .url("https://issp.srce.hr/ISSPAAIEduHr/login.ashx")
-                                                .post(formBody)
-                                                .build();
-
-                                        Call call2 = okHttpClient.newCall(request);
-                                        call2.enqueue(new Callback() {
-                                            @Override
-                                            public void onFailure(Call call, IOException e) {
-                                                Log.d(TAG, "Odgovor_neuspjesno", e);
-                                            }
-
-                                            @Override
-                                            public void onResponse(Call call, Response response) throws IOException {
-
-                                                fetchUserInfo(response.request().url().toString());
-                                                studentUrl = response.request().url().toString();
-                                            }
-
-                                        });
-
-
-                                    }
-                                });
-
+                                parseResponseToken(loginToken);
 
                             }
                         });
@@ -269,6 +210,65 @@ public class CardFragment extends Fragment {
                     }
                 });
             }
+        });
+    }
+
+    public void parseResponseToken(String token){
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("SAMLResponse", token)
+                .add("submit", "Submit")
+                .build();
+
+        final Request request = new Request.Builder()
+                .url("https://login.aaiedu.hr/ms/module.php/saml/sp/saml2-acs.php/default-sp")
+                .post(formBody)
+                .build();
+
+        Call call5 = okHttpClient.newCall(request);
+        call5.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+               showErrorSnack();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Document document = Jsoup.parse(response.body().string());
+
+                Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
+                final String afterToken = el.attr("value");
+
+                submitResponseToken(afterToken);
+
+
+            }
+        });
+    }
+
+    public void submitResponseToken(String token){
+        RequestBody formBody = new FormBody.Builder()
+                .add("SAMLResponse", token)
+                .add("submit", "Submit")
+                .build();
+
+        final Request request = new Request.Builder()
+                .url("https://issp.srce.hr/ISSPAAIEduHr/login.ashx")
+                .post(formBody)
+                .build();
+
+        Call call2 = okHttpClient.newCall(request);
+        call2.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+               showErrorSnack();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                fetchUserInfo(response.request().url().toString());
+            }
+
         });
     }
 
@@ -282,7 +282,7 @@ public class CardFragment extends Fragment {
         call6.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "Odgovor_neuspjesno", e);
+               showErrorSnack();
             }
 
             @Override
@@ -325,8 +325,6 @@ public class CardFragment extends Fragment {
                         userInfoItem4.setindex(4);
                         userInfoItem4.setItemTitle("Prava vrijede do");
                         userInfoItem4.setItemDesc(pravaDo.substring(9, pravaDo.length()));
-
-
 
                         mRealm.executeTransaction(new Realm.Transaction() {
                             @Override
@@ -381,13 +379,8 @@ public class CardFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 Document document = Jsoup.parse(response.body().string());
 
-
                 try {
-
-
                     final Element tablica = document.select("body > div > div.container > table").first();
-
-
                     final Elements redovi = tablica.select("tr");
 
                     for (final Element red : redovi) {
@@ -425,13 +418,6 @@ public class CardFragment extends Fragment {
         });
     }
 
-    public void getRequestUrl(String username, String password){
-        if(studentUrl != null){
-            fetchUserInfo(studentUrl);
-        } else {
-            fetchData(username, password);
-        }
-    }
 
 
     @Override
@@ -440,6 +426,10 @@ public class CardFragment extends Fragment {
 
         if (okHttpClient != null)
             okHttpClient.dispatcher().cancelAll();
+
+        if(mRealm != null){
+            mRealm.close();
+        }
 
     }
 

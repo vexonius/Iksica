@@ -45,7 +45,6 @@ public class SignInActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("SHARED_PREFS", MODE_PRIVATE);
         Boolean prijavljen = sp.getBoolean("korisnik_prijavljen", false);
 
-
         if (prijavljen){
             User u = realm.where(User.class).findFirst();
             if(u!=null) {
@@ -117,6 +116,14 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
         snack.show();
+    }
+
+    public void onStop(){
+        super.onStop();
+
+        if(realm!=null)
+            realm.close();
+
     }
 
 }

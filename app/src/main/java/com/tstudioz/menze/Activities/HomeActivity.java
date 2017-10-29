@@ -31,7 +31,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void inicijalizacijaBottomNavigation(){
-
         bNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
         AHBottomNavigationItem homeItem = new AHBottomNavigationItem("Iksica", R.drawable.kartica_icon, R.color.icon_inactive);

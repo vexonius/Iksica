@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
         User user = mRealm.where(User.class).findFirst();
 
         CircularImageView image = (CircularImageView) view.findViewById(R.id.circularImageView);
-
         Glide.with(this).load(user.getSrcLink()).into(image);
 
         TextView imeStudenta = (TextView)view.findViewById(R.id.name_surename);
@@ -63,7 +62,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void showInfoRecyclerView(){
-
         RealmResults<UserInfoItem> informacije = mRealm.where(UserInfoItem.class).findAll();
 
         rv.setHasFixedSize(true);
@@ -87,5 +85,12 @@ public class ProfileFragment extends Fragment {
 
         getActivity().startActivity(new Intent(getActivity(), SignInActivity.class));
         getActivity().finish();
+    }
+
+    public void onStop(){
+        super.onStop();
+
+        if(mRealm!=null)
+            mRealm.close();
     }
 }

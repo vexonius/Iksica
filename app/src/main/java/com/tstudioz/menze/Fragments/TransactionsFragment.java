@@ -36,18 +36,17 @@ public class TransactionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.transactions_layout, parent, false);
 
         mRealm = Realm.getDefaultInstance();
+
         tRv = (RecyclerView)view.findViewById(R.id.recycler_transactions);
         showInfoRecyclerView();
 
         lineChart = (LineChartView)view.findViewById(R.id.chart);
-
         inicijalizacijaPodataka();
 
         return view;
     }
 
     public void showInfoRecyclerView(){
-
         RealmResults<Transaction> transakcije = mRealm.where(Transaction.class).findAll();
         tRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         AdapterTransactions at = new AdapterTransactions(transakcije);
@@ -59,7 +58,6 @@ public class TransactionsFragment extends Fragment {
         int max = transakcije.size();
         labelsY = new float[transakcije.size()];
         labelsX = new String[transakcije.size()];
-
 
         int i = max-1;
         for(Transaction t : transakcije){
@@ -89,4 +87,12 @@ public class TransactionsFragment extends Fragment {
         lineChart.show(anim);
 
     }
+
+    public void onStop(){
+        super.onStop();
+
+        if(mRealm!=null)
+            mRealm.close();
+    }
+
 }
