@@ -46,11 +46,15 @@ import static android.content.ContentValues.TAG;
 public class CardFragment extends Fragment {
 
     OkHttpClient okHttpClient;
+
+    public String authToken, authState, loginToken, afterToken;
     TextView saldo, korisnik, broj_kartice, potrosenoDanasTextView;
     ProgressBar loading;
     RelativeLayout relativeLayout;
     private Snackbar snack;
+
     public Realm mRealm;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -147,7 +151,7 @@ public class CardFragment extends Fragment {
                 final Document doc = Jsoup.parse(response.body().string());
 
                 Element el = doc.getElementById("SAMLRequest");
-                String authToken = el.val();
+                authToken = el.val();
 
                 RequestBody formBody = new FormBody.Builder()
                         .add("submit", "Continue")
@@ -170,7 +174,7 @@ public class CardFragment extends Fragment {
                     public void onResponse(Call call, Response response) throws IOException {
                         Document document = Jsoup.parse(response.body().string());
 
-                        String authState = document
+                        authState = document
                                 .select("#aai_centerbox > div.aai_form_container > div.aai_login_form > form > input[type=\"hidden\"]:nth-child(7)")
                                 .first().attr("value");
 
@@ -198,10 +202,16 @@ public class CardFragment extends Fragment {
 
                                 Document document = Jsoup.parse(response.body().string());
 
-                                Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
-                                final String loginToken = el.attr("value");
+                                try {
+                                    Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
+                                    loginToken = el.attr("value");
 
-                                parseResponseToken(loginToken);
+                                    parseResponseToken(loginToken);
+                                } catch(Exception exp){
+                                    Log.e("Exception found", exp.toString());
+                                }
+
+
 
                             }
                         });
@@ -236,11 +246,14 @@ public class CardFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 Document document = Jsoup.parse(response.body().string());
 
-                Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
-                final String afterToken = el.attr("value");
+                try {
+                    Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
+                    afterToken = el.attr("value");
+                } catch(Exception ex){
+                    Log.e("Exception found", ex.toString());
+                }
 
                 submitResponseToken(afterToken);
-
 
             }
         });
@@ -288,18 +301,21 @@ public class CardFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                final Document document = Jsoup.parse(response.body().string());
-                final Element el = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(8) ").first();
-                final Element user = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3 > strong").first();
-                final Element number = document.select("body > div > div.container > div:nth-child(6) > div > table > tbody > tr:nth-child(2) > td:nth-child(1)").first();
+                try {
 
-                final String uciliste = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(4)").first().text();
-                final String razinaPrava = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(5)").first().text();
-                final String pravaOd = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(6)").first().text();
-                final String pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
-                final String potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
-                final String userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
-                final  String slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
+                    final Document document = Jsoup.parse(response.body().string());
+                    final Element el = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(8) ").first();
+                    final Element user = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3 > strong").first();
+                    final Element number = document.select("body > div > div.container > div:nth-child(6) > div > table > tbody > tr:nth-child(2) > td:nth-child(1)").first();
+
+                    final String uciliste = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(4)").first().text();
+                    final String razinaPrava = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(5)").first().text();
+                    final String pravaOd = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(6)").first().text();
+                    final String pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
+                    final String potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
+                    final String userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
+                    final String slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
+
 
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -353,9 +369,12 @@ public class CardFragment extends Fragment {
 
                         getTransactions("https://issp.srce.hr" + document.getElementsByClass("btn-primary btn-lg").first().attr("href"));
 
-
                     }
                 });
+
+                } catch (Exception ex){
+                    Log.e("Exception parsing data", ex.toString());
+                }
 
             }
         });
