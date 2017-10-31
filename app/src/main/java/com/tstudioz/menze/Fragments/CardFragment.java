@@ -56,7 +56,7 @@ public class CardFragment extends Fragment {
     private String uciliste, razinaPrava, pravaOd, pravaDo, slikaLink, potrosnjaDanas, userName;
     public TextView saldo, korisnik, broj_kartice, potrosenoDanasTextView;
     private ProgressBar loading;
-    private RelativeLayout relativeLayout;
+    private RelativeLayout relativeLayout, activity_root_layout;
     private Snackbar snack;
 
 
@@ -67,6 +67,7 @@ public class CardFragment extends Fragment {
 
         loading = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.iksica_card_layout);
+        activity_root_layout = (RelativeLayout)view.findViewById(R.id.relative_home);
         korisnik = (TextView) view.findViewById(R.id.user_name);
         broj_kartice = (TextView) view.findViewById(R.id.card_number);
         potrosenoDanasTextView = (TextView) view.findViewById(R.id.potroseno_danas_value);
@@ -108,8 +109,10 @@ public class CardFragment extends Fragment {
     }
 
     public void showErrorSnack(String message) {
-        snack = Snackbar.make(getActivity().findViewById(R.id.iksica_root_relative), message, Snackbar.LENGTH_INDEFINITE);
-        snack.show();
+        if(activity_root_layout!=null) {
+            snack = Snackbar.make(activity_root_layout, message, Snackbar.LENGTH_INDEFINITE);
+            snack.show();
+        }
     }
 
 

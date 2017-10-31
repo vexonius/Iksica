@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.db.chart.animation.Animation;
 import com.db.chart.model.LineSet;
@@ -29,6 +30,7 @@ public class TransactionsFragment extends Fragment {
     public float[] labelsY ;
     public String[] labelsX ;
     public LineChartView lineChart;
+    private TextView noTransactions;
 
 
     @Override
@@ -37,6 +39,7 @@ public class TransactionsFragment extends Fragment {
 
         mRealm = Realm.getDefaultInstance();
 
+        noTransactions = (TextView)view.findViewById(R.id.noTrans);
         tRv = (RecyclerView)view.findViewById(R.id.recycler_transactions);
         showInfoRecyclerView();
 
@@ -56,18 +59,28 @@ public class TransactionsFragment extends Fragment {
     public void inicijalizacijaPodataka(){
         RealmResults<Transaction> transakcije = mRealm.where(Transaction.class).findAll();
         int max = transakcije.size();
-        labelsY = new float[transakcije.size()];
-        labelsX = new String[transakcije.size()];
 
-        int i = max-1;
-        for(Transaction t : transakcije){
+        if(max==0){
+            lineChart.setVisibility(View.INVISIBLE);
+            noTransactions.setVisibility(View.VISIBLE);
+        } else {
+            noTransactions.setVisibility(View.INVISIBLE);
+            lineChart.setVisibility(View.VISIBLE);
+
+            labelsY = new float[transakcije.size()];
+            labelsX = new String[transakcije.size()];
+
+            int i = max-1;
+            for(Transaction t : transakcije){
                 String iznos = t.getSubvencija();
                 labelsY[i] = Float.parseFloat(iznos.replace(",", "."));
                 labelsX[i] = t.getDatum();
                 i--;
+            }
+
+            inicijalizacijaCharta();
         }
 
-        inicijalizacijaCharta();
     }
 
     public void inicijalizacijaCharta(){
