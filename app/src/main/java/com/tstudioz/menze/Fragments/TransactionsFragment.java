@@ -88,8 +88,9 @@ public class TransactionsFragment extends Fragment {
 
     }
 
-    public void onStop(){
-        super.onStop();
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
 
         if(mRealm!=null)
             mRealm.close();

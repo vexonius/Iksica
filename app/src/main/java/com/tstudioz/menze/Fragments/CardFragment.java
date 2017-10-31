@@ -1,6 +1,8 @@
 package com.tstudioz.menze.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,10 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.tstudioz.menze.Activities.SignInActivity;
 import com.tstudioz.menze.Model.Transaction;
 import com.tstudioz.menze.Model.User;
 import com.tstudioz.menze.Model.UserInfoItem;
@@ -45,15 +49,15 @@ import static android.content.ContentValues.TAG;
 
 public class CardFragment extends Fragment {
 
-    OkHttpClient okHttpClient;
+    public OkHttpClient okHttpClient;
+    private Realm mRealm;
 
-    public String authToken, authState, loginToken, afterToken;
-    TextView saldo, korisnik, broj_kartice, potrosenoDanasTextView;
-    ProgressBar loading;
-    RelativeLayout relativeLayout;
+    private String authToken, authState, loginToken, afterToken;
+    private String uciliste, razinaPrava, pravaOd, pravaDo, slikaLink, potrosnjaDanas, userName;
+    public TextView saldo, korisnik, broj_kartice, potrosenoDanasTextView;
+    private ProgressBar loading;
+    private RelativeLayout relativeLayout;
     private Snackbar snack;
-
-    public Realm mRealm;
 
 
     @Override
@@ -103,8 +107,8 @@ public class CardFragment extends Fragment {
         snack.show();
     }
 
-    public void showErrorSnack() {
-        snack = Snackbar.make(getActivity().findViewById(R.id.iksica_root_relative), "Došlo je do pogreške. Pokušajte ponovno kasnije", Snackbar.LENGTH_LONG);
+    public void showErrorSnack(String message) {
+        snack = Snackbar.make(getActivity().findViewById(R.id.iksica_root_relative), message, Snackbar.LENGTH_INDEFINITE);
         snack.show();
     }
 
@@ -143,14 +147,14 @@ public class CardFragment extends Fragment {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                showErrorSnack();
+                showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final Document doc = Jsoup.parse(response.body().string());
 
-                Element el = doc.getElementById("SAMLRequest");
+                final Element el = doc.getElementById("SAMLRequest");
                 authToken = el.val();
 
                 RequestBody formBody = new FormBody.Builder()
@@ -167,7 +171,7 @@ public class CardFragment extends Fragment {
                 call1.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        showErrorSnack();
+                        showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
                     }
 
                     @Override
@@ -194,7 +198,7 @@ public class CardFragment extends Fragment {
                         call4.enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                               showErrorSnack();
+                                showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
                             }
 
                             @Override
@@ -205,18 +209,25 @@ public class CardFragment extends Fragment {
                                 try {
                                     Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
                                     loginToken = el.attr("value");
-
-                                    parseResponseToken(loginToken);
                                 } catch(Exception exp){
                                     Log.e("Exception found", exp.toString());
                                 }
+                                finally {
+                                    if(loginToken!=null) {
+                                        parseResponseToken(loginToken);
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                signOut();
+                                                Toast.makeText(getContext(), "Pogrešno unesen email/lozinka", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
 
-
-
+                                }
                             }
                         });
-
-
                     }
                 });
             }
@@ -239,7 +250,7 @@ public class CardFragment extends Fragment {
         call5.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-               showErrorSnack();
+                showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
             }
 
             @Override
@@ -253,7 +264,8 @@ public class CardFragment extends Fragment {
                     Log.e("Exception found", ex.toString());
                 }
 
-                submitResponseToken(afterToken);
+                if(afterToken!=null)
+                    submitResponseToken(afterToken);
 
             }
         });
@@ -274,14 +286,13 @@ public class CardFragment extends Fragment {
         call2.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-               showErrorSnack();
+                showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 fetchUserInfo(response.request().url().toString());
             }
-
         });
     }
 
@@ -295,28 +306,27 @@ public class CardFragment extends Fragment {
         call6.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-               showErrorSnack();
+                showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
+                final Document document = Jsoup.parse(response.body().string());
+
                 try {
 
-                    final Document document = Jsoup.parse(response.body().string());
                     final Element el = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(8) ").first();
                     final Element user = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3 > strong").first();
                     final Element number = document.select("body > div > div.container > div:nth-child(6) > div > table > tbody > tr:nth-child(2) > td:nth-child(1)").first();
 
-                    final String uciliste = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(4)").first().text();
-                    final String razinaPrava = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(5)").first().text();
-                    final String pravaOd = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(6)").first().text();
-                    final String pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
-                    final String potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
-                    final String userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
-                    final String slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
-
-
+                    uciliste = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(4)").first().text();
+                    razinaPrava = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(5)").first().text();
+                    pravaOd = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(6)").first().text();
+                    pravaDo = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(7)").first().text();
+                    potrosnjaDanas = document.select("body > div > div.container > div:nth-child(3) > div:nth-child(4) > p:nth-child(9)").first().text();
+                    userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
+                    slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -368,14 +378,12 @@ public class CardFragment extends Fragment {
                         relativeLayout.setVisibility(View.VISIBLE);
 
                         getTransactions("https://issp.srce.hr" + document.getElementsByClass("btn-primary btn-lg").first().attr("href"));
-
                     }
                 });
 
                 } catch (Exception ex){
                     Log.e("Exception parsing data", ex.toString());
                 }
-
             }
         });
     }
@@ -391,7 +399,7 @@ public class CardFragment extends Fragment {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                showErrorSnack();
+                showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
             }
 
             @Override
@@ -430,7 +438,7 @@ public class CardFragment extends Fragment {
                         });
                     }
 
-                }catch (NullPointerException e){
+                }catch (Exception e){
                     Log.d("error on string", e.toString());
                 }
             }
@@ -438,6 +446,22 @@ public class CardFragment extends Fragment {
     }
 
 
+    public void signOut(){
+        SharedPreferences sp = getActivity().getSharedPreferences("SHARED_PREFS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("korisnik_prijavljen");
+        editor.commit();
+
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                mRealm.deleteAll();
+            }
+        });
+
+        getActivity().startActivity(new Intent(getActivity(), SignInActivity.class));
+        getActivity().finish();
+    }
 
     @Override
     public void onStop() {
@@ -445,11 +469,14 @@ public class CardFragment extends Fragment {
 
         if (okHttpClient != null)
             okHttpClient.dispatcher().cancelAll();
+    }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
         if(mRealm != null){
             mRealm.close();
         }
-
     }
 
     @Override

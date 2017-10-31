@@ -118,9 +118,9 @@ public class SignInActivity extends AppCompatActivity {
         snack.show();
     }
 
-
-    public void onStop(){
-        super.onStop();
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
 
         if(realm!=null)
             realm.close();

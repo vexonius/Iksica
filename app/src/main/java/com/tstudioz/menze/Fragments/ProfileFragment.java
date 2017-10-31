@@ -87,8 +87,9 @@ public class ProfileFragment extends Fragment {
         getActivity().finish();
     }
 
-    public void onStop(){
-        super.onStop();
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
 
         if(mRealm!=null)
             mRealm.close();
