@@ -88,14 +88,14 @@ public class TransactionsFragment extends Fragment {
         dataset.setColor(getResources().getColor(R.color.line_color))
                 .setFill(getResources().getColor(R.color.dirty_white))
                 .setDotsColor(getResources().getColor(R.color.colorAccent))
-                .setDotsRadius(10)
+                .setDotsRadius(12)
                 .setThickness(7);
 
         Animation anim = new Animation(800);
         lineChart.addData(dataset);
         lineChart.setAxisColor(getResources().getColor(R.color.icon_inactive));
         lineChart.setYAxis(true);
-        lineChart.setAxisBorderValues(0,30);
+        lineChart.setAxisBorderValues(0,40);
         lineChart.setStep(10);
         lineChart.show(anim);
 
