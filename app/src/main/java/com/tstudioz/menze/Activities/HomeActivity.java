@@ -15,7 +15,7 @@ import com.tstudioz.menze.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    AHBottomNavigation bNavigation;
+    public AHBottomNavigation bNavigation;
     public long back_pressed;
     public Snackbar snack;
 
