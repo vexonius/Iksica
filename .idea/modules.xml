@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Iksica.iml" filepath="$PROJECT_DIR$/Iksica.iml" />
+      <module fileurl="file://D:\Tino\Android\Projects\Menze\Iksica.iml" filepath="D:\Tino\Android\Projects\Menze\Iksica.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Menze.iml" filepath="$PROJECT_DIR$/Menze.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
