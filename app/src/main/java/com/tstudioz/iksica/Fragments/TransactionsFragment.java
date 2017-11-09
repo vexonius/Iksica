@@ -74,7 +74,15 @@ public class TransactionsFragment extends Fragment {
             for(Transaction t : transakcije){
                 String iznos = t.getSubvencija();
                 labelsY[i] = Float.parseFloat(iznos.replace(",", "."));
-                labelsX[i] = t.getDatum();
+                if(max<=12){
+                    labelsX[i] = t.getDatum();
+                } else {
+                    if(i % 4 == 0){
+                        labelsX[i] = t.getDatum();
+                    } else {
+                        labelsX[i] = "";
+                    }
+                }
                 i--;
             }
 

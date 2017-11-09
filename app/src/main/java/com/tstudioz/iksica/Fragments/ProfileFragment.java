@@ -84,7 +84,8 @@ public class ProfileFragment extends Fragment {
         });
 
         getActivity().startActivity(new Intent(getActivity(), SignInActivity.class));
-        getActivity().finish();
+        if(getActivity()!=null)
+            getActivity().finish();
     }
 
     @Override

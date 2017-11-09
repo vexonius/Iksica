@@ -2,22 +2,22 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/coord_sign_in"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="48dp"
+    android:background="@drawable/food_cover">
 
     <RelativeLayout
         android:id="@+id/sign_in_relative"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:background="@drawable/food_cover">
+        android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/icon_banner"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="30dp"
-        android:src="@drawable/app_icon"
+        android:src="@drawable/app_icon_small"
         android:scaleType="centerInside"
         android:layout_centerHorizontal="true"/>
 
@@ -28,8 +28,7 @@
             android:layout_below="@+id/icon_banner"
             android:visibility="visible"
             android:paddingBottom="10dp"
-            android:layout_marginBottom="70dp"
-            >
+            android:layout_marginBottom="70dp">
 
             <EditText
                 android:id="@+id/sign_in_username"
@@ -91,4 +90,5 @@
   </RelativeLayout>
 
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

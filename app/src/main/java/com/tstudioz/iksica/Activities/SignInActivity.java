@@ -249,9 +249,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void showNetworkErrorSnack(){
-        snack = Snackbar.make(relative, "Niste povezani", Snackbar.LENGTH_INDEFINITE);
-        View view = snack.getView();
-        view.setPadding(0,0,0, 167);
+        snack = Snackbar.make(findViewById(R.id.coord_sign_in), "Niste povezani", Snackbar.LENGTH_INDEFINITE);
         snack.setAction("PONOVI", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,9 +260,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void showErrorSnack(String message) {
-            snack = Snackbar.make(relative, message, Snackbar.LENGTH_LONG);
-            View view = snack.getView();
-            view.setPadding(0,0,0, 167);
+            snack = Snackbar.make(findViewById(R.id.coord_sign_in), message, Snackbar.LENGTH_LONG);
             snack.show();
         }
 
