@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Model;
+package com.tstudioz.iksica.Model;
 
 import io.realm.RealmObject;
 

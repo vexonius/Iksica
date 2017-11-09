@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Activities;
+package com.tstudioz.iksica.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.tstudioz.menze.Model.User;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Model.User;
+import com.tstudioz.iksica.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,7 +36,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by etino7 on 08-Oct-17.
@@ -127,14 +125,11 @@ public class SignInActivity extends AppCompatActivity {
     public void fetchData(final String username, final String password) {
 
         final CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         okHttpClient = new OkHttpClient().newBuilder()
                 .followRedirects(true)
                 .followSslRedirects(true)
                 .cookieJar(cookieJar)
-                .addInterceptor(logging)
                 .build();
 
         Request rq = new Request.Builder()
@@ -279,7 +274,6 @@ public class SignInActivity extends AppCompatActivity {
 
         if(realm!=null)
             realm.close();
-
     }
 
 }

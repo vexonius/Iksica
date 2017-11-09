@@ -10,6 +10,7 @@
 
     <style name="AppTheme.Transparent" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@drawable/startup_back</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>

@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Adapter;
+package com.tstudioz.iksica.Adapter;
 
 
 
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tstudioz.menze.Model.UserInfoItem;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Model.UserInfoItem;
+import com.tstudioz.iksica.R;
 
 
 import io.realm.RealmResults;

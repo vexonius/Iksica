@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Adapter;
+package com.tstudioz.iksica.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tstudioz.menze.Model.Transaction;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Model.Transaction;
+import com.tstudioz.iksica.R;
 
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;

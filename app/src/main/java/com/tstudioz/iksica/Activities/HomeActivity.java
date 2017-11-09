@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Activities;
+package com.tstudioz.iksica.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.tstudioz.menze.Fragments.CardFragment;
-import com.tstudioz.menze.Fragments.ProfileFragment;
-import com.tstudioz.menze.Fragments.TransactionsFragment;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Fragments.CardFragment;
+import com.tstudioz.iksica.Fragments.ProfileFragment;
+import com.tstudioz.iksica.Fragments.TransactionsFragment;
+import com.tstudioz.iksica.R;
 
 
 public class HomeActivity extends AppCompatActivity {

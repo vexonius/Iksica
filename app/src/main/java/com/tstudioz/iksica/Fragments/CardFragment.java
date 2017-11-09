@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Fragments;
+package com.tstudioz.iksica.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,11 +20,11 @@ import android.widget.Toast;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.tstudioz.menze.Activities.SignInActivity;
-import com.tstudioz.menze.Model.Transaction;
-import com.tstudioz.menze.Model.User;
-import com.tstudioz.menze.Model.UserInfoItem;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Activities.SignInActivity;
+import com.tstudioz.iksica.Model.Transaction;
+import com.tstudioz.iksica.Model.User;
+import com.tstudioz.iksica.Model.UserInfoItem;
+import com.tstudioz.iksica.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,9 +42,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-
-import static android.content.ContentValues.TAG;
 
 
 public class CardFragment extends Fragment {
@@ -131,14 +128,11 @@ public class CardFragment extends Fragment {
     public void fetchData(final String username, final String password) {
 
         final CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getActivity()));
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         okHttpClient = new OkHttpClient().newBuilder()
                 .followRedirects(true)
                 .followSslRedirects(true)
                 .cookieJar(cookieJar)
-                .addInterceptor(logging)
                 .build();
 
         Request rq = new Request.Builder()

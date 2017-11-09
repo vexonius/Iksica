@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Fragments;
+package com.tstudioz.iksica.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.tstudioz.menze.Activities.SignInActivity;
-import com.tstudioz.menze.Adapter.AdapterInfo;
-import com.tstudioz.menze.Model.User;
-import com.tstudioz.menze.Model.UserInfoItem;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Activities.SignInActivity;
+import com.tstudioz.iksica.Adapter.AdapterInfo;
+import com.tstudioz.iksica.Model.User;
+import com.tstudioz.iksica.Model.UserInfoItem;
+import com.tstudioz.iksica.R;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

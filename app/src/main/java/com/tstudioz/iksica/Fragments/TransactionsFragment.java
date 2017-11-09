@@ -1,4 +1,4 @@
-package com.tstudioz.menze.Fragments;
+package com.tstudioz.iksica.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import com.db.chart.animation.Animation;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
-import com.tstudioz.menze.Adapter.AdapterTransactions;
-import com.tstudioz.menze.Model.Transaction;
-import com.tstudioz.menze.R;
+import com.tstudioz.iksica.Adapter.AdapterTransactions;
+import com.tstudioz.iksica.Model.Transaction;
+import com.tstudioz.iksica.R;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

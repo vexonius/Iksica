@@ -1,4 +1,4 @@
-package com.tstudioz.menze;
+package com.tstudioz.iksica;
 
 import org.junit.Test;
 
