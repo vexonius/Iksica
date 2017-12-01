@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:background="@color/dirty_white">
 
     <FrameLayout
@@ -33,8 +34,6 @@
             android:visibility="invisible"/>
 
     </FrameLayout>
-
-
 
     <TextView
         android:id="@+id/transText"

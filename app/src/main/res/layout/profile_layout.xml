@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingBottom="40dp">
+        android:background="@color/white"
+        android:elevation="4dp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/circularImageView"
@@ -22,7 +23,6 @@
             android:layout_height="100dp"
             android:src="@drawable/korisnik_icon"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
             app:civ_border_color="@color/colorAccent"
             app:civ_border_width="2dp"
             app:civ_shadow="false" />
@@ -63,10 +63,10 @@
             android:textColor="@color/white"
             android:background="@drawable/button_background"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_below="@+id/button_logout">
+        <View android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@id/button_logout"
+            android:background="@android:color/transparent">
         </View>
 
     </RelativeLayout>
@@ -75,7 +75,8 @@
         android:id="@+id/user_info_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/user_info_relative">
+        android:layout_below="@+id/user_info_relative"
+        android:layout_marginTop="22dp">
     </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>

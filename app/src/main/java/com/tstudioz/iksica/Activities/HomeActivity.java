@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
                 getSupportActionBar().setTitle("Korisnik");
-                getSupportActionBar().setElevation(8);
+                getSupportActionBar().setElevation(0);
                 break;
         }
     }
