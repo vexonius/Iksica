@@ -95,7 +95,7 @@ public class CardFragment extends Fragment {
     }
 
     public void showNetworkErrorSnack() {
-        snack = Snackbar.make(getActivity().findViewById(R.id.iksica_root_relative), "Niste povezani", Snackbar.LENGTH_INDEFINITE);
+        snack = Snackbar.make(getActivity().findViewById(R.id.relative_home), "Niste povezani", Snackbar.LENGTH_INDEFINITE);
         snack.setAction("PONOVI", new View.OnClickListener() {
             @Override
             public void onClick(View view) {

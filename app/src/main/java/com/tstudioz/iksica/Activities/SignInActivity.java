@@ -26,6 +26,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import okhttp3.Call;
@@ -37,9 +38,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * Created by etino7 on 08-Oct-17.
- */
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -130,6 +128,9 @@ public class SignInActivity extends AppCompatActivity {
                 .followRedirects(true)
                 .followSslRedirects(true)
                 .cookieJar(cookieJar)
+                .connectTimeout(9000, TimeUnit.MILLISECONDS)
+                .writeTimeout(9000, TimeUnit.MILLISECONDS)
+                .readTimeout(9000, TimeUnit.MILLISECONDS)
                 .build();
 
         Request rq = new Request.Builder()
@@ -140,8 +141,16 @@ public class SignInActivity extends AppCompatActivity {
         Call call = okHttpClient.newCall(rq);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(Call call, final IOException e) {
                 showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        signInButton.setVisibility(View.VISIBLE);
+                        pbar.setVisibility(View.INVISIBLE);
+                        Log.d("kojik", e.getMessage().toString());
+                    }
+                });
             }
 
             @Override
@@ -166,6 +175,8 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         showErrorSnack("Došlo je do pogreške. Pokušajte ponovno");
+                        signInButton.setVisibility(View.VISIBLE);
+                        pbar.setVisibility(View.INVISIBLE);
                     }
 
                     @Override

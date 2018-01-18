@@ -19,9 +19,6 @@ import com.tstudioz.iksica.R;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-/**
- * Created by etino7 on 18-Oct-17.
- */
 
 public class TransactionsFragment extends Fragment {
 
