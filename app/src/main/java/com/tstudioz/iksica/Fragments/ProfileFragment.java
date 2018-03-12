@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.tstudioz.iksica.Activities.SignInActivity;
 import com.tstudioz.iksica.Adapter.AdapterInfo;
@@ -32,6 +34,7 @@ public class ProfileFragment extends Fragment {
 
     private RecyclerView rv;
     private Button signOutButton;
+    private AdView mAdViewProfile;
     Realm mRealm;
 
     @Override
@@ -50,6 +53,9 @@ public class ProfileFragment extends Fragment {
         rv = (RecyclerView)view.findViewById(R.id.user_info_recycler);
         showInfoRecyclerView();
 
+        mAdViewProfile = (AdView) view.findViewById(R.id.adViewProfile);
+        loadAds();
+
         signOutButton = (Button)view.findViewById(R.id.button_logout);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +65,11 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void loadAds(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdViewProfile.loadAd(adRequest);
     }
 
     public void showInfoRecyclerView(){

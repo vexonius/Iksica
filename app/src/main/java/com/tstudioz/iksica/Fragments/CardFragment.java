@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.tstudioz.iksica.Activities.SignInActivity;
 import com.tstudioz.iksica.Model.Transaction;
 import com.tstudioz.iksica.Model.User;
@@ -32,8 +34,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.CookieJar;
@@ -56,6 +60,8 @@ public class CardFragment extends Fragment {
     private RelativeLayout relativeLayout, activity_root_layout;
     private Snackbar snack;
 
+    private AdView mAdView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -64,13 +70,15 @@ public class CardFragment extends Fragment {
 
         loading = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.iksica_card_layout);
-        activity_root_layout = (RelativeLayout)view.findViewById(R.id.relative_home);
+        activity_root_layout = (RelativeLayout) view.findViewById(R.id.relative_home);
         korisnik = (TextView) view.findViewById(R.id.user_name);
         broj_kartice = (TextView) view.findViewById(R.id.card_number);
         potrosenoDanasTextView = (TextView) view.findViewById(R.id.potroseno_danas_value);
         saldo = (TextView) view.findViewById(R.id.pare);
+        mAdView = (AdView) view.findViewById(R.id.adView);
 
         showUserCard();
+        loadAds();
 
         return view;
     }
@@ -88,7 +96,7 @@ public class CardFragment extends Fragment {
 
     }
 
-    public void getKorisnickePodatke(){
+    public void getKorisnickePodatke() {
         mRealm = Realm.getDefaultInstance();
         User user = mRealm.where(User.class).findFirst();
         fetchData(user.getuMail(), user.getuPassword());
@@ -106,7 +114,7 @@ public class CardFragment extends Fragment {
     }
 
     public void showErrorSnack(String message) {
-        if(activity_root_layout!=null) {
+        if (activity_root_layout != null) {
             snack = Snackbar.make(activity_root_layout, message, Snackbar.LENGTH_INDEFINITE);
             snack.show();
         }
@@ -206,11 +214,10 @@ public class CardFragment extends Fragment {
                                 try {
                                     Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
                                     loginToken = el.attr("value");
-                                } catch(Exception exp){
+                                } catch (Exception exp) {
                                     Log.e("Exception found", exp.toString());
-                                }
-                                finally {
-                                    if(loginToken!=null) {
+                                } finally {
+                                    if (loginToken != null) {
                                         parseResponseToken(loginToken);
                                     } else {
                                         getActivity().runOnUiThread(new Runnable() {
@@ -231,7 +238,7 @@ public class CardFragment extends Fragment {
         });
     }
 
-    public void parseResponseToken(String token){
+    public void parseResponseToken(String token) {
 
         RequestBody formBody = new FormBody.Builder()
                 .add("SAMLResponse", token)
@@ -257,18 +264,18 @@ public class CardFragment extends Fragment {
                 try {
                     Element el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)").first();
                     afterToken = el.attr("value");
-                } catch(Exception ex){
+                } catch (Exception ex) {
                     Log.e("Exception found", ex.toString());
                 }
 
-                if(afterToken!=null)
+                if (afterToken != null)
                     submitResponseToken(afterToken);
 
             }
         });
     }
 
-    public void submitResponseToken(String token){
+    public void submitResponseToken(String token) {
         RequestBody formBody = new FormBody.Builder()
                 .add("SAMLResponse", token)
                 .add("submit", "Submit")
@@ -293,8 +300,8 @@ public class CardFragment extends Fragment {
         });
     }
 
-    public void fetchUserInfo(String url){
-         Request request = new Request.Builder()
+    public void fetchUserInfo(String url) {
+        Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
@@ -325,67 +332,67 @@ public class CardFragment extends Fragment {
                     userName = document.select("body > div > div.container > div:nth-child(3) > div.col-md-4.col-md-offset-2 > h3").first().text();
                     slikaLink = document.getElementsByClass("col-md-2").select("img").attr("src").toString();
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        final UserInfoItem userInfoItem = new UserInfoItem();
-                        userInfoItem.setindex(1);
-                        userInfoItem.setItemTitle("Fakultet");
-                        userInfoItem.setItemDesc(uciliste.substring(9, uciliste.length()));
+                            final UserInfoItem userInfoItem = new UserInfoItem();
+                            userInfoItem.setindex(1);
+                            userInfoItem.setItemTitle("Fakultet");
+                            userInfoItem.setItemDesc(uciliste.substring(9, uciliste.length()));
 
-                        final UserInfoItem userInfoItem2 = new UserInfoItem();
-                        userInfoItem2.setindex(2);
-                        userInfoItem2.setItemTitle("Razina  prava");
-                        userInfoItem2.setItemDesc(razinaPrava.substring(13, razinaPrava.length()));
+                            final UserInfoItem userInfoItem2 = new UserInfoItem();
+                            userInfoItem2.setindex(2);
+                            userInfoItem2.setItemTitle("Razina  prava");
+                            userInfoItem2.setItemDesc(razinaPrava.substring(13, razinaPrava.length()));
 
-                        final UserInfoItem userInfoItem3 = new UserInfoItem();
-                        userInfoItem3.setindex(3);
-                        userInfoItem3.setItemTitle("Prava vrijede od");
-                        userInfoItem3.setItemDesc(pravaOd.substring(9, pravaOd.length()));
+                            final UserInfoItem userInfoItem3 = new UserInfoItem();
+                            userInfoItem3.setindex(3);
+                            userInfoItem3.setItemTitle("Prava vrijede od");
+                            userInfoItem3.setItemDesc(pravaOd.substring(9, pravaOd.length()));
 
-                        final UserInfoItem userInfoItem4 = new UserInfoItem();
-                        userInfoItem4.setindex(4);
-                        userInfoItem4.setItemTitle("Prava vrijede do");
-                        userInfoItem4.setItemDesc(pravaDo.substring(9, pravaDo.length()));
+                            final UserInfoItem userInfoItem4 = new UserInfoItem();
+                            userInfoItem4.setindex(4);
+                            userInfoItem4.setItemTitle("Prava vrijede do");
+                            userInfoItem4.setItemDesc(pravaDo.substring(9, pravaDo.length()));
 
-                        mRealm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                User mUser = mRealm.where(User.class).findFirst();
-                                mUser.setuName(userName);
-                                mUser.setSrcLink(slikaLink);
+                            mRealm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    User mUser = mRealm.where(User.class).findFirst();
+                                    mUser.setuName(userName);
+                                    mUser.setSrcLink(slikaLink);
 
-                                mRealm.copyToRealmOrUpdate(userInfoItem);
-                                mRealm.copyToRealmOrUpdate(userInfoItem2);
-                                mRealm.copyToRealmOrUpdate(userInfoItem3);
-                                mRealm.copyToRealmOrUpdate(userInfoItem4);
-                            }
-                        });
+                                    mRealm.copyToRealmOrUpdate(userInfoItem);
+                                    mRealm.copyToRealmOrUpdate(userInfoItem2);
+                                    mRealm.copyToRealmOrUpdate(userInfoItem3);
+                                    mRealm.copyToRealmOrUpdate(userInfoItem4);
+                                }
+                            });
 
-                        String money = el.text();
-                        String num = money.substring(17, money.length());
-                        
-                        saldo.setText(num + " kn");
-                        korisnik.setText(user.text());
-                        broj_kartice.setText(number.text());
-                        potrosenoDanasTextView.setText("- " + potrosnjaDanas.substring(16, potrosnjaDanas.length()) + " kn");
+                            String money = el.text();
+                            String num = money.substring(17, money.length());
 
-                        loading.setVisibility(View.INVISIBLE);
-                        relativeLayout.setVisibility(View.VISIBLE);
+                            saldo.setText(num + " kn");
+                            korisnik.setText(user.text());
+                            broj_kartice.setText(number.text());
+                            potrosenoDanasTextView.setText("- " + potrosnjaDanas.substring(16, potrosnjaDanas.length()) + " kn");
 
-                        getTransactions("https://issp.srce.hr" + document.getElementsByClass("btn-primary btn-lg").first().attr("href"));
-                    }
-                });
+                            loading.setVisibility(View.INVISIBLE);
+                            relativeLayout.setVisibility(View.VISIBLE);
 
-                } catch (Exception ex){
+                            getTransactions("https://issp.srce.hr" + document.getElementsByClass("btn-primary btn-lg").first().attr("href"));
+                        }
+                    });
+
+                } catch (Exception ex) {
                     Log.e("Exception parsing data", ex.toString());
                 }
             }
         });
     }
 
-    public void getTransactions(String link){
+    public void getTransactions(String link) {
 
         final Request request = new Request.Builder()
                 .url(link)
@@ -403,6 +410,20 @@ public class CardFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 Document document = Jsoup.parse(response.body().string());
 
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final RealmResults<Transaction> sveTransakcije = mRealm.where(Transaction.class).findAll();
+                        mRealm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                sveTransakcije.deleteAllFromRealm();
+                            }
+                        });
+
+                    }
+                });
+
                 try {
                     final Element tablica = document.select("body > div > div.container > table").first();
                     final Elements redovi = tablica.select("tr");
@@ -412,38 +433,46 @@ public class CardFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                 String vrijeme = red.child(1).text();
-                                 if(!vrijeme.equals("Vrijeme računa")) {
-                                     final Transaction transaction = new Transaction();
-                                     transaction.setTimeID(vrijeme);
-                                     transaction.setRestoran(red.child(0).text());
-                                     transaction.setVrijeme(vrijeme.substring(11, vrijeme.length() - 3));
-                                     transaction.setDatum(vrijeme.substring(0, 5));
-                                     transaction.setIznos(red.child(2).text());
-                                     transaction.setSubvencija(red.child(3).text());
+                                String vrijeme = red.child(1).text();
+                                if (vrijeme.contains(".")) {
+                                    String[] vrijemeSplited = vrijeme.split(Pattern.quote("."));
 
-                                     mRealm.executeTransaction(new Realm.Transaction() {
-                                         @Override
-                                         public void execute(Realm realm) {
-                                             mRealm.copyToRealmOrUpdate(transaction);
-                                         }
-                                     });
+                                    if (!vrijeme.equals("Vrijeme računa")) {
+                                        final Transaction transaction = new Transaction();
+                                        transaction.setTimeID(vrijeme);
+                                        transaction.setRestoran(red.child(0).text());
+                                        transaction.setVrijeme(vrijeme.substring(11, vrijeme.length() - 3));
+                                        transaction.setDatum(vrijemeSplited[0] + "." + vrijemeSplited[1] + ".");
+                                        transaction.setIznos(red.child(2).text());
+                                        transaction.setSubvencija(red.child(3).text());
 
-                                 }
+                                        mRealm.executeTransaction(new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
+                                                mRealm.copyToRealm(transaction);
+                                            }
+                                        });
 
+                                    }
+                                }
                             }
                         });
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     Log.d("error on string", e.toString());
                 }
             }
         });
     }
 
+    public void loadAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
 
-    public void signOut(){
+
+    public void signOut() {
         SharedPreferences sp = getActivity().getSharedPreferences("SHARED_PREFS", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("korisnik_prijavljen");
@@ -469,15 +498,15 @@ public class CardFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if(mRealm != null){
+        if (mRealm != null) {
             mRealm.close();
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 }

@@ -1,83 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dirty_white">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/user_info_relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:elevation="4dp">
-
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/circularImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/korisnik_icon"
-            android:layout_centerHorizontal="true"
-            app:civ_border_color="@color/colorAccent"
-            app:civ_border_width="2dp"
-            app:civ_shadow="false" />
-
-        <TextView
-            android:id="@+id/name_surename"
+        <RelativeLayout
+            android:id="@+id/user_info_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/circularImageView"
-            android:layout_marginTop="10dp"
-            android:textSize="18dp"
-            android:textColor="@color/light_grey"
-            android:textAlignment="center"
-            android:text="Ime Prezime"/>
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/user_desc"
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/circularImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/korisnik_icon"
+                app:civ_border_color="@color/colorAccent"
+                app:civ_border_width="2dp"
+                app:civ_shadow="false" />
+
+            <TextView
+                android:id="@+id/name_surename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/circularImageView"
+                android:layout_marginTop="10dp"
+                android:text="Ime Prezime"
+                android:textAlignment="center"
+                android:textColor="@color/light_grey"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/user_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_surename"
+                android:layout_marginTop="3dp"
+                android:text="student"
+                android:textAlignment="center"
+                android:textColor="@color/lighter_grey"
+                android:textSize="14dp" />
+
+            <Button
+                android:id="@+id/button_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_desc"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_background"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="ODJAVA"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@id/button_logout"
+                android:background="@android:color/transparent">
+            </View>
+
+        </RelativeLayout>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adViewProfile"
+            android:layout_below="@+id/user_info_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name_surename"
-            android:layout_marginTop="3dp"
-            android:textSize="14dp"
-            android:textColor="@color/lighter_grey"
-            android:textAlignment="center"
-            android:text="student"/>
+            android:layout_marginTop="15dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-5944203368510130/5953389590">
+        </com.google.android.gms.ads.AdView>
 
-        <Button
-            android:id="@+id/button_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_desc"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:text="ODJAVA"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            android:background="@drawable/button_background"/>
-
-        <View android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@id/button_logout"
-            android:background="@android:color/transparent">
-        </View>
-
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/user_info_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/user_info_relative"
-        android:layout_marginTop="22dp">
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_info_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/adViewProfile"
+            android:layout_marginTop="15dp">
+        </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
 

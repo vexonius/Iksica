@@ -2,4 +2,6 @@
     <string name="app_name">Iksica</string>
     <string name="prijava">button_login</string>
     <string name="title_activity_login">LoginActivity</string>
+
+    <string name="ad_id">ca-app-pub-5944203368510130/4664748292</string>
 </resources>
