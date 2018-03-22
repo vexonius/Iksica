@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
         showInfoRecyclerView();
 
         mAdViewProfile = (AdView) view.findViewById(R.id.adViewProfile);
-        loadAds();
+       // loadAds();
 
         signOutButton = (Button)view.findViewById(R.id.button_logout);
         signOutButton.setOnClickListener(new View.OnClickListener() {

@@ -78,7 +78,7 @@ public class CardFragment extends Fragment {
         mAdView = (AdView) view.findViewById(R.id.adView);
 
         showUserCard();
-        loadAds();
+        // loadAds();
 
         return view;
     }
