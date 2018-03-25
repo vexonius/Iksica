@@ -2,6 +2,7 @@ package com.tstud.iksica;
 
 import android.app.Application;
 
+import com.google.android.gms.ads.MobileAds;
 import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class MyApplication extends Application {
 
         chechIfOldRealmExists();
 
-        //    MobileAds.initialize(this, "ca-app-pub-5944203368510130~6211911487");
+        MobileAds.initialize(this, "ca-app-pub-5944203368510130~6211911487");
 
     }
 

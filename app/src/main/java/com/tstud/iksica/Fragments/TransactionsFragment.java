@@ -100,8 +100,8 @@ public class TransactionsFragment extends Fragment {
         lineChart.addData(dataset);
         lineChart.setAxisColor(getResources().getColor(R.color.icon_inactive));
         lineChart.setYAxis(true);
-        lineChart.setAxisBorderValues(0,40);
-        lineChart.setStep(10);
+        lineChart.setAxisBorderValues(0, 35);
+        lineChart.setStep(5);
         lineChart.show(anim);
 
     }
