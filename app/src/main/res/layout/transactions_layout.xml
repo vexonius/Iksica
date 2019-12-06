@@ -46,11 +46,11 @@
         android:text="SVE TRANSAKCIJE"
         android:textSize="12dp" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/transText"
         android:id="@+id/recycler_transactions"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

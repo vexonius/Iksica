@@ -1,12 +1,12 @@
 package com.tstudioz.iksica.Adapter;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tstudioz.iksica.Model.Transaction;
+import com.tstudioz.iksica.Data.Models.Transaction;
 import com.tstudioz.iksica.R;
 
 import io.realm.RealmChangeListener;

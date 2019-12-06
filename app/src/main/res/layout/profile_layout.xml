@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,30 +19,26 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/circularImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/korisnik_icon"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_centerHorizontal="true"
-            app:civ_border_color="@color/colorAccent"
-            app:civ_border_width="2dp"
             app:civ_shadow="false" />
 
         <TextView
-            android:id="@+id/name_surename"
+            android:id="@+id/name_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/circularImageView"
             android:layout_marginTop="10dp"
-            android:textSize="18dp"
+            android:textSize="22dp"
             android:textColor="@color/light_grey"
-            android:textAlignment="center"
-            android:text="Ime Prezime"/>
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/user_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name_surename"
+            android:layout_below="@+id/name_surname"
             android:layout_marginTop="3dp"
             android:textSize="14dp"
             android:textColor="@color/lighter_grey"
@@ -71,14 +67,14 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_info_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/user_info_relative"
         android:layout_marginTop="22dp">
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

@@ -16,4 +16,17 @@
 
     //graph colors
     <color name="line_color">#ff676f</color>
+
+    //gradient colors
+    <color name="purple_500">#9C27B0</color>
+    <color name="deep_purple_500">#673AB7</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="cyan_500">#00BCD4</color>
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="firewatch_dark">#cb2d3e</color>
+    <color name="firewatch_light">#ef473a</color>
+    <color name="burning_dark">#FF416C</color>
+    <color name="burning_light">#FF4B2B</color>
+    <color name="black">#000000</color>
 </resources>

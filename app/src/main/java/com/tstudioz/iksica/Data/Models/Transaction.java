@@ -1,4 +1,4 @@
-package com.tstudioz.iksica.Model;
+package com.tstudioz.iksica.Data.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -10,13 +10,13 @@ import io.realm.annotations.PrimaryKey;
 public class Transaction extends RealmObject {
 
     @PrimaryKey
-    public String timeID;
+    private String timeID;
 
-    public String restoran;
-    public String vrijeme;
-    public String datum;
-    public String iznos;
-    public String subvencija;
+    private String restoran;
+    private String vrijeme;
+    private String datum;
+    private String iznos;
+    private String subvencija;
 
 
     public void setTimeID(String timeID) {

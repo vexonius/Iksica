@@ -1,4 +1,4 @@
-package com.tstudioz.iksica.Model;
+package com.tstudioz.iksica.Data.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

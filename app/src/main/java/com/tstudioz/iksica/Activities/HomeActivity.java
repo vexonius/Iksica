@@ -1,13 +1,13 @@
 package com.tstudioz.iksica.Activities;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.tstudioz.iksica.Fragments.CardFragment;
+import com.tstudioz.iksica.CardScreen.CardFragment;
 import com.tstudioz.iksica.Fragments.ProfileFragment;
 import com.tstudioz.iksica.Fragments.TransactionsFragment;
 import com.tstudioz.iksica.R;
@@ -49,12 +49,9 @@ public class HomeActivity extends AppCompatActivity {
 
         bNavigation.setCurrentItem(1);
 
-        bNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                switchFragment(position);
-                return true;
-            }
+        bNavigation.setOnTabSelectedListener((position, wasSelected) -> {
+            switchFragment(position);
+            return true;
         });
     }
 
@@ -91,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
                 ft.add(R.id.main_frame, pf);
                 ft.addToBackStack(null);
                 ft.commit();
-                getSupportActionBar().setTitle("Korisnik");
+                getSupportActionBar().setTitle("");
                 getSupportActionBar().setElevation(0);
                 break;
         }
@@ -112,7 +109,7 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             showExitSnack();
         }
-        back_pressed= System.currentTimeMillis();
+        back_pressed = System.currentTimeMillis();
     }
 
     public void showExitSnack(){

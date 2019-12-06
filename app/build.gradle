@@ -1,16 +1,20 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.1'
     defaultConfig {
-        applicationId "com.tstudioz.iksica"
+        applicationId "com.tstud.iksica"
+        multiDexEnabled true
         minSdkVersion 17
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 29
+        versionCode 5
+        versionName "1.3"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -18,29 +22,50 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    // For Kotlin projects
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation ('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:recyclerview-v7:26.+'
-    compile 'com.android.support:design:26.+'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-    compile 'org.jsoup:jsoup:1.10.3'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'io.realm:android-adapters:2.1.0'
-    compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
-    compile 'com.mikhaellopez:circularimageview:3.0.2'
-    compile 'com.github.bumptech.glide:glide:4.3.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.0'
-    compile 'com.diogobernardino:williamchart:2.5.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'org.jsoup:jsoup:1.10.3'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'io.realm:android-adapters:2.1.1'
+    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    implementation 'com.mikhaellopez:circularimageview:3.0.2'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'com.diogobernardino:williamchart:2.5.0'
+    implementation 'com.orhanobut:hawk:2.0.1'
+    implementation 'com.google.android.gms:play-services-ads:11.8.0'
+    testImplementation 'junit:junit:4.12'
+    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation group: 'androidx.lifecycle', name: 'lifecycle-extensions', version: '2.2.0-rc03'
+    implementation group: 'androidx.lifecycle', name: 'lifecycle-viewmodel-ktx', version: '2.2.0-rc03'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.github.andreilisun:swipedismissdialog:0.1'
+    implementation "com.github.vicpinm:krealmextensions:2.5.0"
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
 }
 
 
@@ -48,4 +73,7 @@ configurations.all {
     resolutionStrategy {
         force 'com.google.code.findbugs:jsr305:3.0.2'
     }
+}
+repositories {
+    mavenCentral()
 }

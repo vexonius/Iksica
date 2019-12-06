@@ -1,94 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coord_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="48dp"
-    android:background="@drawable/food_cover">
+    android:background="@color/black">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sign_in_relative"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/login_gradient"
         android:gravity="center_vertical">
 
-    <ImageView
-        android:id="@+id/icon_banner"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/app_icon_small"
-        android:scaleType="centerInside"
-        android:layout_centerHorizontal="true"/>
+        <ImageView
+            android:id="@+id/icon_banner"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_banner"
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.16000003" />
 
-        <RelativeLayout
-            android:id="@+id/sign_in_layout"
-            android:layout_width="match_parent"
+
+        <EditText
+            android:id="@+id/sign_in_username"
+            style="@style/inputMaterial"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/icon_banner"
-            android:visibility="visible"
-            android:paddingBottom="10dp"
-            android:layout_marginBottom="70dp">
+            android:layout_marginTop="64dp"
+            android:hint="EDU email"
+            android:inputType="text"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon_banner" />
 
-            <EditText
-                android:id="@+id/sign_in_username"
-                android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/sign_in_password"
+            style="@style/inputMaterial"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sign_in_username"
+            android:hint="Lozinka"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_username" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sign_in_password"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_password">
+
+            <ProgressBar
+                android:id="@+id/progressBarLoading"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="EDU email"
-                android:textColor="@color/dirty_white"
-                android:textColorHint="#c6c6c6"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:inputType="text"
-                android:singleLine="true"/>
+                android:indeterminate="true"
+                android:indeterminateTint="@color/white"
+                android:indeterminateTintMode="multiply"
+                android:paddingBottom="10dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/sign_in_password"
-                android:layout_below="@+id/sign_in_username"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/sign_in_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Lozinka"
-                android:inputType="textPassword"
-                android:textColor="@color/dirty_white"
-                android:textColorHint="#c6c6c6"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:singleLine="true"/>
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/login_button_background"
+                android:padding="10dp"
+                android:text="PRIJAVA"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/sign_in_password">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBarLoading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_marginTop="15dp"
-            android:visibility="invisible"
-            android:paddingBottom="10dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/sign_in_button"
-            android:layout_marginRight="80dp"
-            android:layout_marginLeft="80dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PRIJAVA"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            android:background="@drawable/button_background"
-            android:layout_marginTop="15dp"
-            android:visibility="visible"
-            android:padding="10dp"/>
-
-    </FrameLayout>
-
-  </RelativeLayout>
-
-    </RelativeLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
