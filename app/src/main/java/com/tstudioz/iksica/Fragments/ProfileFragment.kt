@@ -1,22 +1,21 @@
 package com.tstudioz.iksica.Fragments
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.tstudioz.iksica.SignInScreen.SignInActivity
+import com.tstudioz.iksica.Adapter.AdapterInfo
+import com.tstudioz.iksica.CardScreen.MainViewModel
+import com.tstudioz.iksica.Data.Models.PaperUser
+import com.tstudioz.iksica.Data.Models.UserInfoItem
 import com.tstudioz.iksica.R
-import com.tstudioz.iksica.SignInScreen.MainViewModel
-import io.realm.Realm
 import kotlinx.android.synthetic.main.profile_layout.*
+import timber.log.Timber
 
 /**
  * Created by etino7 on 18-Oct-17.
@@ -24,16 +23,12 @@ import kotlinx.android.synthetic.main.profile_layout.*
 
 class ProfileFragment : Fragment() {
 
-    internal var mRealm: Realm? = null
-
-    var viewModel : MainViewModel? = null
+    var viewModel: MainViewModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedBundleInstance: Bundle?): View? {
         val view = inflater.inflate(R.layout.profile_layout, parent, false)
 
         viewModel = ViewModelProvider(activity!!)[MainViewModel::class.java]
-
-
 
         return view
     }
@@ -41,46 +36,33 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        recyclerProfile.layoutManager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
+
+
         viewModel?.getUserData()?.observe(viewLifecycleOwner, Observer {
-            Glide.with(view.context)
-                    .load(it?.srcLink)
-                    .placeholder(ColorDrawable(ContextCompat.getColor(view.context, R.color.dirty_white)))
-                    .into(circularImageView)
+            it?.let {
+                Glide.with(view.context)
+                        .load(it.avatarLink)
+                        .into(avatar)
+                name_surname.text = it.name
+                user_desc.text = getString(R.string.student_desc).plus(" ").plus(it.university)
 
-            name_surname.setText(it?.getuName())
+                val recyclerViewdata: ArrayList<UserInfoItem> = convertUserDataToList(it)
+                Timber.d(recyclerViewdata[0].item)
+                val adapter = AdapterInfo(recyclerViewdata)
+                recyclerProfile.adapter = adapter
+            }
         })
-
-        showInfoRecyclerView()
-
     }
 
-    fun showInfoRecyclerView() {
-//        val informacije = mRealm!!.where<UserInfoItem>(UserInfoItem::class.java!!).findAll()
-/**
-        rv!!.setHasFixedSize(true)
-        rv!!.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        val ah = AdapterInfo(informacije)
-        rv!!.adapter = ah
-    */
-        }
+    private fun convertUserDataToList(user: PaperUser): ArrayList<UserInfoItem> {
 
-    fun signOut() {
-        val sp = activity!!.getSharedPreferences("SHARED_PREFS", Context.MODE_PRIVATE)
-        val editor = sp.edit()
-        editor.remove("korisnik_prijavljen")
-        editor.commit()
+        val razinaPrava = UserInfoItem("Razina prava", user.rightsLevel.toString())
+        val pravaOd = UserInfoItem("Prava od", user.rightsFrom)
+        val pravaDo = UserInfoItem("Prava do", user.rightsTo)
 
-        mRealm!!.executeTransaction { mRealm!!.deleteAll() }
-
-        activity!!.startActivity(Intent(activity, SignInActivity::class.java))
-        if (activity != null)
-            activity!!.finish()
+        return arrayListOf<UserInfoItem>(razinaPrava, pravaOd, pravaDo)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
 
-        if (mRealm != null)
-            mRealm!!.close()
-    }
 }

@@ -1,80 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dirty_white">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/user_info_relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:elevation="4dp">
-
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/circularImageView"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            app:civ_shadow="false" />
-
-        <TextView
-            android:id="@+id/name_surname"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_details_constraint"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/circularImageView"
-            android:layout_marginTop="10dp"
-            android:textSize="22dp"
-            android:textColor="@color/light_grey"
-            android:textAlignment="center" />
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/user_desc"
-            android:layout_width="match_parent"
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/avatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                app:civ_shadow="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/name_surname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textAlignment="center"
+                android:textColor="@color/light_grey"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/avatar" />
+
+            <TextView
+                android:id="@+id/user_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:text="student"
+                android:textAlignment="center"
+                android:textColor="@color/lighter_grey"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name_surname" />
+
+            <Button
+                android:id="@+id/button_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_background"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/odjava"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_desc" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerProfile"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name_surname"
-            android:layout_marginTop="3dp"
-            android:textSize="14dp"
-            android:textColor="@color/lighter_grey"
-            android:textAlignment="center"
-            android:text="student"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_details_constraint"
+             />
 
-        <Button
-            android:id="@+id/button_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_desc"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:text="ODJAVA"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            android:background="@drawable/button_background"/>
 
-        <View android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@id/button_logout"
-            android:background="@android:color/transparent">
-        </View>
-
-    </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/user_info_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/user_info_relative"
-        android:layout_marginTop="22dp">
-    </androidx.recyclerview.widget.RecyclerView>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

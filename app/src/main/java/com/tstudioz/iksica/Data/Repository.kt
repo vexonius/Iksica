@@ -1,16 +1,15 @@
 package com.tstudioz.iksica.Data
 
 import androidx.lifecycle.MutableLiveData
+import com.tstudioz.iksica.Data.Models.PaperUser
+import com.tstudioz.iksica.Data.Models.Transaction
 import com.tstudioz.iksica.Data.Models.User
 import com.tstudioz.iksica.Utils.DataParser
 import com.tstudioz.iksica.Utils.NetworkService
-import com.tstudioz.iksica.Utils.RealmSingleResultLiveData
 import timber.log.Timber
-import java.lang.NullPointerException
 
 class Repository {
 
-    val mUserData: MutableLiveData<User> = MutableLiveData()
     val dataParser: DataParser = DataParser()
     val service: NetworkService = NetworkService()
     val dbHelper: DatabaseHelper = DatabaseHelper.instance!!
@@ -18,9 +17,12 @@ class Repository {
     var authToken: String? = null
     var loginToken: String? = null
     var responseToken: String? = null
+    val isUserLogged: MutableLiveData<Boolean> = MutableLiveData()
+    var userdata: MutableLiveData<PaperUser> = MutableLiveData()
 
     init {
-        mUserData.value = loadUserFromDb()
+        loadUserFromDb()
+        checkIfUserIsAlreadyLogged()
     }
 
     companion object {
@@ -39,71 +41,100 @@ class Repository {
         }
     }
 
+    fun scrapeUserInfo(): PaperUser {
+        Timber.d("Scraping...")
+        return dataParser.parseUserInfo(service.getUserInfo())
+    }
+
+    fun scrapeuserTransactions(data : PaperUser) : ArrayList<Transaction>{
+        Timber.d("Transactions...")
+        return dataParser.parseUserTransactions(service.getUserTransactions(data.oib, data.jmbag))
+    }
+
+    fun loadUserFromDb() {
+        val user: PaperUser? = dbHelper.readUserFromPaper()
+      //  Timber.d("Loading user: ${user?.id}")
+        user?.let {
+            userdata.value = it
+        }
+    }
+
+    fun checkIsUserLogged(): MutableLiveData<Boolean> {
+        // todo sharedprefs impl
+        isUserLogged.value = false
+        return isUserLogged
+    }
+
+    fun getUserData(): MutableLiveData<PaperUser> {
+        return userdata
+    }
+
+    fun insertUser(user: PaperUser?) {
+        if (user == null) return
+
+        dbHelper.insertUserInPaper(user)
+        loadUserFromDbAsync()
+    }
+
+    fun deleteUser() {
+        dbHelper.deleteUserFromPaper()
+    }
+
+    fun checkIfUserIsAlreadyLogged() {
+        isUserLogged.value = dbHelper.readBoolInSharedPrefs("user_logged")
+    }
+
+    fun getUserAlreadyLogged(): MutableLiveData<Boolean> {
+        return isUserLogged
+    }
+
     fun loginUser(): String? {
         if (responseToken == null) {
             Timber.d("Atempting to login...")
-            val user = mUserData.value
             token = dataParser.parseSAMLToken(service.fetchSAMLToken())
             authToken = dataParser.parseAuthToken(service.getAuthState(token))
-            loginToken = dataParser.parseLoginToken(service.postAuthState(user?.uMail, user?.uPassword, authToken))
+            loginToken = dataParser.parseLoginToken(service.postAuthState(userdata.value?.mail, userdata.value?.password, authToken))
             responseToken = dataParser.parseResponseToken(service.getResponseToken(loginToken))
             service.postResponseToken(responseToken)
         }
 
-        return responseToken
+        return responseToken ?: throw NullPointerException("User cannot be null")
     }
 
-    fun scrapeUserInfo(): User? {
-        Timber.d("Scraping...")
-        var userData: User? = null
-        try {
-            userData = dataParser.parseUserInfo(service.getUserInfo())
-        } catch (ex: NullPointerException) {
-            Timber.e(ex)
+    fun loadUserFromDbAsync() {
+        val user: PaperUser? = dbHelper.readUserFromPaper()
+       // Timber.d("Loading user: ${user?.id}")
+        user?.let {
+            userdata.postValue(it)
         }
-
-        return userData
     }
 
-    fun loadUserFromDb(): User? {
-        Timber.d("Fetching user...")
-        return dbHelper.getUserBlocking()
+    fun setUserLogged(key: String, value: Boolean) {
+        dbHelper.writeBoolInSharedPrefs(key, value)
+        checkIfUserIsAlreadyLogged()
     }
 
-    fun getUserData(): MutableLiveData<User> {
-        return mUserData
+    fun updateUserData(freshdata: PaperUser) {
+        val user: PaperUser? = dbHelper.readUserFromPaper()
+        user?.let {
+            insertUser(
+                    PaperUser(
+                            user.id,
+                            user.mail,
+                            user.password,
+                            freshdata.name,
+                            freshdata.cardNumber,
+                            freshdata.subventionAmount,
+                            freshdata.spentTodayAmount,
+                            freshdata.rightsLevel,
+                            freshdata.rightsFrom,
+                            freshdata.rightsTo,
+                            freshdata.university,
+                            freshdata.avatarLink,
+                            freshdata.oib,
+                            freshdata.jmbag))
+        }
     }
-
-    fun checkCachedCookies() {
-        dataParser.parseUserInfo(service.getUserInfo())
-    }
-
-    fun insertUser(user: User) {
-        dbHelper.insertOrUpdateUserInfo(user)
-    }
-
-    fun getUserDataBlocking(): MutableLiveData<User> {
-        return mUserData
-    }
-
-    fun insertUserBlocking(user: User) {
-        Timber.d("Inserting user...")
-        dbHelper.createUserBlocking(user)
-    }
-
-    /** fun signOut() {
-    val sp = getActivity()!!.getSharedPreferences("SHARED_PREFS", Context.MODE_PRIVATE)
-    val editor = sp.edit()
-    editor.remove("korisnik_prijavljen")
-    editor.commit()
-
-    mRealm.executeTransaction(Realm.Transaction { mRealm.deleteAll() })
-
-    getActivity()!!.startActivity(Intent(getActivity(), SignInActivity::class.java))
-    getActivity()!!.finish()
-    }
-
-     */
 
 
 }

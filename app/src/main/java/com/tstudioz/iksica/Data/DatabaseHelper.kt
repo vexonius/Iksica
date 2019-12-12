@@ -1,79 +1,80 @@
 package com.tstudioz.iksica.Data
 
 import android.content.Context
-import android.util.Log
-
+import android.content.SharedPreferences
 import com.orhanobut.hawk.Hawk
-import com.tstudioz.iksica.Data.Models.User
-import com.tstudioz.iksica.Utils.RealmSingleResultLiveData
-import com.tstudioz.iksica.Utils.RealmUtil
-import com.vicpin.krealmextensions.equalToValue
-import com.vicpin.krealmextensions.query
-import com.vicpin.krealmextensions.queryFirst
-import com.vicpin.krealmextensions.save
-
-import java.io.File
-import java.security.SecureRandom
-
+import com.tstudioz.iksica.Data.Models.PaperUser
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import timber.log.Timber
+import java.io.File
+import java.security.SecureRandom
 
 /**
  * Created by etino7 on 12/10/2019.
  */
 class DatabaseHelper private constructor(context: Context) {
     private val defaultRealmConfig: RealmConfiguration
-    private var realm: Realm? = null
+    private val prefs: SharedPreferences
 
     init {
         defaultRealmConfig = RealmConfiguration.Builder()
                 .name("encrypted.realm")
-                .schemaVersion(1)
+                .schemaVersion(2)
                 .deleteRealmIfMigrationNeeded()
-                .encryptionKey(getRealmKey(context))
+                .encryptionKey(getRealmKey())
                 .build()
 
         Realm.setDefaultConfiguration(defaultRealmConfig)
-        realm = Realm.getDefaultInstance()
+        prefs = context.getSharedPreferences("DEFAULT_PREFS", Context.MODE_PRIVATE)
 
         checkIfOldRealmExists(context)
     }
 
+    companion object {
+        var instance: DatabaseHelper? = null
+            private set
 
-    fun insertOrUpdateUserInfo(user: User) {
-       User().queryFirst { equalToValue("id", 1)}?.let {
-            it.uName = user.uName
-            it.cardNumber = user.cardNumber
-            it.currentSubvention = user.currentSubvention
-            it.jmbag = user.jmbag
-            it.oib = user.oib
-            it.rightFrom = user.rightFrom
-            it.rightTo = user.rightTo
-            it.rightsLevel = user.rightsLevel
-            it.srcLink = user.srcLink
-            it.spentToday = user.spentToday
-            it.uni = user.uni
-            it.save()
+        fun createInstance(context: Context) {
+            if (instance == null)
+                instance = DatabaseHelper(context)
         }
-
-        Timber.d("Updating user ${user.id}")
-
     }
 
-    fun getUserBlocking(): User? {
-        val user : User? = User().queryFirst { equalToValue("id", 1) }
-        return user
+    fun insertUserInPaper(user: PaperUser) {
+        Hawk.put("user", user)
     }
 
-    fun createUserBlocking(user: User) {
-        user.save()
-        Timber.d("Realm extensions user ${user.id} successfully saved")
+    fun readUserFromPaper(): PaperUser? {
+        return Hawk.get("user")
     }
 
-    private fun getRealmKey(context: Context): ByteArray {
+    fun deleteUserFromPaper() {
+        Hawk.delete("user")
+    }
 
-        Hawk.init(context).build()
+    fun writeStringInSharedPrefs(key: String, value: String) {
+        with(prefs.edit()) {
+            putString(key, value)
+            commit()
+        }
+    }
+
+    fun readStringInSharedPrefs(key: String): String {
+        return prefs.getString(key, null) ?: null!!
+    }
+
+    fun writeBoolInSharedPrefs(key: String, value: Boolean) {
+        with(prefs.edit()) {
+            putBoolean(key, value)
+            commit()
+        }
+    }
+
+    fun readBoolInSharedPrefs(key: String): Boolean {
+        return prefs.getBoolean(key, false)
+    }
+
+    private fun getRealmKey(): ByteArray {
 
         if (Hawk.contains("masterKey")) {
             return Hawk.get("masterKey")
@@ -87,7 +88,6 @@ class DatabaseHelper private constructor(context: Context) {
         return bytes
     }
 
-
     private fun checkIfOldRealmExists(context: Context) {
         val newRealmFile = File(defaultRealmConfig.path)
         if (!newRealmFile.exists()) {
@@ -99,28 +99,10 @@ class DatabaseHelper private constructor(context: Context) {
                     .build()
 
             val realm = Realm.getInstance(old)
-            realm.writeEncryptedCopyTo(newRealmFile, getRealmKey(context))
+            realm.writeEncryptedCopyTo(newRealmFile, getRealmKey())
             realm.close()
             Realm.deleteRealm(old)
         }
     }
-
-    private fun destroyInstance() {
-        realm?.close()
-
-        realm = null
-    }
-
-    companion object {
-
-        var instance: DatabaseHelper? = null
-            private set
-
-        fun createInstance(context: Context) {
-            if (instance == null)
-                instance = DatabaseHelper(context)
-        }
-    }
-
 
 }

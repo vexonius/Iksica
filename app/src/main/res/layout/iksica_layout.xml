@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dirty_white"
-    android:clickable="true"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,8 +37,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="25dp"
-                android:background="@drawable/gradientx"
-                android:elevation="6dp">
+                android:background="@drawable/gradientx">
 
                 <TextView
                     android:id="@+id/user_name"
@@ -47,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="30dp"
-                    android:text="Ime Prezime"
+                    android:text="@string/ime_prezime"
                     android:textColor="@color/white"
                     android:textSize="18dp" />
 
@@ -70,65 +68,73 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginBottom="35dp"
-                    android:text="0,00 kn"
+                    android:text="@string/default_sub"
                     android:textColor="@color/white"
                     android:textSize="24dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_medium" />
 
             </RelativeLayout>
 
         </FrameLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="344dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/potroseno_cardview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iksica_frame_layout"
             android:layout_margin="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iksica_frame_layout"
-            app:layout_constraintVertical_bias="0.0">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:contentPadding="30dp">
 
-            <TextView
-                android:id="@+id/potroseno_danas_text"
-                android:layout_width="wrap_content"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/potroseno_constraint_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:text="Potrošeno danas"
-                android:textColor="@color/light_grey"
-                android:textSize="16dp" />
+                android:gravity="center_vertical"
+               >
 
-            <TextView
-                android:id="@+id/potroseno_danas_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="18dp"
-                android:text="- 0,00 kn"
-                android:textColor="@color/colorAccent"
-                android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/potroseno_danas_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/potroseno_danas"
+                    android:textColor="@color/light_grey"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/potroseno_danas_value" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/potroseno_danas_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zero_kn"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="24dp"
+                    android:fontFamily="@font/poppins_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-5944203368510130/4664748292"
-            ads:layout_constraintBottom_toBottomOf="parent"
-            ads:layout_constraintEnd_toEndOf="parent"
-            ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-5944203368510130/4664748292"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

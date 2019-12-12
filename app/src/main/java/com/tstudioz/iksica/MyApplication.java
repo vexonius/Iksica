@@ -9,21 +9,19 @@ import com.orhanobut.hawk.Hawk;
 import com.tstudioz.iksica.Data.DatabaseHelper;
 import com.tstudioz.iksica.Utils.OkHttpClientX;
 
-import java.io.File;
-import java.security.SecureRandom;
-
+import io.paperdb.Paper;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+        Paper.init(getApplicationContext());
         super.onCreate();
 
         Realm.init(this);
+        Hawk.init(getApplicationContext()).build();
         DatabaseHelper.Companion.createInstance(getApplicationContext());
 
         OkHttpClientX.createInstance(getApplicationContext());
@@ -41,8 +39,5 @@ public class MyApplication extends Application {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
-
-
 
 }

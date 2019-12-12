@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey
 open class User : RealmObject() {
 
     @PrimaryKey
-    var id: Int = 0
+    var id: Int = 1
 
     var uMail: String? = null
     var uPassword: String? = null

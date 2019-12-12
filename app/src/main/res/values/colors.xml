@@ -18,8 +18,8 @@
     <color name="line_color">#ff676f</color>
 
     //gradient colors
-    <color name="purple_500">#9C27B0</color>
-    <color name="deep_purple_500">#673AB7</color>
+    <color name="purple_500">#02aab0</color>
+    <color name="deep_purple_500">#00cdac</color>
     <color name="indigo_500">#3F51B5</color>
     <color name="blue_500">#2196F3</color>
     <color name="cyan_500">#00BCD4</color>

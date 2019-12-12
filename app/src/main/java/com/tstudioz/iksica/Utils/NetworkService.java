@@ -1,7 +1,5 @@
 package com.tstudioz.iksica.Utils;
 
-import android.util.Log;
-
 import java.io.IOException;
 
 import okhttp3.FormBody;
@@ -17,8 +15,8 @@ import timber.log.Timber;
  */
 public class NetworkService {
 
-    OkHttpClient okHttpClient;
-    HttpUrl currentUrl;
+    private OkHttpClient okHttpClient;
+    private HttpUrl currentUrl;
 
     public NetworkService(){
         okHttpClient = OkHttpClientX.getInstance();
@@ -30,9 +28,7 @@ public class NetworkService {
                 .url("https://issp.srce.hr/isspaaieduhr/login.ashx")
                 .build();
 
-        Response response = okHttpClient.newCall(rq).execute();
-
-        return response;
+        return okHttpClient.newCall(rq).execute();
     }
 
     public Response getAuthState(String token) throws IOException{
@@ -65,9 +61,7 @@ public class NetworkService {
                 .post(formBody)
                 .build();
 
-        Response response = okHttpClient.newCall(request).execute();
-
-        return response;
+        return okHttpClient.newCall(request).execute();
     }
 
     public Response getResponseToken(String token) throws IOException {
@@ -81,9 +75,7 @@ public class NetworkService {
                 .post(formBody)
                 .build();
 
-        Response response = okHttpClient.newCall(request).execute();
-
-        return response;
+        return okHttpClient.newCall(request).execute();
     }
 
     public Response postResponseToken(String token) throws IOException {
@@ -110,9 +102,21 @@ public class NetworkService {
                 .get()
                 .build();
 
-        Response response = okHttpClient.newCall(request).execute();
+        return okHttpClient.newCall(request).execute();
+    }
 
-        return response;
+    public Response getUserTransactions(Long oib, Long jmbag) throws IOException {
+        StringBuilder transactionsUrl = new StringBuilder("https://issp.srce.hr/PretragaStudenta/StudentRacuni?oib=")
+                .append(oib)
+                .append("&jmbag=")
+                .append(jmbag);
+
+        Request request = new Request.Builder()
+                .url(transactionsUrl.toString())
+                .get()
+                .build();
+
+        return okHttpClient.newCall(request).execute();
     }
 
 

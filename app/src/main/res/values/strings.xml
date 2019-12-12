@@ -2,4 +2,11 @@
     <string name="app_name">Iksica</string>
     <string name="prijava">button_login</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="odjava">ODJAVA</string>
+    <string name="student_desc">student @</string>
+    <string name="potroseno_danas">Potrošeno danas</string>
+    <string name="zero_kn">- 0,00 kn</string>
+    <string name="default_sub">0,00 kn</string>
+    <string name="ime_prezime">Ime Prezime</string>
+    <string name="lozinka">Lozinka</string>
 </resources>

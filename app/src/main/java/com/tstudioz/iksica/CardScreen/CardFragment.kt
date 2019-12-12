@@ -1,18 +1,17 @@
 package com.tstudioz.iksica.CardScreen
 
 import android.graphics.drawable.AnimationDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.tstudioz.iksica.R
-import com.tstudioz.iksica.SignInScreen.MainViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.iksica_layout.*
 
@@ -23,6 +22,12 @@ class CardFragment : Fragment() {
     private var animationDrawable: AnimationDrawable? = null
     private var viewmodel: MainViewModel? = null
 
+    companion object {
+
+        fun newInstance(): CardFragment {
+            return CardFragment()
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.iksica_layout,
@@ -30,18 +35,15 @@ class CardFragment : Fragment() {
 
         viewmodel = ViewModelProvider(activity!!)[MainViewModel::class.java]
 
-        viewmodel?.loginUser()
-
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        animationDrawable = iksica_card_layout.getBackground() as AnimationDrawable
-        animationDrawable?.setEnterFadeDuration(2000)
-        animationDrawable?.setExitFadeDuration(2000)
+        animationDrawable = iksica_card_layout.background as AnimationDrawable
+        animationDrawable?.setEnterFadeDuration(1500)
+        animationDrawable?.setExitFadeDuration(1100)
 
         root_refreshing.setOnRefreshListener {
             viewmodel?.loginUser()
@@ -52,28 +54,33 @@ class CardFragment : Fragment() {
         })
 
 
-
     }
 
     override fun onStart() {
         super.onStart()
-
-        showUserCard()
         // loadAds()
     }
 
+
     fun showUserCard() {
 
-        progressBar.setVisibility(View.INVISIBLE)
-        iksica_card_layout.setVisibility(View.VISIBLE)
+        progressBar.visibility = View.INVISIBLE
+        iksica_card_layout.visibility = View.VISIBLE
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            potroseno_cardview.translationZ = 8f
+        }
+
 
         viewmodel?.getUserData()?.observe(viewLifecycleOwner, Observer {
-            progressBar.setVisibility(View.INVISIBLE)
-            iksica_card_layout.setVisibility(View.VISIBLE)
-            user_name.setText(it.getuName())
-            card_number.setText(it.cardNumber)
-            pare.setText(it.currentSubvention)
-            potroseno_danas_value.setText(it.spentToday)
+            it?.let {
+                progressBar.visibility = View.INVISIBLE
+                iksica_card_layout.visibility = View.VISIBLE
+                user_name.text = it.name
+                card_number.text = it.cardNumber
+                pare.text = it.subventionAmount
+                potroseno_danas_value.text = it.spentTodayAmount
+            }
         })
 
     }
@@ -101,6 +108,7 @@ class CardFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         animationDrawable?.start()
+        showUserCard()
     }
 
     override fun onStop() {
