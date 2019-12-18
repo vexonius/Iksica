@@ -1,4 +1,4 @@
-package com.tstudioz.iksica.Fragments
+package com.tstudioz.iksica.HomeScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.db.williamchart.view.ImplementsAlphaChart
 import com.tstudioz.iksica.Adapter.AdapterTransactions
-import com.tstudioz.iksica.CardScreen.MainViewModel
 import com.tstudioz.iksica.R
 import kotlinx.android.synthetic.main.transactions_layout.*
 
@@ -26,7 +25,7 @@ class TransactionsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedBundleInstance: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.transactions_layout, parent, false)
+        val view = inflater.inflate(R.layout.transactions_layout, parent, false)
 
         viewmodel = ViewModelProvider(activity!!)[MainViewModel::class.java]
 
@@ -51,6 +50,12 @@ class TransactionsFragment : Fragment() {
         viewmodel?.getTransactionDataMapped()?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 chart.animate(it)
+            }
+        })
+
+        viewmodel?.isTransactionsLayoutRefreshing()?.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                trans_swipe_layout.isRefreshing = it
             }
         })
 

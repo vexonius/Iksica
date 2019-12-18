@@ -6,7 +6,9 @@ import com.orhanobut.hawk.Hawk
 import com.tstudioz.iksica.Data.Models.PaperUser
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import timber.log.Timber
 import java.io.File
+import java.lang.Exception
 import java.security.SecureRandom
 
 /**
@@ -103,6 +105,15 @@ class DatabaseHelper private constructor(context: Context) {
             realm.close()
             Realm.deleteRealm(old)
         }
+
+        try {
+            newRealmFile.delete()
+            Timber.d("realm file deleted")
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
+
+
     }
 
 }

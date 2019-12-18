@@ -7,77 +7,86 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
-import com.tstudioz.iksica.Activities.HomeActivity
-import com.tstudioz.iksica.Data.Models.PaperUser
-import com.tstudioz.iksica.Data.Models.User
+import com.tstudioz.iksica.HomeScreen.HomeActivity
 import com.tstudioz.iksica.R
 import kotlinx.android.synthetic.main.sign_in_layout.*
+import org.aviran.cookiebar2.CookieBar
 
 
 class SignInActivity : AppCompatActivity() {
 
-
-    private var snack: Snackbar? = null
     private var animationDrawable: AnimationDrawable? = null
     private var viewmodel: SignInViewModel? = null
 
 
     override fun onCreate(savedInstanceBundle: Bundle?) {
         super.onCreate(savedInstanceBundle)
+        viewmodel = ViewModelProvider(this)[SignInViewModel::class.java]
+        checkIfIsUserLogged()
 
         supportActionBar?.hide()
         setContentView(R.layout.sign_in_layout)
 
-        viewmodel = ViewModelProvider(this)[SignInViewModel::class.java]
+        setUpAimation()
 
-        startAnimation()
-        checkIfIsUserLogged()
     }
 
     override fun onResume() {
         super.onResume()
+        listenForErrors()
 
         animationDrawable?.start()
 
         sign_in_button.setOnClickListener {
-            viewmodel?.insertUserData(parseInputFields())
+            viewmodel?.authenticateCredentials(parseInputFields())
             sign_in_button.visibility = View.INVISIBLE
             progressBarLoading.visibility = View.VISIBLE
         }
 
     }
 
-    private fun parseInputFields(): PaperUser {
-        val user = PaperUser(1, sign_in_username.text.toString(), sign_in_password.text.toString())
-        return user
+    private fun parseInputFields(): Pair<String, String> {
+        return Pair(sign_in_username.text.toString(), sign_in_password.text.toString())
     }
 
     private fun checkIfIsUserLogged() {
         viewmodel?.isUserLoggedAlready()?.observe(this, Observer {
             it?.let {
-                if (it) startActivity(Intent(this, HomeActivity::class.java))
+                if (it) {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
+                }
             }
         })
     }
-
-    fun startAnimation() {
-        animationDrawable = sign_in_relative?.background as AnimationDrawable
-
-        animationDrawable?.setEnterFadeDuration(1500)
-        animationDrawable?.setExitFadeDuration(1500)
-    }
-
 
     override fun onStop() {
         super.onStop()
         animationDrawable?.stop()
     }
 
-    fun showErrorSnack(message: String) {
-        snack = Snackbar.make(coord_sign_in, message, Snackbar.LENGTH_LONG)
-        snack?.show()
+    private fun listenForErrors() {
+        viewmodel?.getErrors()?.observe(this, Observer {
+
+            sign_in_button.visibility = View.VISIBLE
+            progressBarLoading.visibility = View.INVISIBLE
+
+            it?.let {
+                CookieBar.build(this)
+                        .setMessage(it)
+                        .setCookiePosition(CookieBar.TOP)
+                        .setBackgroundColor(R.color.darker_grey)
+                        .setDuration(4000)
+                        .show()
+            }
+        })
     }
 
+    fun setUpAimation() {
+        animationDrawable = sign_in_relative?.background as AnimationDrawable
+
+        animationDrawable?.setEnterFadeDuration(1500)
+        animationDrawable?.setExitFadeDuration(1500)
+    }
 
 }

@@ -7,6 +7,7 @@
     //Home layout colors
     <color name="light_grey">#555555</color>
     <color name="lighter_grey">#eb5e5e5e</color>
+    <color name="darker_grey">#1A1A1A</color>
     <color name="white">#ffffff</color>
     <color name="dirty_white">#fafafa</color>
 

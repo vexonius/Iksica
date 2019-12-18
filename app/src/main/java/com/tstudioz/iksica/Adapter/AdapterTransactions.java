@@ -57,7 +57,7 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         Transaction item = transactions.get(position);
         holder.time.setText(item.getTime());
         holder.date.setText(item.getDate());
-        holder.amount.setText(item.getAmount() + " kn");
+        holder.amount.setText("-" + item.getAmount() + "  kn");
         holder.place.setText(item.getRestourant());
 
     }

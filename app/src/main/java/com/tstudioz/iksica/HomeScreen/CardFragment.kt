@@ -1,4 +1,4 @@
-package com.tstudioz.iksica.CardScreen
+package com.tstudioz.iksica.HomeScreen
 
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.tstudioz.iksica.R
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.iksica_layout.*
 
 
@@ -83,19 +82,13 @@ class CardFragment : Fragment() {
             }
         })
 
-    }
 
-    fun showNetworkErrorSnack() {
-        snack = Snackbar.make(activity!!.findViewById(R.id.relative_home), "Niste povezani", Snackbar.LENGTH_INDEFINITE)
-        snack?.setAction("PONOVI") { showUserCard() }
-        snack?.show()
     }
 
     fun showErrorSnack(message: String) {
-        if (relative_home != null) {
-            snack = Snackbar.make(relative_home, message, Snackbar.LENGTH_INDEFINITE)
-            snack?.show()
-        }
+        snack = Snackbar.make(root_refreshing, message, Snackbar.LENGTH_INDEFINITE)
+        snack?.show()
+
     }
 
 
@@ -108,7 +101,12 @@ class CardFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         animationDrawable?.start()
+
         showUserCard()
+
+        viewmodel?.getErrors()?.observe(viewLifecycleOwner, Observer {
+            it?.let { showErrorSnack(it) }
+        })
     }
 
     override fun onStop() {

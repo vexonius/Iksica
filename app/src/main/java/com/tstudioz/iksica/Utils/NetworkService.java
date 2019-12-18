@@ -18,7 +18,7 @@ public class NetworkService {
     private OkHttpClient okHttpClient;
     private HttpUrl currentUrl;
 
-    public NetworkService(){
+    public NetworkService() {
         okHttpClient = OkHttpClientX.getInstance();
     }
 
@@ -31,7 +31,7 @@ public class NetworkService {
         return okHttpClient.newCall(rq).execute();
     }
 
-    public Response getAuthState(String token) throws IOException{
+    public Response getAuthState(String token) throws IOException {
         RequestBody formBody = new FormBody.Builder()
                 .add("submit", "Continue")
                 .add("SAMLRequest", token)
@@ -105,11 +105,9 @@ public class NetworkService {
         return okHttpClient.newCall(request).execute();
     }
 
-    public Response getUserTransactions(Long oib, Long jmbag) throws IOException {
+    public Response getUserTransactions(Long oib) throws IOException {
         StringBuilder transactionsUrl = new StringBuilder("https://issp.srce.hr/PretragaStudenta/StudentRacuni?oib=")
-                .append(oib)
-                .append("&jmbag=")
-                .append(jmbag);
+                .append(oib);
 
         Request request = new Request.Builder()
                 .url(transactionsUrl.toString())
@@ -118,7 +116,6 @@ public class NetworkService {
 
         return okHttpClient.newCall(request).execute();
     }
-
 
 
 }

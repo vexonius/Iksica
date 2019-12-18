@@ -3,16 +3,16 @@ package com.tstudioz.iksica.Data
 import androidx.lifecycle.MutableLiveData
 import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.Transaction
-import com.tstudioz.iksica.Data.Models.User
 import com.tstudioz.iksica.Utils.DataParser
 import com.tstudioz.iksica.Utils.NetworkService
+import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
 import timber.log.Timber
 
 class Repository {
 
     val dataParser: DataParser = DataParser()
     val service: NetworkService = NetworkService()
-    val dbHelper: DatabaseHelper = DatabaseHelper.instance!!
+    val dbHelper: DatabaseHelper
     var token: String? = null
     var authToken: String? = null
     var loginToken: String? = null
@@ -21,6 +21,7 @@ class Repository {
     var userdata: MutableLiveData<PaperUser> = MutableLiveData()
 
     init {
+        dbHelper = DatabaseHelper.instance!!
         loadUserFromDb()
         checkIfUserIsAlreadyLogged()
     }
@@ -46,23 +47,17 @@ class Repository {
         return dataParser.parseUserInfo(service.getUserInfo())
     }
 
-    fun scrapeuserTransactions(data : PaperUser) : ArrayList<Transaction>{
+    fun scrapeUserTransactions(data: PaperUser): ArrayList<Transaction> {
         Timber.d("Transactions...")
-        return dataParser.parseUserTransactions(service.getUserTransactions(data.oib, data.jmbag))
+        return dataParser.parseUserTransactions(service.getUserTransactions(data.oib))
     }
 
     fun loadUserFromDb() {
         val user: PaperUser? = dbHelper.readUserFromPaper()
-      //  Timber.d("Loading user: ${user?.id}")
+        Timber.d("Loading user: ${user?.id}")
         user?.let {
             userdata.value = it
         }
-    }
-
-    fun checkIsUserLogged(): MutableLiveData<Boolean> {
-        // todo sharedprefs impl
-        isUserLogged.value = false
-        return isUserLogged
     }
 
     fun getUserData(): MutableLiveData<PaperUser> {
@@ -77,33 +72,73 @@ class Repository {
     }
 
     fun deleteUser() {
+        userdata.value = null
         dbHelper.deleteUserFromPaper()
     }
 
+    fun logOutUser() {
+        dbHelper.writeBoolInSharedPrefs("user_logged", false)
+        isUserLogged.value = false
+        dataParser.clearAllTokens()
+        deleteAllRepoTokens()
+        deleteUser()
+    }
+
+    fun deleteAllRepoTokens() {
+        token = null
+        authToken = null
+        loginToken = null
+        responseToken = null
+    }
+
     fun checkIfUserIsAlreadyLogged() {
-        isUserLogged.value = dbHelper.readBoolInSharedPrefs("user_logged")
+        isUserLogged.postValue(dbHelper.readBoolInSharedPrefs("user_logged"))
     }
 
     fun getUserAlreadyLogged(): MutableLiveData<Boolean> {
         return isUserLogged
     }
 
+
+    @Throws(WrongCredsException::class)
+    fun verifyUserInput(mail: String, psswd: String): Boolean {
+
+        Timber.d("Verifing user...")
+        token = dataParser.parseSAMLToken(service.fetchSAMLToken())
+        authToken = dataParser.parseAuthToken(service.getAuthState(token))
+
+        loginToken = dataParser.parseLoginToken(service.postAuthState(mail, psswd, authToken))
+        if(token==null) return false
+
+        responseToken = dataParser.parseResponseToken(service.getResponseToken(loginToken))
+        service.postResponseToken(responseToken)
+
+        return true
+
+    }
+
     fun loginUser(): String? {
+        Timber.d("Atempting to login...")
+
         if (responseToken == null) {
-            Timber.d("Atempting to login...")
             token = dataParser.parseSAMLToken(service.fetchSAMLToken())
             authToken = dataParser.parseAuthToken(service.getAuthState(token))
-            loginToken = dataParser.parseLoginToken(service.postAuthState(userdata.value?.mail, userdata.value?.password, authToken))
+
+            loginToken = dataParser.parseLoginToken(
+                    service.postAuthState(userdata.value?.mail, userdata.value?.password, authToken))
+                    ?: throw WrongCredsException()
+
             responseToken = dataParser.parseResponseToken(service.getResponseToken(loginToken))
             service.postResponseToken(responseToken)
         }
 
-        return responseToken ?: throw NullPointerException("User cannot be null")
+        return responseToken
+                ?: throw WrongCredsException()
     }
 
     fun loadUserFromDbAsync() {
         val user: PaperUser? = dbHelper.readUserFromPaper()
-       // Timber.d("Loading user: ${user?.id}")
+        Timber.d("Loading user: ${user?.id}")
         user?.let {
             userdata.postValue(it)
         }

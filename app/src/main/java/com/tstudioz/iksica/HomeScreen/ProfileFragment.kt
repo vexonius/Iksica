@@ -1,5 +1,6 @@
-package com.tstudioz.iksica.Fragments
+package com.tstudioz.iksica.HomeScreen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.tstudioz.iksica.Adapter.AdapterInfo
-import com.tstudioz.iksica.CardScreen.MainViewModel
 import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.UserInfoItem
 import com.tstudioz.iksica.R
+import com.tstudioz.iksica.SignInScreen.SignInActivity
 import kotlinx.android.synthetic.main.profile_layout.*
 import timber.log.Timber
 
@@ -53,6 +54,11 @@ class ProfileFragment : Fragment() {
                 recyclerProfile.adapter = adapter
             }
         })
+
+        button_logout.setOnClickListener{
+            viewModel?.logOutUser()
+            startActivity(Intent(activity, SignInActivity::class.java))
+        }
     }
 
     private fun convertUserDataToList(user: PaperUser): ArrayList<UserInfoItem> {
@@ -61,7 +67,7 @@ class ProfileFragment : Fragment() {
         val pravaOd = UserInfoItem("Prava od", user.rightsFrom)
         val pravaDo = UserInfoItem("Prava do", user.rightsTo)
 
-        return arrayListOf<UserInfoItem>(razinaPrava, pravaOd, pravaDo)
+        return arrayListOf(razinaPrava, pravaOd, pravaDo)
     }
 
 

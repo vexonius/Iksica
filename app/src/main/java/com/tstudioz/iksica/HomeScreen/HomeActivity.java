@@ -1,4 +1,4 @@
-package com.tstudioz.iksica.Activities;
+package com.tstudioz.iksica.HomeScreen;
 
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.tstudioz.iksica.CardScreen.CardFragment;
-import com.tstudioz.iksica.Fragments.ProfileFragment;
-import com.tstudioz.iksica.Fragments.TransactionsFragment;
 import com.tstudioz.iksica.R;
 
 
