@@ -171,5 +171,10 @@ class Repository {
         }
     }
 
+    fun fetchTransactionDetails(linkOfReceipt: String) {
+        val tranDet = dataParser.parseTransactionDetails(service.fetchTransactiondetails(linkOfReceipt))
+        Timber.d(tranDet.subventionTotal)
+    }
+
 
 }

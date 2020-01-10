@@ -57,7 +57,7 @@ class CardFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // loadAds()
+        loadAds()
     }
 
 

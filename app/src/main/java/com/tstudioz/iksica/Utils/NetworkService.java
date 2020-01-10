@@ -1,5 +1,7 @@
 package com.tstudioz.iksica.Utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 import okhttp3.FormBody;
@@ -118,4 +120,13 @@ public class NetworkService {
     }
 
 
+    @NotNull
+    public Response fetchTransactiondetails(@NotNull String linkOfReceipt) throws IOException {
+        Request request = new Request.Builder()
+                .url("https://issp.srce.hr" + linkOfReceipt)
+                .get()
+                .build();
+
+        return okHttpClient.newCall(request).execute();
+    }
 }

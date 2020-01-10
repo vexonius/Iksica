@@ -131,5 +131,12 @@ class MainViewModel : ViewModel() {
         repository.logOutUser()
     }
 
+    fun getTransactiondetails(linkOfReceipt: String) {
+        viewModelScope.launch(context = Dispatchers.Main) {
+            async(context = Dispatchers.IO) {
+                repository.fetchTransactionDetails(linkOfReceipt)
+            }.await()
+        }
+    }
 
 }

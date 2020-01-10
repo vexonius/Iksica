@@ -2,9 +2,12 @@ package com.tstudioz.iksica.Utils
 
 import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.Transaction
+import com.tstudioz.iksica.Data.Models.TransactionDetails
+import com.tstudioz.iksica.Data.Models.TransactionItem
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
 import okhttp3.Response
 import org.jsoup.Jsoup
+import org.w3c.dom.Document
 import timber.log.Timber
 import java.io.IOException
 
@@ -185,6 +188,65 @@ class DataParser {
         }
 
         return transactions
+    }
+
+    fun parseTransactionDetails(response: Response) : TransactionDetails {
+        var transactionDetails = TransactionDetails("", "", ArrayList())
+        val document = Jsoup.parse(response.body()?.string())
+
+        val mainDiv = document.getElementById("mainDivContent")
+
+        mainDiv?.let { div ->
+            val table = div.select("div:nth-child(3) > div > table")?.first()
+
+            table?.let {
+                val tableBody = it.select("tbody")?.first()
+
+                val rows = tableBody?.select("tr")
+
+                rows?.let { rows ->
+                    for ((index, row) in rows.withIndex()) {
+
+                        if (index == rows.size - 1) {
+                            transactionDetails.total = row.select(" th:nth-child(1)")?.first()?.text()
+                                    ?: ""
+                            transactionDetails.subventionTotal = row.select(" th:nth-child(2)")?.first()?.text()
+                                    ?: ""
+                            continue
+                        }
+
+                        var itemName = ""
+                        var itemQuantity: Int = -1
+                        var itemPrice = ""
+                        var itemsTotal = ""
+                        var itemSubvention = ""
+
+                        val cols = row?.select("td")
+
+                        cols?.let {
+                            for ((index, data) in cols.withIndex()) {
+                                when (index) {
+                                    0 -> itemName = data?.text() ?: ""
+                                    1 -> itemQuantity = data?.text()?.toInt() ?: -1
+                                    2 -> itemPrice = data?.text() ?: ""
+                                    3 -> itemsTotal = data?.text() ?: ""
+                                    4 -> itemSubvention = data?.text() ?: ""
+
+                                    else -> {
+                                        Timber.d("Dunno where to put table data detail")
+                                    }
+                                }
+                            }
+                        }
+                        transactionDetails.items?.add(TransactionItem(itemName, itemQuantity, itemPrice, itemsTotal, itemSubvention))
+                    }
+
+                }
+
+            }
+
+        }
+        return  transactionDetails
     }
 
     fun clearAllTokens() {

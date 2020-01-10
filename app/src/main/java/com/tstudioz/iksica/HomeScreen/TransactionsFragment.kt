@@ -1,6 +1,8 @@
 package com.tstudioz.iksica.HomeScreen
 
 import android.os.Bundle
+import android.os.Message
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +11,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.db.williamchart.view.ImplementsAlphaChart
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tstudioz.iksica.Adapter.AdapterTransactions
+import com.tstudioz.iksica.Data.Models.Transaction
 import com.tstudioz.iksica.R
+import com.tstudioz.iksica.Utils.DetailClickListener
 import kotlinx.android.synthetic.main.transactions_layout.*
+import timber.log.Timber
 
 @ImplementsAlphaChart
-class TransactionsFragment : Fragment() {
+class TransactionsFragment : Fragment(), DetailClickListener {
 
     private var viewmodel: MainViewModel? = null
 
@@ -38,7 +44,7 @@ class TransactionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclertransactions.layoutManager = LinearLayoutManager(recyclertransactions.context, LinearLayoutManager.VERTICAL, false)
-        val adapter = AdapterTransactions(null)
+        val adapter = AdapterTransactions(null, this)
         recyclertransactions.adapter = adapter
 
         viewmodel?.getUserTransactions()?.observe(viewLifecycleOwner, Observer {
@@ -60,6 +66,17 @@ class TransactionsFragment : Fragment() {
         })
 
 
+    }
+
+    fun showBottomSheetDetail(){
+        val btmSheet = BottomSheetDialog(context!!)
+        btmSheet.setTitle("Račun")
+        btmSheet.show()
+    }
+
+    override fun onClicked(position: Int, transaction: Transaction) {
+        viewmodel?.getTransactiondetails(transaction.linkOfReceipt)
+        Timber.d("CLICKED ITEM NUMBER ${position}")
     }
 
 
