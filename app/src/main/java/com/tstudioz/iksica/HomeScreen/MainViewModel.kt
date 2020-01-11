@@ -50,7 +50,7 @@ class MainViewModel : ViewModel() {
             }
             else -> {
                 Timber.e(throwable)
-                mErrors.postValue("Niste povezani. \nProvjerite internetsku vezu i pokušajte ponovno")
+                mErrors.postValue("Došlo je do pogreške. \nPokušajte ponovno kasnije")
                 isRefreshing.value = false
                 areTransactionsRefreshing.value = false
             }
@@ -112,7 +112,9 @@ class MainViewModel : ViewModel() {
                 repository.updateUserData(userData)
             }.await()
 
-            val transactions: ArrayList<Transaction> = async(context = Dispatchers.IO) { repository.scrapeUserTransactions(userData) }.await()
+            val transactions: ArrayList<Transaction> = async(context = Dispatchers.IO) {
+                repository.scrapeUserTransactions(userData)
+            }.await()
 
             mUserTransactions.value = transactions
 
@@ -127,10 +129,9 @@ class MainViewModel : ViewModel() {
     fun createLinkedHashMap(list: List<Transaction>) {
         val linkedHashMap: LinkedHashMap<String, Float> = LinkedHashMap()
         for (item in list)
-            linkedHashMap.put(item.date, item.amount.toFloat())
+            linkedHashMap[item.date] = item.amount.toFloat()
 
         mTransactionsMapped.postValue(linkedHashMap)
-
     }
 
     fun logOutUser() {
@@ -140,7 +141,6 @@ class MainViewModel : ViewModel() {
     fun updateCurrentTransactionDetails(transaction: Transaction) {
         mCurrentTransactionData.value = transaction
         repository.clearTransactionDetails()
-        Timber.d("${transaction.restourant}")
         viewModelScope.launch(context = Dispatchers.Main) {
             async(context = Dispatchers.IO) {
                 repository.fetchTransactionDetails(transaction.linkOfReceipt)

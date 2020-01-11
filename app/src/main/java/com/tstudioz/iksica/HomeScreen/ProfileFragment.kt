@@ -37,7 +37,10 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = AdapterInfo(ArrayList())
+
         recyclerProfile.layoutManager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
+        recyclerProfile.adapter = adapter
 
 
         viewModel?.getUserData()?.observe(viewLifecycleOwner, Observer {
@@ -48,16 +51,14 @@ class ProfileFragment : Fragment() {
                 name_surname.text = it.name
                 user_desc.text = getString(R.string.student_desc).plus(" ").plus(it.university)
 
-                val recyclerViewdata: ArrayList<UserInfoItem> = convertUserDataToList(it)
-                Timber.d(recyclerViewdata[0].item)
-                val adapter = AdapterInfo(recyclerViewdata)
-                recyclerProfile.adapter = adapter
+                adapter.updateData(convertUserDataToList(it))
             }
         })
 
         button_logout.setOnClickListener{
             viewModel?.logOutUser()
             startActivity(Intent(activity, SignInActivity::class.java))
+            activity?.finish()
         }
     }
 

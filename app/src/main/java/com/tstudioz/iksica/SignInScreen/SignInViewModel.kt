@@ -68,7 +68,6 @@ class SignInViewModel : ViewModel() {
 
 
     fun isUserLoggedAlready(): LiveData<Boolean> {
-        Timber.d("userlogged ${userLogged.value}")
         return userLogged
     }
 

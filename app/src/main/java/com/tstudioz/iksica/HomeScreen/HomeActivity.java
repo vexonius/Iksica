@@ -92,20 +92,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
-    @Override
-    public void onStop(){
-        super.onStop();
-    }
-
     @Override
     public void onBackPressed(){
 
-        if (back_pressed + 2000 > System.currentTimeMillis()){
+        if (back_pressed + 2000 > System.currentTimeMillis()) {
             finish();
-        } else {
-            showExitSnack();
+            return;
         }
+
+        showExitSnack();
         back_pressed = System.currentTimeMillis();
     }
 

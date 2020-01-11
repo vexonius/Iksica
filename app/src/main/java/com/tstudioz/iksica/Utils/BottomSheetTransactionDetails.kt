@@ -27,9 +27,8 @@ class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
 
 
     companion object {
-        public fun newInstance(): BottomSheetTransactionDetails {
+        fun newInstance(): BottomSheetTransactionDetails {
             return BottomSheetTransactionDetails()
-
         }
     }
 
@@ -70,7 +69,6 @@ class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
                 adapter.updateItems(transactionDetails.items)
             }
         })
-
 
     }
 

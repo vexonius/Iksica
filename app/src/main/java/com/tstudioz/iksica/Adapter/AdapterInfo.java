@@ -4,7 +4,6 @@ package com.tstudioz.iksica.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tstudioz.iksica.Data.Models.UserInfoItem;
 import com.tstudioz.iksica.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterInfo extends RecyclerView.Adapter<AdapterInfo.InfoItemViewHolder> {
-    private ArrayList<UserInfoItem> items;
+    private List<UserInfoItem> items;
 
-    public AdapterInfo(ArrayList<UserInfoItem> items) {
+    public AdapterInfo(List<UserInfoItem> items) {
         this.items = items;
     }
 
@@ -53,7 +52,7 @@ public class AdapterInfo extends RecyclerView.Adapter<AdapterInfo.InfoItemViewHo
         holder.desc.setText(item.getItem());
     }
 
-    public void updateData(ArrayList<UserInfoItem> items){
+    public void updateData(List<UserInfoItem> items){
         this.items = items;
     }
 

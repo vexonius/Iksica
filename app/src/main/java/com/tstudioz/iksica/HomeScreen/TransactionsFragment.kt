@@ -33,8 +33,6 @@ class TransactionsFragment : Fragment(), DetailClickListener {
 
         viewmodel = ViewModelProvider(activity!!)[MainViewModel::class.java]
 
-
-
         return view
     }
 
@@ -47,7 +45,7 @@ class TransactionsFragment : Fragment(), DetailClickListener {
 
         viewmodel?.getUserTransactions()?.observe(viewLifecycleOwner, Observer {
             it?.let {
-                (recyclertransactions.adapter as AdapterTransactions).updateItems(it)
+                adapter.updateItems(it)
             }
         })
 
@@ -63,7 +61,6 @@ class TransactionsFragment : Fragment(), DetailClickListener {
             }
         })
 
-
     }
 
     fun showBottomSheetDetail(){
@@ -74,7 +71,6 @@ class TransactionsFragment : Fragment(), DetailClickListener {
     override fun onClicked(transaction: Transaction) {
         viewmodel?.updateCurrentTransactionDetails(transaction)
         showBottomSheetDetail()
-        Timber.d("CLICKED ITEM NUMBER ${transaction.restourant}")
     }
 
 

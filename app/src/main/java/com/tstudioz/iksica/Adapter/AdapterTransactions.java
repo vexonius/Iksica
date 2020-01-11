@@ -1,5 +1,6 @@
 package com.tstudioz.iksica.Adapter;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -44,7 +45,6 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
             date = (TextView) view.findViewById(R.id.transaction_date);
 
             view.setOnClickListener(this);
-
         }
 
         @Override
@@ -53,6 +53,7 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         }
     }
 
+    @NonNull
     @Override
     public DetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_item_layout, parent, false);
@@ -64,7 +65,7 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         Transaction item = transactions.get(position);
         holder.time.setText(item.getTime());
         holder.date.setText(item.getDate());
-        holder.amount.setText("-" + item.getAmount() + "  kn");
+        holder.amount.setText("-" + item.getSubvention() + "  kn");
         holder.place.setText(item.getRestourant());
 
     }

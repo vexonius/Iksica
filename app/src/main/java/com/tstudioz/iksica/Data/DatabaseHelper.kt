@@ -61,8 +61,8 @@ class DatabaseHelper private constructor(context: Context) {
         }
     }
 
-    fun readStringInSharedPrefs(key: String): String {
-        return prefs.getString(key, null) ?: null!!
+    fun readStringInSharedPrefs(key: String): String? {
+        return prefs.getString(key, null)
     }
 
     fun writeBoolInSharedPrefs(key: String, value: Boolean) {

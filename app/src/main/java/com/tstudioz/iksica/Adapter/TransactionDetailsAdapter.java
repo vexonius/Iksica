@@ -5,12 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tstudioz.iksica.Data.Models.Transaction;
 import com.tstudioz.iksica.Data.Models.TransactionItem;
 import com.tstudioz.iksica.R;
-import com.tstudioz.iksica.Utils.DetailClickListener;
 
 import java.util.List;
 
@@ -27,7 +26,6 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<TransactionD
 
     public class DetailViewHolder extends RecyclerView.ViewHolder {
         private TextView quantity, name, price, subvention;
-        private DetailClickListener detailClickListener;
 
 
         public DetailViewHolder(final View view) {
@@ -37,10 +35,10 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<TransactionD
             name = (TextView) itemView.findViewById(R.id.item_name);
             price = (TextView) itemView.findViewById(R.id.item_price);
             subvention = (TextView) view.findViewById(R.id.subvention_amount);
-
         }
     }
 
+    @NonNull
     @Override
     public DetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater
