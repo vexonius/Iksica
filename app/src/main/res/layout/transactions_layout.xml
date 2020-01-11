@@ -1,56 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/trans_swipe_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:background="@color/dirty_white">
 
-    <FrameLayout
-        android:id="@+id/chart_frame"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="12dp">
-
-        <com.db.chart.view.LineChartView
-            android:id="@+id/chart"
-            xmlns:chart="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="20dp"
-            android:visibility="invisible">
-        </com.db.chart.view.LineChartView>
-
-        <TextView
-            android:id="@+id/noTrans"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:text="Nema podataka o transakcijama"
-            android:textSize="14dp"
-            android:textColor="@color/light_grey"
-            android:visibility="invisible"/>
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/transText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chart_frame"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/light_grey"
-        android:text="SVE TRANSAKCIJE"
-        android:textSize="12dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/transText"
-        android:id="@+id/recycler_transactions"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
 
-</RelativeLayout>
+        <com.db.williamchart.view.LineChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="16dp"
+            app:chart_labelsFont="@font/poppins_regular"
+            app:chart_labelsSize="0dp"
+            app:chart_lineColor="@color/colorAccent"
+            app:chart_lineThickness="6dp"
+            app:chart_smoothLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclertransactions"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chart" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
