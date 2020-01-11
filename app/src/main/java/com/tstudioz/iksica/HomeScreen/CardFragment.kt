@@ -51,8 +51,6 @@ class CardFragment : Fragment() {
         viewmodel?.isLayoutRefreshing()?.observe(viewLifecycleOwner, Observer {
             root_refreshing.isRefreshing = it == true
         })
-
-
     }
 
     override fun onStart() {
@@ -88,13 +86,12 @@ class CardFragment : Fragment() {
     fun showErrorSnack(message: String) {
         snack = Snackbar.make(root_refreshing, message, Snackbar.LENGTH_INDEFINITE)
         snack?.show()
-
     }
 
 
     fun loadAds() {
-      //  val adRequest = AdRequest.Builder().build()
-      //  adView.loadAd(adRequest)
+          val adRequest = AdRequest.Builder().build()
+          adView.loadAd(adRequest)
     }
 
 

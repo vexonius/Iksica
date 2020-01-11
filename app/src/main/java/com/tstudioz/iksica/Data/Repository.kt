@@ -186,5 +186,9 @@ class Repository {
         Timber.d(tranDet.subventionTotal)
     }
 
+    fun clearTransactionDetails() {
+        transactionDetailsData.postValue(null)
+    }
+
 
 }

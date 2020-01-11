@@ -64,6 +64,17 @@
         app:layout_constraintTop_toTopOf="@+id/details_time_icon"
         tools:text="11:20" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@+id/details_recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/details_recycler" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/details_recycler"
         android:layout_width="match_parent"

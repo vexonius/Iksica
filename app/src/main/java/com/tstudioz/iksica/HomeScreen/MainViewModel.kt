@@ -139,6 +139,7 @@ class MainViewModel : ViewModel() {
 
     fun updateCurrentTransactionDetails(transaction: Transaction) {
         mCurrentTransactionData.value = transaction
+        repository.clearTransactionDetails()
         Timber.d("${transaction.restourant}")
         viewModelScope.launch(context = Dispatchers.Main) {
             async(context = Dispatchers.IO) {

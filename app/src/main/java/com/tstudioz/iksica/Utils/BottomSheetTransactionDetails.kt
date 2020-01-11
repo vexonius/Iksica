@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Adapter
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Data.Models.TransactionItem
 import com.tstudioz.iksica.HomeScreen.MainViewModel
 import com.tstudioz.iksica.R
+import kotlinx.android.synthetic.main.transaction_details_layout.*
 
 
 /**
@@ -45,6 +47,9 @@ class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
         val time = contentView.findViewById(R.id.details_time) as TextView
         val total = contentView.findViewById(R.id.total) as TextView
         val recycler = contentView.findViewById(R.id.details_recycler) as RecyclerView
+        val progress = contentView.findViewById(R.id.progressBar) as ProgressBar
+
+        progress.visibility = View.VISIBLE
 
         recycler.layoutManager = LinearLayoutManager(contentView.context)
         val adapter = TransactionDetailsAdapter(ArrayList<TransactionItem>())
@@ -60,6 +65,7 @@ class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
 
         viewModel?.getCurrentTransactionItems()?.observe(this, Observer {transactionDetails ->
             transactionDetails?.let {
+                progress.visibility = View.INVISIBLE
                 total.text = "${it.subventionTotal} kn"
                 adapter.updateItems(transactionDetails.items)
             }
