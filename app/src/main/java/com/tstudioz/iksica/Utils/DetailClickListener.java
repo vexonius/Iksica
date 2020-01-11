@@ -6,5 +6,5 @@ import com.tstudioz.iksica.Data.Models.Transaction;
  * Created by etino7 on 1/9/2020.
  */
 public interface DetailClickListener {
-    void onClicked(int position, Transaction transaction);
+    void onClicked(Transaction transaction);
 }

@@ -93,8 +93,8 @@ class CardFragment : Fragment() {
 
 
     fun loadAds() {
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+      //  val adRequest = AdRequest.Builder().build()
+      //  adView.loadAd(adRequest)
     }
 
 

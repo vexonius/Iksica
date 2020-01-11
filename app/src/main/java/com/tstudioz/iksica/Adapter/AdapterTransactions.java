@@ -49,7 +49,7 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
 
         @Override
         public void onClick(View view) {
-            detailClickListener.onClicked(getAdapterPosition(), transactions.get(getAdapterPosition()));
+            detailClickListener.onClicked(transactions.get(getAdapterPosition()));
         }
     }
 

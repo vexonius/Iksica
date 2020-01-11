@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.Transaction
+import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Data.Repository
 import com.tstudioz.iksica.Utils.Exceptions.NoNetworkException
 import com.tstudioz.iksica.Utils.LiveEvent
@@ -23,11 +24,16 @@ import timber.log.Timber
 class MainViewModel : ViewModel() {
 
     val repository: Repository
+
     val mUserData: MutableLiveData<PaperUser>
     val isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
+
     val areTransactionsRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
     val mUserTransactions: MutableLiveData<List<Transaction>> = MutableLiveData()
     val mTransactionsMapped: MutableLiveData<LinkedHashMap<String, Float>> = MutableLiveData()
+
+    val mCurrentTransactionData: MutableLiveData<Transaction> = MutableLiveData()
+
     val mErrors: LiveEvent<String> = LiveEvent()
 
     val handler = CoroutineExceptionHandler { _, throwable ->
@@ -131,12 +137,22 @@ class MainViewModel : ViewModel() {
         repository.logOutUser()
     }
 
-    fun getTransactiondetails(linkOfReceipt: String) {
+    fun updateCurrentTransactionDetails(transaction: Transaction) {
+        mCurrentTransactionData.value = transaction
+        Timber.d("${transaction.restourant}")
         viewModelScope.launch(context = Dispatchers.Main) {
             async(context = Dispatchers.IO) {
-                repository.fetchTransactionDetails(linkOfReceipt)
+                repository.fetchTransactionDetails(transaction.linkOfReceipt)
             }.await()
         }
+    }
+
+    fun getCurrentTransaction(): LiveData<Transaction> {
+        return mCurrentTransactionData
+    }
+
+    fun getCurrentTransactionItems(): LiveData<TransactionDetails> {
+        return repository.getTransactionDetails()
     }
 
 }

@@ -4,83 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
     android:background="@color/white"
-    android:elevation="2dp"
     android:paddingLeft="10dp"
-    android:paddingTop="20dp"
+    android:elevation="1dp"
+    android:paddingTop="10dp"
     android:paddingRight="10dp"
-    android:paddingBottom="20dp">
-
+    android:paddingBottom="10dp">
 
     <TextView
-        android:id="@+id/transaction_time"
+        android:id="@+id/item_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:textColor="@color/light_grey"
-        android:textSize="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/transaction_date"
-        tools:text="15:38" />
-
-    <TextView
-        android:id="@+id/transaction_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:textColor="@color/light_grey"
-        android:textSize="12dp"
+        android:textSize="14dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/transaction_time"
-        tools:text="23.10." />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2X" />
 
 
     <TextView
-        android:id="@+id/transaction_place"
+        android:id="@+id/item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:maxLines="2"
         android:textColor="@color/light_grey"
-        android:textSize="16dp"
+        android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/transaction_amount"
-        app:layout_constraintStart_toEndOf="@+id/transaction_date"
+        app:layout_constraintEnd_toStartOf="@+id/item_price"
+        app:layout_constraintStart_toEndOf="@+id/item_quantity"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Restoran" />
+        tools:text="Čokoldani kroasan" />
 
 
     <TextView
-        android:id="@+id/transaction_amount"
+        android:id="@+id/item_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:fontFamily="@font/poppins_medium"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/subvention_amount"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="12,56 kn" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_arrow"
-        android:tint="@color/colorAccent"
+    <TextView
+        android:id="@+id/subvention_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:textColor="@color/colorAccent"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:text="-8,64 kn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

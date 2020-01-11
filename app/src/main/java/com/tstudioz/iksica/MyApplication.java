@@ -33,7 +33,7 @@ public class MyApplication extends Application {
         Hawk.init(getApplicationContext()).build();
         DatabaseHelper.Companion.createInstance(getApplicationContext());
 
-         MobileAds.initialize(this, "ca-app-pub-5944203368510130~6211911487");
+        // MobileAds.initialize(this, "ca-app-pub-5944203368510130~6211911487");
 
     }
 

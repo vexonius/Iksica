@@ -3,6 +3,7 @@ package com.tstudioz.iksica.Data
 import androidx.lifecycle.MutableLiveData
 import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.Transaction
+import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Utils.DataParser
 import com.tstudioz.iksica.Utils.NetworkService
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
@@ -13,12 +14,16 @@ class Repository {
     val dataParser: DataParser = DataParser()
     val service: NetworkService = NetworkService()
     val dbHelper: DatabaseHelper
+
     var token: String? = null
     var authToken: String? = null
     var loginToken: String? = null
     var responseToken: String? = null
+
     val isUserLogged: MutableLiveData<Boolean> = MutableLiveData()
-    var userdata: MutableLiveData<PaperUser> = MutableLiveData()
+    val userdata: MutableLiveData<PaperUser> = MutableLiveData()
+
+    val transactionDetailsData: MutableLiveData<TransactionDetails> = MutableLiveData()
 
     init {
         dbHelper = DatabaseHelper.instance!!
@@ -62,6 +67,10 @@ class Repository {
 
     fun getUserData(): MutableLiveData<PaperUser> {
         return userdata
+    }
+
+    fun getTransactionDetails(): MutableLiveData<TransactionDetails> {
+        return transactionDetailsData
     }
 
     fun insertUser(user: PaperUser?) {
@@ -173,6 +182,7 @@ class Repository {
 
     fun fetchTransactionDetails(linkOfReceipt: String) {
         val tranDet = dataParser.parseTransactionDetails(service.fetchTransactiondetails(linkOfReceipt))
+        transactionDetailsData.postValue(tranDet)
         Timber.d(tranDet.subventionTotal)
     }
 
