@@ -71,5 +71,10 @@ class ProfileFragment : Fragment() {
         return arrayListOf(razinaPrava, pravaOd, pravaDo)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Glide.get(context!!).clearMemory();
+    }
+
 
 }

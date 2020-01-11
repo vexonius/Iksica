@@ -12,8 +12,8 @@ android {
         multiDexEnabled true
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 7
-        versionName "v2-alpha02"
+        versionCode 8
+        versionName "v2-beta03"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -64,7 +64,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.diogobernardino:williamchart:3.2.0'
     implementation 'org.aviran.cookiebar2:cookiebar2:1.1.3'
-
 
 }
 
