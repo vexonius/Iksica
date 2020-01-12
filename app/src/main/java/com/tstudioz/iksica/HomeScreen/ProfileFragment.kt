@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
         button_logout.setOnClickListener{
             viewModel?.logOutUser()
             startActivity(Intent(activity, SignInActivity::class.java))
-            activity?.finish()
+
         }
     }
 
@@ -72,8 +72,8 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        Glide.get(context!!).clearMemory()
         super.onDestroy()
-        Glide.get(context!!).clearMemory();
     }
 
 

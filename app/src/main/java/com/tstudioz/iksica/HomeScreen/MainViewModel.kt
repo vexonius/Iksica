@@ -141,7 +141,7 @@ class MainViewModel : ViewModel() {
     fun updateCurrentTransactionDetails(transaction: Transaction) {
         mCurrentTransactionData.value = transaction
         repository.clearTransactionDetails()
-        viewModelScope.launch(context = Dispatchers.Main) {
+        viewModelScope.launch(handler) {
             async(context = Dispatchers.IO) {
                 repository.fetchTransactionDetails(transaction.linkOfReceipt)
             }.await()

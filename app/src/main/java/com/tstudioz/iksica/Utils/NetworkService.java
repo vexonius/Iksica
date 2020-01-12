@@ -24,6 +24,10 @@ public class NetworkService {
         okHttpClient = OkHttpClientX.getInstance();
     }
 
+    public void clearCookies(){
+        OkHttpClientX.clearCookies();
+    }
+
 
     public Response fetchSAMLToken() throws IOException {
         Request rq = new Request.Builder()

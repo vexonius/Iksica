@@ -11,12 +11,15 @@ import com.tstudioz.iksica.HomeScreen.HomeActivity
 import com.tstudioz.iksica.R
 import kotlinx.android.synthetic.main.sign_in_layout.*
 import org.aviran.cookiebar2.CookieBar
+import timber.log.Timber
 
 
 class SignInActivity : AppCompatActivity() {
 
     private var animationDrawable: AnimationDrawable? = null
     private var viewmodel: SignInViewModel? = null
+
+    var backPressed: Long = 0
 
 
     override fun onCreate(savedInstanceBundle: Bundle?) {
@@ -80,6 +83,10 @@ class SignInActivity : AppCompatActivity() {
                         .show()
             }
         })
+    }
+
+    override fun onBackPressed() {
+        Timber.d("Closing aplication")
     }
 
     fun setUpAimation() {

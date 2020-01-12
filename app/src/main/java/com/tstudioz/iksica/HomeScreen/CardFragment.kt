@@ -85,6 +85,9 @@ class CardFragment : Fragment() {
 
     fun showErrorSnack(message: String) {
         snack = Snackbar.make(root_refreshing, message, Snackbar.LENGTH_INDEFINITE)
+        snack?.setAction("PONOVI", View.OnClickListener {
+            viewmodel?.loginUser()
+        })
         snack?.show()
     }
 

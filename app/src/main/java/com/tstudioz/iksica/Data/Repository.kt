@@ -89,6 +89,7 @@ class Repository {
         dbHelper.writeBoolInSharedPrefs("user_logged", false)
         isUserLogged.value = false
         dataParser.clearAllTokens()
+        service.clearCookies()
         deleteAllRepoTokens()
         deleteUser()
     }

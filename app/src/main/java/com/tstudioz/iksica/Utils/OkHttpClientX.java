@@ -2,6 +2,7 @@ package com.tstudioz.iksica.Utils;
 
 import android.content.Context;
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
@@ -16,7 +17,7 @@ public class OkHttpClientX {
 
     private static OkHttpClient okHttpClient;
 
-    private static CookieJar cookieJar;
+    private static ClearableCookieJar cookieJar;
 
     private OkHttpClientX(){
 
@@ -40,6 +41,11 @@ public class OkHttpClientX {
                 .addInterceptor(new NoNetworkInterceptor())
                 .cookieJar(cookieJar)
                 .build();
+    }
+
+    public static void clearCookies(){
+        if (cookieJar != null)
+            cookieJar.clear();
     }
 
 

@@ -61,6 +61,10 @@ class TransactionsFragment : Fragment(), DetailClickListener {
             }
         })
 
+        trans_swipe_layout.setOnRefreshListener {
+            viewmodel?.loginUser()
+        }
+
     }
 
     fun showBottomSheetDetail(){

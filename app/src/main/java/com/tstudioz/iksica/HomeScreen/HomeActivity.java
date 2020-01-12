@@ -12,9 +12,9 @@ import com.tstudioz.iksica.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public AHBottomNavigation bNavigation;
-    public long back_pressed;
-    public Snackbar snack;
+    private AHBottomNavigation bNavigation;
+    private long back_pressed = 0;
+    private Snackbar snack;
 
 
     @Override
@@ -105,8 +105,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showExitSnack(){
-        snack = Snackbar.make(findViewById(R.id.relative_home), "Ponovno pritisnite nazadan za izaći", Snackbar.LENGTH_LONG);
+        snack = Snackbar.make(findViewById(R.id.relative_home), "Ponovno pritisnite nazad za izaći", Snackbar.LENGTH_LONG);
         snack.show();
     }
+
 }
 
