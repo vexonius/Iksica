@@ -1,7 +1,6 @@
 package com.tstudioz.iksica.Utils;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.tstudioz.iksica.Utils.Exceptions.NoNetworkException;
 
@@ -12,20 +11,24 @@ import okhttp3.Request;
 import okhttp3.Response;
 import timber.log.Timber;
 
-import static com.tstudioz.iksica.Utils.NetworkMonitor.isConnected;
+import static org.koin.java.KoinJavaComponent.get;
+
 
 /**
  * Created by etino7 on 12/17/2019.
  */
 public class NoNetworkInterceptor implements Interceptor {
 
+    private NetworkMonitor monitor = get(NetworkMonitor.class);
+
     @NonNull
     @Override
-    public Response intercept(@NonNull Interceptor.Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request originalRequest = chain.request();
-        Timber.d(originalRequest.url().toString());
 
-        if (!isConnected())
+        Timber.d(String.valueOf(monitor.isConnected()));
+
+        if (!monitor.isConnected())
             throw new NoNetworkException();
 
         return chain.proceed(originalRequest);

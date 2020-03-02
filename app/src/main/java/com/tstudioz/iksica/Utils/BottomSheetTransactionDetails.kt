@@ -3,7 +3,6 @@ package com.tstudioz.iksica.Utils
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import android.widget.Adapter
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
@@ -12,11 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tstudioz.iksica.Adapter.TransactionDetailsAdapter
-import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Data.Models.TransactionItem
 import com.tstudioz.iksica.HomeScreen.MainViewModel
 import com.tstudioz.iksica.R
-import kotlinx.android.synthetic.main.transaction_details_layout.*
 
 
 /**

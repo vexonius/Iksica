@@ -15,7 +15,6 @@ import com.tstudioz.iksica.R
 import com.tstudioz.iksica.Utils.BottomSheetTransactionDetails
 import com.tstudioz.iksica.Utils.DetailClickListener
 import kotlinx.android.synthetic.main.transactions_layout.*
-import timber.log.Timber
 
 @ImplementsAlphaChart
 class TransactionsFragment : Fragment(), DetailClickListener {

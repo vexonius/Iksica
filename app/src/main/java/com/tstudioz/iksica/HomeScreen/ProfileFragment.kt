@@ -16,7 +16,6 @@ import com.tstudioz.iksica.Data.Models.UserInfoItem
 import com.tstudioz.iksica.R
 import com.tstudioz.iksica.SignInScreen.SignInActivity
 import kotlinx.android.synthetic.main.profile_layout.*
-import timber.log.Timber
 
 /**
  * Created by etino7 on 18-Oct-17.

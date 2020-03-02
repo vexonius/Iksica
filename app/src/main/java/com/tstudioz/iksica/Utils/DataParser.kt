@@ -7,7 +7,6 @@ import com.tstudioz.iksica.Data.Models.TransactionItem
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
 import okhttp3.Response
 import org.jsoup.Jsoup
-import org.w3c.dom.Document
 import timber.log.Timber
 import java.io.IOException
 

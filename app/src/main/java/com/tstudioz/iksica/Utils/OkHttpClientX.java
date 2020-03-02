@@ -9,29 +9,18 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 
 
 public class OkHttpClientX {
 
-    private static OkHttpClient okHttpClient;
-
     private static ClearableCookieJar cookieJar;
 
-    private OkHttpClientX(){
-
-    }
-
-    public static OkHttpClient getInstance(){
-        return okHttpClient;
-    }
-
-    public static void createInstance(Context context){
+    public static OkHttpClient provideClientInstance(Context context){
 
         cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
 
-        okHttpClient = new OkHttpClient()
+        return new OkHttpClient()
                 .newBuilder()
                 .callTimeout(1, TimeUnit.MINUTES)
                 .connectTimeout(1, TimeUnit.MINUTES)

@@ -12,11 +12,7 @@ import com.tstudioz.iksica.Data.Models.Transaction;
 import com.tstudioz.iksica.R;
 import com.tstudioz.iksica.Utils.DetailClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 /**
  * Created by etino7 on 11-Oct-17.

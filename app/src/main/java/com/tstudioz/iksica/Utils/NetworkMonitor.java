@@ -10,25 +10,18 @@ import android.net.NetworkInfo;
 
 public class NetworkMonitor {
 
-    private static NetworkMonitor instance;
-    private static ConnectivityManager connectivityManager;
+    private Context context;
 
-    private NetworkMonitor(Context context) {
-        connectivityManager =
+    public NetworkMonitor(Context context) {
+        this.context = context;
+    }
+
+    public boolean isConnected() {
+
+        ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    }
-
-    public static NetworkMonitor getInstance() {
-        return instance;
-    }
-
-    public static NetworkMonitor createInstance(Context context) {
-        return new NetworkMonitor(context);
-    }
-
-    public static boolean isConnected() {
-
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
     }

@@ -20,8 +20,8 @@ public class NetworkService {
     private OkHttpClient okHttpClient;
     private HttpUrl currentUrl;
 
-    public NetworkService() {
-        okHttpClient = OkHttpClientX.getInstance();
+    public NetworkService(OkHttpClient okHttpClient) {
+        this.okHttpClient = okHttpClient;
     }
 
     public void clearCookies(){

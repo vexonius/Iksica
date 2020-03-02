@@ -5,15 +5,14 @@ import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.Transaction
 import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Utils.DataParser
-import com.tstudioz.iksica.Utils.NetworkService
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
+import com.tstudioz.iksica.Utils.NetworkService
+import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
-class Repository {
+class Repository constructor(private val service: NetworkService, private  val dbHelper: DatabaseHelper) {
 
-    val dataParser: DataParser = DataParser()
-    val service: NetworkService = NetworkService()
-    val dbHelper: DatabaseHelper
+    val dataParser: DataParser by inject(DataParser::class.java)
 
     var token: String? = null
     var authToken: String? = null
@@ -26,26 +25,10 @@ class Repository {
     val transactionDetailsData: MutableLiveData<TransactionDetails> = MutableLiveData()
 
     init {
-        dbHelper = DatabaseHelper.instance!!
         loadUserFromDb()
         checkIfUserIsAlreadyLogged()
     }
 
-    companion object {
-
-        private var INSTANCE: Repository? = null
-
-        @JvmStatic
-        fun getInstance(): Repository {
-            return INSTANCE ?: Repository().apply { INSTANCE = this }
-        }
-
-
-        @JvmStatic
-        fun destroyInstance() {
-            INSTANCE = null
-        }
-    }
 
     fun scrapeUserInfo(): PaperUser {
         Timber.d("Scraping...")
