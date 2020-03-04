@@ -23,7 +23,7 @@ val defaultModule = module {
     single { NetworkService(get()) }
     single { DataParser() }
     single { DatabaseHelper(androidContext()) }
-    single { Repository(get(), get()) }
+    single { Repository(get(), get(), get()) }
 
 }
 

@@ -59,12 +59,12 @@ class SignInViewModel : ViewModel() {
         }
     }
 
-    fun checkInputs(data: Pair<String, String>) : Boolean {
-        if(data.first.isEmpty() || data.second.isEmpty()) {
+    fun checkInputs(data: Pair<String, String>): Boolean {
+        if (data.first.isEmpty() || data.second.isEmpty()) {
             throw EmptyInputFields()
         }
 
-        return  true
+        return true
     }
 
 

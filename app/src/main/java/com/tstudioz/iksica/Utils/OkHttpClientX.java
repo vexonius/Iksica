@@ -16,9 +16,10 @@ public class OkHttpClientX {
 
     private static ClearableCookieJar cookieJar;
 
-    public static OkHttpClient provideClientInstance(Context context){
+    public static OkHttpClient provideClientInstance(Context context) {
 
-        cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+        cookieJar = new PersistentCookieJar(new SetCookieCache(),
+                new SharedPrefsCookiePersistor(context));
 
         return new OkHttpClient()
                 .newBuilder()
@@ -32,11 +33,10 @@ public class OkHttpClientX {
                 .build();
     }
 
-    public static void clearCookies(){
+    public static void clearCookies() {
         if (cookieJar != null)
             cookieJar.clear();
     }
-
 
 
 }

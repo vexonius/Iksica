@@ -83,7 +83,7 @@ class MainViewModel : ViewModel() {
         return isRefreshing
     }
 
-    fun isTransactionsLayoutRefreshing() : LiveData<Boolean> {
+    fun isTransactionsLayoutRefreshing(): LiveData<Boolean> {
         return areTransactionsRefreshing
     }
 
@@ -100,7 +100,6 @@ class MainViewModel : ViewModel() {
             }.await()
             isRefreshing.value = false
         }
-
     }
 
     fun scrapeUserInfo() {

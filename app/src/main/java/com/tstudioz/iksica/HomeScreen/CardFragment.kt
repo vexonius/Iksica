@@ -8,33 +8,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.tstudioz.iksica.R
 import kotlinx.android.synthetic.main.iksica_layout.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class CardFragment : Fragment() {
 
     private var snack: Snackbar? = null
     private var animationDrawable: AnimationDrawable? = null
-    private var viewmodel: MainViewModel? = null
+    private val viewmodel: MainViewModel by viewModel()
 
     companion object {
-
         fun newInstance(): CardFragment {
             return CardFragment()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.iksica_layout,
-                container, false)
+        return inflater.inflate(R.layout.iksica_layout,
+                                container, false)
 
-        viewmodel = ViewModelProvider(activity!!)[MainViewModel::class.java]
-
-        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,10 +41,10 @@ class CardFragment : Fragment() {
         animationDrawable?.setExitFadeDuration(1100)
 
         root_refreshing.setOnRefreshListener {
-            viewmodel?.loginUser()
+            viewmodel.loginUser()
         }
 
-        viewmodel?.isLayoutRefreshing()?.observe(viewLifecycleOwner, Observer {
+        viewmodel.isLayoutRefreshing().observe(viewLifecycleOwner, Observer {
             root_refreshing.isRefreshing = it == true
         })
     }
@@ -60,7 +56,6 @@ class CardFragment : Fragment() {
 
 
     fun showUserCard() {
-
         progressBar.visibility = View.INVISIBLE
         iksica_card_layout.visibility = View.VISIBLE
 
@@ -68,8 +63,7 @@ class CardFragment : Fragment() {
             potroseno_cardview.translationZ = 8f
         }
 
-
-        viewmodel?.getUserData()?.observe(viewLifecycleOwner, Observer {
+        viewmodel.getUserData()?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 progressBar.visibility = View.INVISIBLE
                 iksica_card_layout.visibility = View.VISIBLE
@@ -86,15 +80,15 @@ class CardFragment : Fragment() {
     fun showErrorSnack(message: String) {
         snack = Snackbar.make(root_refreshing, message, Snackbar.LENGTH_INDEFINITE)
         snack?.setAction("PONOVI", View.OnClickListener {
-            viewmodel?.loginUser()
+            viewmodel.loginUser()
         })
         snack?.show()
     }
 
 
     fun loadAds() {
-          val adRequest = AdRequest.Builder().build()
-          adView.loadAd(adRequest)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
     }
 
 
@@ -104,7 +98,7 @@ class CardFragment : Fragment() {
 
         showUserCard()
 
-        viewmodel?.getErrors()?.observe(viewLifecycleOwner, Observer {
+        viewmodel.getErrors()?.observe(viewLifecycleOwner, Observer {
             it?.let { showErrorSnack(it) }
         })
     }

@@ -7,12 +7,11 @@ import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Utils.DataParser
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
 import com.tstudioz.iksica.Utils.NetworkService
-import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
-class Repository constructor(private val service: NetworkService, private  val dbHelper: DatabaseHelper) {
-
-    val dataParser: DataParser by inject(DataParser::class.java)
+class Repository constructor(private val service: NetworkService,
+                             private val dbHelper: DatabaseHelper,
+                             private val dataParser: DataParser) {
 
     var token: String? = null
     var authToken: String? = null
@@ -28,7 +27,6 @@ class Repository constructor(private val service: NetworkService, private  val d
         loadUserFromDb()
         checkIfUserIsAlreadyLogged()
     }
-
 
     fun scrapeUserInfo(): PaperUser {
         Timber.d("Scraping...")
@@ -101,7 +99,7 @@ class Repository constructor(private val service: NetworkService, private  val d
         authToken = dataParser.parseAuthToken(service.getAuthState(token))
 
         loginToken = dataParser.parseLoginToken(service.postAuthState(mail, psswd, authToken))
-        if(token==null) return false
+        if (token == null) return false
 
         responseToken = dataParser.parseResponseToken(service.getResponseToken(loginToken))
         service.postResponseToken(responseToken)
@@ -125,8 +123,7 @@ class Repository constructor(private val service: NetworkService, private  val d
             service.postResponseToken(responseToken)
         }
 
-        return responseToken
-                ?: throw WrongCredsException()
+        return responseToken ?: throw WrongCredsException()
     }
 
     fun loadUserFromDbAsync() {
@@ -145,22 +142,21 @@ class Repository constructor(private val service: NetworkService, private  val d
     fun updateUserData(freshdata: PaperUser) {
         val user: PaperUser? = dbHelper.readUserFromPaper()
         user?.let {
-            insertUser(
-                    PaperUser(
-                            user.id,
-                            user.mail,
-                            user.password,
-                            freshdata.name,
-                            freshdata.cardNumber,
-                            freshdata.subventionAmount,
-                            freshdata.spentTodayAmount,
-                            freshdata.rightsLevel,
-                            freshdata.rightsFrom,
-                            freshdata.rightsTo,
-                            freshdata.university,
-                            freshdata.avatarLink,
-                            freshdata.oib,
-                            freshdata.jmbag))
+            insertUser(PaperUser(
+                    user.id,
+                    user.mail,
+                    user.password,
+                    freshdata.name,
+                    freshdata.cardNumber,
+                    freshdata.subventionAmount,
+                    freshdata.spentTodayAmount,
+                    freshdata.rightsLevel,
+                    freshdata.rightsFrom,
+                    freshdata.rightsTo,
+                    freshdata.university,
+                    freshdata.avatarLink,
+                    freshdata.oib,
+                    freshdata.jmbag))
         }
     }
 

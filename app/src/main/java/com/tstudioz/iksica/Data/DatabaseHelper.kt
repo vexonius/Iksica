@@ -15,7 +15,6 @@ class DatabaseHelper constructor(context: Context) {
         prefs = context.getSharedPreferences("DEFAULT_PREFS", Context.MODE_PRIVATE)
     }
 
-
     fun insertUserInPaper(user: PaperUser) {
         Hawk.put("user", user)
     }

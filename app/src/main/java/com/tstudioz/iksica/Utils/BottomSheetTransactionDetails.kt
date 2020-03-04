@@ -20,8 +20,8 @@ import com.tstudioz.iksica.R
  * Created by etino7 on 1/11/2020.
  */
 class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
-    var viewModel: MainViewModel? = null
 
+    var viewModel: MainViewModel? = null
 
     companion object {
         fun newInstance(): BottomSheetTransactionDetails {
@@ -51,7 +51,7 @@ class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
         val adapter = TransactionDetailsAdapter(ArrayList<TransactionItem>())
         recycler.adapter = adapter
 
-        viewModel?.getCurrentTransaction()?.observe(this, Observer {transaction ->
+        viewModel?.getCurrentTransaction()?.observe(this, Observer { transaction ->
             transaction?.let {
                 location.text = it.restourant
                 time.text = "${it.date}, ${it.time}"
@@ -59,7 +59,7 @@ class BottomSheetTransactionDetails : BottomSheetDialogFragment() {
             }
         })
 
-        viewModel?.getCurrentTransactionItems()?.observe(this, Observer {transactionDetails ->
+        viewModel?.getCurrentTransactionItems()?.observe(this, Observer { transactionDetails ->
             transactionDetails?.let {
                 progress.visibility = View.INVISIBLE
                 total.text = "${it.subventionTotal} kn"

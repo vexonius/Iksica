@@ -33,6 +33,7 @@ class LiveEvent<T> : MediatorLiveData<T>() {
             super.removeObserver(observer)
             return
         }
+
         val iterator = observers.iterator()
         while (iterator.hasNext()) {
             val wrapper = iterator.next()
