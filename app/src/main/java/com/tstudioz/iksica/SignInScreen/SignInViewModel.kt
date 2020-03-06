@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
 /**
@@ -21,7 +22,8 @@ import timber.log.Timber
  */
 class SignInViewModel : ViewModel() {
 
-    val repository: Repository
+    val repository: Repository by inject(Repository::class.java)
+
     val userLogged: MutableLiveData<Boolean>
     val userData: MutableLiveData<PaperUser>
     val errorMessage: LiveEvent<String> = LiveEvent()
@@ -36,7 +38,6 @@ class SignInViewModel : ViewModel() {
     }
 
     init {
-        repository = Repository.getInstance()
         userData = repository.getUserData()
         userLogged = repository.getUserAlreadyLogged()
     }
@@ -58,12 +59,12 @@ class SignInViewModel : ViewModel() {
         }
     }
 
-    fun checkInputs(data: Pair<String, String>) : Boolean {
-        if(data.first.isEmpty() || data.second.isEmpty()) {
+    fun checkInputs(data: Pair<String, String>): Boolean {
+        if (data.first.isEmpty() || data.second.isEmpty()) {
             throw EmptyInputFields()
         }
 
-        return  true
+        return true
     }
 
 

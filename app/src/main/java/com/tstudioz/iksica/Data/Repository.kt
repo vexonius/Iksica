@@ -5,15 +5,13 @@ import com.tstudioz.iksica.Data.Models.PaperUser
 import com.tstudioz.iksica.Data.Models.Transaction
 import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Utils.DataParser
-import com.tstudioz.iksica.Utils.NetworkService
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
+import com.tstudioz.iksica.Utils.NetworkService
 import timber.log.Timber
 
-class Repository {
-
-    val dataParser: DataParser = DataParser()
-    val service: NetworkService = NetworkService()
-    val dbHelper: DatabaseHelper
+class Repository constructor(private val service: NetworkService,
+                             private val dbHelper: DatabaseHelper,
+                             private val dataParser: DataParser) {
 
     var token: String? = null
     var authToken: String? = null
@@ -26,25 +24,8 @@ class Repository {
     val transactionDetailsData: MutableLiveData<TransactionDetails> = MutableLiveData()
 
     init {
-        dbHelper = DatabaseHelper.instance!!
         loadUserFromDb()
         checkIfUserIsAlreadyLogged()
-    }
-
-    companion object {
-
-        private var INSTANCE: Repository? = null
-
-        @JvmStatic
-        fun getInstance(): Repository {
-            return INSTANCE ?: Repository().apply { INSTANCE = this }
-        }
-
-
-        @JvmStatic
-        fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 
     fun scrapeUserInfo(): PaperUser {
@@ -89,6 +70,7 @@ class Repository {
         dbHelper.writeBoolInSharedPrefs("user_logged", false)
         isUserLogged.value = false
         dataParser.clearAllTokens()
+        service.clearCookies()
         deleteAllRepoTokens()
         deleteUser()
     }
@@ -117,7 +99,7 @@ class Repository {
         authToken = dataParser.parseAuthToken(service.getAuthState(token))
 
         loginToken = dataParser.parseLoginToken(service.postAuthState(mail, psswd, authToken))
-        if(token==null) return false
+        if (token == null) return false
 
         responseToken = dataParser.parseResponseToken(service.getResponseToken(loginToken))
         service.postResponseToken(responseToken)
@@ -141,8 +123,7 @@ class Repository {
             service.postResponseToken(responseToken)
         }
 
-        return responseToken
-                ?: throw WrongCredsException()
+        return responseToken ?: throw WrongCredsException()
     }
 
     fun loadUserFromDbAsync() {
@@ -161,22 +142,21 @@ class Repository {
     fun updateUserData(freshdata: PaperUser) {
         val user: PaperUser? = dbHelper.readUserFromPaper()
         user?.let {
-            insertUser(
-                    PaperUser(
-                            user.id,
-                            user.mail,
-                            user.password,
-                            freshdata.name,
-                            freshdata.cardNumber,
-                            freshdata.subventionAmount,
-                            freshdata.spentTodayAmount,
-                            freshdata.rightsLevel,
-                            freshdata.rightsFrom,
-                            freshdata.rightsTo,
-                            freshdata.university,
-                            freshdata.avatarLink,
-                            freshdata.oib,
-                            freshdata.jmbag))
+            insertUser(PaperUser(
+                    user.id,
+                    user.mail,
+                    user.password,
+                    freshdata.name,
+                    freshdata.cardNumber,
+                    freshdata.subventionAmount,
+                    freshdata.spentTodayAmount,
+                    freshdata.rightsLevel,
+                    freshdata.rightsFrom,
+                    freshdata.rightsTo,
+                    freshdata.university,
+                    freshdata.avatarLink,
+                    freshdata.oib,
+                    freshdata.jmbag))
         }
     }
 

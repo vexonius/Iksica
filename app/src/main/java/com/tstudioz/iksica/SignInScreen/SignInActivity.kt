@@ -6,29 +6,28 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.tstudioz.iksica.HomeScreen.HomeActivity
 import com.tstudioz.iksica.R
 import kotlinx.android.synthetic.main.sign_in_layout.*
 import org.aviran.cookiebar2.CookieBar
+import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 
 class SignInActivity : AppCompatActivity() {
 
     private var animationDrawable: AnimationDrawable? = null
-    private var viewmodel: SignInViewModel? = null
-
+    private val viewmodel: SignInViewModel by viewModel()
 
     override fun onCreate(savedInstanceBundle: Bundle?) {
         super.onCreate(savedInstanceBundle)
-        viewmodel = ViewModelProvider(this)[SignInViewModel::class.java]
+
         checkIfIsUserLogged()
 
         supportActionBar?.hide()
         setContentView(R.layout.sign_in_layout)
 
         setUpAimation()
-
     }
 
     override fun onResume() {
@@ -38,11 +37,10 @@ class SignInActivity : AppCompatActivity() {
         animationDrawable?.start()
 
         sign_in_button.setOnClickListener {
-            viewmodel?.authenticateCredentials(parseInputFields())
+            viewmodel.authenticateCredentials(parseInputFields())
             sign_in_button.visibility = View.INVISIBLE
             progressBarLoading.visibility = View.VISIBLE
         }
-
     }
 
     private fun parseInputFields(): Pair<String, String> {
@@ -50,7 +48,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun checkIfIsUserLogged() {
-        viewmodel?.isUserLoggedAlready()?.observe(this, Observer {
+        viewmodel.isUserLoggedAlready().observe(this, Observer {
             it?.let {
                 if (it) {
                     startActivity(Intent(this, HomeActivity::class.java))
@@ -66,8 +64,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun listenForErrors() {
-        viewmodel?.getErrors()?.observe(this, Observer {
-
+        viewmodel.getErrors().observe(this, Observer {
             sign_in_button.visibility = View.VISIBLE
             progressBarLoading.visibility = View.INVISIBLE
 
@@ -82,9 +79,12 @@ class SignInActivity : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        Timber.d("Closing aplication")
+    }
+
     fun setUpAimation() {
         animationDrawable = sign_in_relative?.background as AnimationDrawable
-
         animationDrawable?.setEnterFadeDuration(1500)
         animationDrawable?.setExitFadeDuration(1500)
     }

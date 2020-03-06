@@ -12,11 +12,7 @@ import com.tstudioz.iksica.Data.Models.Transaction;
 import com.tstudioz.iksica.R;
 import com.tstudioz.iksica.Utils.DetailClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 /**
  * Created by etino7 on 11-Oct-17.
@@ -26,7 +22,8 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
     private List<Transaction> transactions;
     private DetailClickListener detailClickListener;
 
-    public AdapterTransactions(List<Transaction> transactions, DetailClickListener detailClickListener) {
+    public AdapterTransactions(List<Transaction> transactions,
+                               DetailClickListener detailClickListener) {
         this.transactions = transactions;
         this.detailClickListener = detailClickListener;
     }
@@ -36,7 +33,8 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         private DetailClickListener detailClickListener;
 
 
-        public DetailViewHolder(final View view, DetailClickListener detailClickListener) {
+        public DetailViewHolder(final View view,
+                                DetailClickListener detailClickListener) {
             super(view);
             this.detailClickListener = detailClickListener;
             time = (TextView) itemView.findViewById(R.id.transaction_time);
@@ -56,7 +54,10 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
     @NonNull
     @Override
     public DetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_item_layout, parent, false);
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.transaction_item_layout, parent, false);
+
         return new DetailViewHolder(view, detailClickListener);
     }
 
@@ -67,7 +68,6 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         holder.date.setText(item.getDate());
         holder.amount.setText("-" + item.getSubvention() + "  kn");
         holder.place.setText(item.getRestourant());
-
     }
 
     @Override

@@ -11,4 +11,12 @@
     <string name="lozinka">Lozinka</string>
     <string name="sastavnice_racuna">Sastavnice računa</string>
     <string name="subvencionirano">Ukupno subvencionirano</string>
+    <string name="retry">PONOVI</string>
+    <string name="iksica">Iksica</string>
+    <string name="transactions">Transakcije</string>
+    <string name="user">Korisnik</string>
+    <string name="exit_message">Ponovno pritisnite nazad za izaći</string>
+    <string name="rights_level">Razina prava</string>
+    <string name="rights_from">Prava od</string>
+    <string name="rights_until">Prava do</string>
 </resources>

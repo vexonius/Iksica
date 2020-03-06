@@ -9,13 +9,13 @@ import com.tstudioz.iksica.Data.Models.Transaction
 import com.tstudioz.iksica.Data.Models.TransactionDetails
 import com.tstudioz.iksica.Data.Repository
 import com.tstudioz.iksica.Utils.Exceptions.NoNetworkException
-import com.tstudioz.iksica.Utils.LiveEvent
-import com.tstudioz.iksica.Utils.NoNetworkInterceptor
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
+import com.tstudioz.iksica.Utils.LiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
 /**
@@ -23,7 +23,7 @@ import timber.log.Timber
  */
 class MainViewModel : ViewModel() {
 
-    val repository: Repository
+    val repository: Repository by inject(Repository::class.java)
 
     val mUserData: MutableLiveData<PaperUser>
     val isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -59,7 +59,6 @@ class MainViewModel : ViewModel() {
 
 
     init {
-        repository = Repository.getInstance()
         mUserData = repository.getUserData()
         loginUser()
     }
@@ -84,7 +83,7 @@ class MainViewModel : ViewModel() {
         return isRefreshing
     }
 
-    fun isTransactionsLayoutRefreshing() : LiveData<Boolean> {
+    fun isTransactionsLayoutRefreshing(): LiveData<Boolean> {
         return areTransactionsRefreshing
     }
 
@@ -101,7 +100,6 @@ class MainViewModel : ViewModel() {
             }.await()
             isRefreshing.value = false
         }
-
     }
 
     fun scrapeUserInfo() {
@@ -141,7 +139,7 @@ class MainViewModel : ViewModel() {
     fun updateCurrentTransactionDetails(transaction: Transaction) {
         mCurrentTransactionData.value = transaction
         repository.clearTransactionDetails()
-        viewModelScope.launch(context = Dispatchers.Main) {
+        viewModelScope.launch(handler) {
             async(context = Dispatchers.IO) {
                 repository.fetchTransactionDetails(transaction.linkOfReceipt)
             }.await()

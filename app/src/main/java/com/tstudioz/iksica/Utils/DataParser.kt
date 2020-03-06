@@ -7,7 +7,6 @@ import com.tstudioz.iksica.Data.Models.TransactionItem
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
 import okhttp3.Response
 import org.jsoup.Jsoup
-import org.w3c.dom.Document
 import timber.log.Timber
 import java.io.IOException
 
@@ -15,6 +14,7 @@ import java.io.IOException
  * Created by etino7 on 07/10/2019.
  */
 class DataParser {
+
     private var afterToken: String? = null
     private var loginToken: String? = null
     private var token: String? = null
@@ -133,12 +133,20 @@ class DataParser {
                 ?.trim()
                 ?.toLong()
 
-
-        return PaperUser(1, "", "", user ?: "", number ?: "",
-                saldo ?: "", spent
-                ?: "", razinaPrava?.toInt() ?: 0, pravaOd
-                ?: "", pravaDo ?: "", uciliste ?: "", slikaLink ?: "",
-                oib ?: 0, jmbag ?: 0)
+        return PaperUser(1,
+                         "",
+                         "",
+                         user ?: "",
+                         number ?: "",
+                         saldo ?: "",
+                         spent ?: "",
+                         razinaPrava?.toInt() ?: 0,
+                         pravaOd ?: "",
+                         pravaDo ?: "",
+                         uciliste ?: "",
+                         slikaLink ?: "",
+                         oib ?: 0,
+                         jmbag ?: 0)
     }
 
     fun parseUserTransactions(response: Response): ArrayList<Transaction> {
@@ -173,7 +181,8 @@ class DataParser {
                         3 -> amount = value?.text() ?: ""
                         4 -> subvention = value?.text() ?: ""
                         5 -> authorization = value?.text() ?: ""
-                        6 -> linkOfReceipt = value?.select("a")?.attr("href") ?: ""
+                        6 -> linkOfReceipt = value?.select("a")?.attr("href")
+                                ?: ""
 
                         else -> {
                             Timber.d("None of the criteria met")
@@ -190,7 +199,7 @@ class DataParser {
         return transactions
     }
 
-    fun parseTransactionDetails(response: Response) : TransactionDetails {
+    fun parseTransactionDetails(response: Response): TransactionDetails {
         var transactionDetails = TransactionDetails("", "", ArrayList())
         val document = Jsoup.parse(response.body()?.string())
 
@@ -227,7 +236,8 @@ class DataParser {
                             for ((index, data) in cols.withIndex()) {
                                 when (index) {
                                     0 -> itemName = data?.text() ?: ""
-                                    1 -> itemQuantity = data?.text()?.toInt() ?: -1
+                                    1 -> itemQuantity = data?.text()?.toInt()
+                                            ?: -1
                                     2 -> itemPrice = data?.text() ?: ""
                                     3 -> itemsTotal = data?.text() ?: ""
                                     4 -> itemSubvention = data?.text() ?: ""
@@ -238,7 +248,8 @@ class DataParser {
                                 }
                             }
                         }
-                        transactionDetails.items?.add(TransactionItem(itemName, itemQuantity, itemPrice, itemsTotal, itemSubvention))
+                        transactionDetails.items?.add(
+                                TransactionItem(itemName, itemQuantity, itemPrice, itemsTotal, itemSubvention))
                     }
 
                 }
@@ -246,7 +257,7 @@ class DataParser {
             }
 
         }
-        return  transactionDetails
+        return transactionDetails
     }
 
     fun clearAllTokens() {

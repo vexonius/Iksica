@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.db.williamchart.view.ImplementsAlphaChart
 import com.tstudioz.iksica.Adapter.AdapterTransactions
 import com.tstudioz.iksica.Data.Models.Transaction
 import com.tstudioz.iksica.R
 import com.tstudioz.iksica.Utils.BottomSheetTransactionDetails
 import com.tstudioz.iksica.Utils.DetailClickListener
 import kotlinx.android.synthetic.main.transactions_layout.*
-import timber.log.Timber
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-@ImplementsAlphaChart
+
 class TransactionsFragment : Fragment(), DetailClickListener {
 
-    private var viewmodel: MainViewModel? = null
+    private val viewmodel: MainViewModel by sharedViewModel()
 
     companion object {
         fun newInstance(): TransactionsFragment {
@@ -29,49 +27,50 @@ class TransactionsFragment : Fragment(), DetailClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedBundleInstance: Bundle?): View? {
-        val view = inflater.inflate(R.layout.transactions_layout, parent, false)
-
-        viewmodel = ViewModelProvider(activity!!)[MainViewModel::class.java]
-
-        return view
+        return inflater.inflate(R.layout.transactions_layout, parent, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclertransactions.layoutManager = LinearLayoutManager(recyclertransactions.context, LinearLayoutManager.VERTICAL, false)
         val adapter = AdapterTransactions(null, this)
+
+        recyclertransactions.layoutManager =
+                LinearLayoutManager(recyclertransactions.context, LinearLayoutManager.VERTICAL, false)
         recyclertransactions.adapter = adapter
 
-        viewmodel?.getUserTransactions()?.observe(viewLifecycleOwner, Observer {
+        viewmodel.getUserTransactions()?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.updateItems(it)
             }
         })
 
-        viewmodel?.getTransactionDataMapped()?.observe(viewLifecycleOwner, Observer {
+        viewmodel.getTransactionDataMapped().observe(viewLifecycleOwner, Observer {
             it?.let {
                 chart.animate(it)
             }
         })
 
-        viewmodel?.isTransactionsLayoutRefreshing()?.observe(viewLifecycleOwner, Observer {
+        viewmodel.isTransactionsLayoutRefreshing().observe(viewLifecycleOwner, Observer {
             it?.let {
                 trans_swipe_layout.isRefreshing = it
             }
         })
 
+        trans_swipe_layout.setOnRefreshListener {
+            viewmodel.loginUser()
+        }
+
     }
 
-    fun showBottomSheetDetail(){
+    fun showBottomSheetDetail() {
         val btmSheet = BottomSheetTransactionDetails.newInstance()
         btmSheet.show(fragmentManager!!, "bottomsheet")
     }
 
     override fun onClicked(transaction: Transaction) {
-        viewmodel?.updateCurrentTransactionDetails(transaction)
+        viewmodel.updateCurrentTransactionDetails(transaction)
         showBottomSheetDetail()
     }
-
 
 }
