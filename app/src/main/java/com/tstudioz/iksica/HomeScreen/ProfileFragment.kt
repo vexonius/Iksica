@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.tstudioz.iksica.Adapter.AdapterInfo
@@ -16,7 +15,7 @@ import com.tstudioz.iksica.Data.Models.UserInfoItem
 import com.tstudioz.iksica.R
 import com.tstudioz.iksica.SignInScreen.SignInActivity
 import kotlinx.android.synthetic.main.profile_layout.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 /**
  * Created by etino7 on 18-Oct-17.
@@ -24,7 +23,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
 
-    val viewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by sharedViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedBundleInstance: Bundle?): View? {
         return inflater.inflate(R.layout.profile_layout, parent, false)

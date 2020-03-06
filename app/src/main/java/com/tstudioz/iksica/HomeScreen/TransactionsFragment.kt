@@ -13,12 +13,12 @@ import com.tstudioz.iksica.R
 import com.tstudioz.iksica.Utils.BottomSheetTransactionDetails
 import com.tstudioz.iksica.Utils.DetailClickListener
 import kotlinx.android.synthetic.main.transactions_layout.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
 class TransactionsFragment : Fragment(), DetailClickListener {
 
-    private val viewmodel: MainViewModel by viewModel()
+    private val viewmodel: MainViewModel by sharedViewModel()
 
     companion object {
         fun newInstance(): TransactionsFragment {
