@@ -17,7 +17,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.title = "Iksica"
+        supportActionBar?.title = getString(R.string.iksica)
 
         setContentView(R.layout.activity_home)
 
@@ -29,9 +29,9 @@ class HomeActivity : AppCompatActivity() {
 
         bNavigation = findViewById<View>(R.id.bottom_navigation) as AHBottomNavigation
 
-        val homeItem = AHBottomNavigationItem("Iksica", R.drawable.ic_card, R.color.icon_inactive)
-        val transItem = AHBottomNavigationItem("Transakcije", R.drawable.ic_receipt, R.color.icon_inactive)
-        val profileItem = AHBottomNavigationItem("Korisnik", R.drawable.ic_user, R.color.icon_inactive)
+        val homeItem = AHBottomNavigationItem(getString(R.string.iksica), R.drawable.ic_card, R.color.icon_inactive)
+        val transItem = AHBottomNavigationItem(getString(R.string.transactions), R.drawable.ic_receipt, R.color.icon_inactive)
+        val profileItem = AHBottomNavigationItem(getString(R.string.user), R.drawable.ic_user, R.color.icon_inactive)
 
         bNavigation?.apply {
             addItems(listOf(transItem, homeItem, profileItem))
@@ -68,7 +68,7 @@ class HomeActivity : AppCompatActivity() {
                 ft.addToBackStack(null)
                 ft.commit()
 
-                supportActionBar?.setTitle("Transakcije")
+                supportActionBar?.setTitle(getString(R.string.transactions))
                 supportActionBar?.elevation = 0f
             }
             1 -> {
@@ -77,7 +77,7 @@ class HomeActivity : AppCompatActivity() {
                 ft.addToBackStack(null)
                 ft.commit()
 
-                supportActionBar?.setTitle("Iksica")
+                supportActionBar?.setTitle(getString(R.string.iksica))
                 supportActionBar?.elevation = 8f
             }
             2 -> {
@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun showExitSnack() {
-        snack = Snackbar.make(findViewById(R.id.relative_home), "Ponovno pritisnite nazad za izaći", Snackbar.LENGTH_LONG)
+        snack = Snackbar.make(findViewById(R.id.relative_home), getString(R.string.exit_message), Snackbar.LENGTH_LONG)
         snack?.show()
     }
 }

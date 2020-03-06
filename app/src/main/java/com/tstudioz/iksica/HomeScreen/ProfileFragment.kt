@@ -53,14 +53,13 @@ class ProfileFragment : Fragment() {
         button_logout.setOnClickListener {
             viewModel.logOutUser()
             startActivity(Intent(activity, SignInActivity::class.java))
-
         }
     }
 
     private fun convertUserDataToList(user: PaperUser): ArrayList<UserInfoItem> {
-        val razinaPrava = UserInfoItem("Razina prava", user.rightsLevel.toString())
-        val pravaOd = UserInfoItem("Prava od", user.rightsFrom)
-        val pravaDo = UserInfoItem("Prava do", user.rightsTo)
+        val razinaPrava = UserInfoItem(getString(R.string.rights_level), user.rightsLevel.toString())
+        val pravaOd = UserInfoItem(getString(R.string.rights_from), user.rightsFrom)
+        val pravaDo = UserInfoItem(getString(R.string.rights_until), user.rightsTo)
 
         return arrayListOf(razinaPrava, pravaOd, pravaDo)
     }
