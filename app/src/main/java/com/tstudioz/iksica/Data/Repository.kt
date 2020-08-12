@@ -13,10 +13,14 @@ class Repository constructor(private val service: NetworkService,
                              private val dbHelper: DatabaseHelper,
                              private val dataParser: DataParser) {
 
-    var token: String? = null
-    var authToken: String? = null
-    var loginToken: String? = null
-    var responseToken: String? = null
+    companion object {
+        private const val USER_LOGGED_IN = "user_logged"
+    }
+
+    private var token: String? = null
+    private var authToken: String? = null
+    private var loginToken: String? = null
+    private var responseToken: String? = null
 
     private val isUserLogged: MutableLiveData<Boolean> = MutableLiveData()
     private val userdata: MutableLiveData<PaperUser> = MutableLiveData()
@@ -38,7 +42,7 @@ class Repository constructor(private val service: NetworkService,
         return dataParser.parseUserTransactions(service.getUserTransactions(data.oib))
     }
 
-    fun loadUserFromDb() {
+    private fun loadUserFromDb() {
         val user: PaperUser? = dbHelper.readUserFromPaper()
         Timber.d("Loading user: ${user?.id}")
         user?.let {
@@ -61,13 +65,13 @@ class Repository constructor(private val service: NetworkService,
         loadUserFromDbAsync()
     }
 
-    fun deleteUser() {
+    private fun deleteUser() {
         userdata.value = null
         dbHelper.deleteUserFromPaper()
     }
 
     fun logOutUser() {
-        dbHelper.writeBoolInSharedPrefs("user_logged", false)
+        dbHelper.writeBoolInSharedPrefs(USER_LOGGED_IN, false)
         isUserLogged.value = false
         dataParser.clearAllTokens()
         service.clearCookies()
@@ -83,7 +87,7 @@ class Repository constructor(private val service: NetworkService,
     }
 
     fun checkIfUserIsAlreadyLogged() {
-        isUserLogged.postValue(dbHelper.readBoolInSharedPrefs("user_logged"))
+        isUserLogged.postValue(dbHelper.readBoolInSharedPrefs(USER_LOGGED_IN))
     }
 
     fun getUserAlreadyLogged(): MutableLiveData<Boolean> {
@@ -139,24 +143,24 @@ class Repository constructor(private val service: NetworkService,
         checkIfUserIsAlreadyLogged()
     }
 
-    fun updateUserData(freshdata: PaperUser) {
+    fun updateUserData(freshData: PaperUser) {
         val user: PaperUser? = dbHelper.readUserFromPaper()
         user?.let {
             insertUser(PaperUser(
                     user.id,
                     user.mail,
                     user.password,
-                    freshdata.name,
-                    freshdata.cardNumber,
-                    freshdata.subventionAmount,
-                    freshdata.spentTodayAmount,
-                    freshdata.rightsLevel,
-                    freshdata.rightsFrom,
-                    freshdata.rightsTo,
-                    freshdata.university,
-                    freshdata.avatarLink,
-                    freshdata.oib,
-                    freshdata.jmbag))
+                    freshData.name,
+                    freshData.cardNumber,
+                    freshData.subventionAmount,
+                    freshData.spentTodayAmount,
+                    freshData.rightsLevel,
+                    freshData.rightsFrom,
+                    freshData.rightsTo,
+                    freshData.university,
+                    freshData.avatarLink,
+                    freshData.oib,
+                    freshData.jmbag))
         }
     }
 

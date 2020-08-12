@@ -11,10 +11,7 @@ import com.tstudioz.iksica.Data.Repository
 import com.tstudioz.iksica.Utils.Exceptions.NoNetworkException
 import com.tstudioz.iksica.Utils.Exceptions.WrongCredsException
 import com.tstudioz.iksica.Utils.LiveEvent
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 
@@ -23,20 +20,20 @@ import timber.log.Timber
  */
 class MainViewModel : ViewModel() {
 
-    val repository: Repository by inject(Repository::class.java)
+    private val repository: Repository by inject(Repository::class.java)
 
-    val mUserData: MutableLiveData<PaperUser>
-    val isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val mUserData: MutableLiveData<PaperUser>
+    private val isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    val areTransactionsRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
-    val mUserTransactions: MutableLiveData<List<Transaction>> = MutableLiveData()
-    val mTransactionsMapped: MutableLiveData<LinkedHashMap<String, Float>> = MutableLiveData()
+    private val areTransactionsRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val mUserTransactions: MutableLiveData<List<Transaction>> = MutableLiveData()
+    private val mTransactionsMapped: MutableLiveData<LinkedHashMap<String, Float>> = MutableLiveData()
 
-    val mCurrentTransactionData: MutableLiveData<Transaction> = MutableLiveData()
+    private val mCurrentTransactionData: MutableLiveData<Transaction> = MutableLiveData()
 
-    val mErrors: LiveEvent<String> = LiveEvent()
+    private val mErrors: LiveEvent<String> = LiveEvent()
 
-    val handler = CoroutineExceptionHandler { _, throwable ->
+    private val handler = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
             is WrongCredsException -> {
                 mErrors.postValue("Došlo je do pogreške prilikom prijave. Osvježite za ponovni pokušaj")
@@ -91,40 +88,40 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(handler) {
             isRefreshing.value = true
             areTransactionsRefreshing.value = true
-            async(context = Dispatchers.IO) {
+            withContext(context = Dispatchers.IO) {
                 repository.loginUser()
-            }.await()
+            }
 
-            async(context = Dispatchers.IO) {
+            withContext(context = Dispatchers.IO) {
                 scrapeUserInfo()
-            }.await()
+            }
             isRefreshing.value = false
         }
     }
 
-    fun scrapeUserInfo() {
+    private fun scrapeUserInfo() {
         viewModelScope.launch(context = Dispatchers.Main) {
             val userData: PaperUser = async(context = Dispatchers.IO) { repository.scrapeUserInfo() }.await()
 
-            async(context = Dispatchers.IO) {
+            withContext(context = Dispatchers.IO) {
                 repository.updateUserData(userData)
-            }.await()
+            }
 
-            val transactions: ArrayList<Transaction> = async(context = Dispatchers.IO) {
+            val transactions: ArrayList<Transaction> = withContext(context = Dispatchers.IO) {
                 repository.scrapeUserTransactions(userData)
-            }.await()
+            }
 
             mUserTransactions.value = transactions
 
-            async(context = Dispatchers.IO) {
+            withContext(context = Dispatchers.IO) {
                 createLinkedHashMap(transactions)
                 repository.updateUserData(userData)
                 areTransactionsRefreshing.postValue(false)
-            }.await()
+            }
         }
     }
 
-    fun createLinkedHashMap(list: List<Transaction>) {
+    private fun createLinkedHashMap(list: List<Transaction>) {
         val linkedHashMap: LinkedHashMap<String, Float> = LinkedHashMap()
         for (item in list)
             linkedHashMap[item.date] = item.amount.toFloat()
@@ -140,9 +137,9 @@ class MainViewModel : ViewModel() {
         mCurrentTransactionData.value = transaction
         repository.clearTransactionDetails()
         viewModelScope.launch(handler) {
-            async(context = Dispatchers.IO) {
+            withContext(context = Dispatchers.IO) {
                 repository.fetchTransactionDetails(transaction.linkOfReceipt)
-            }.await()
+            }
         }
     }
 

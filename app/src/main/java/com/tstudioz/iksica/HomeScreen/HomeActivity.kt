@@ -11,21 +11,23 @@ import com.tstudioz.iksica.R
 class HomeActivity : AppCompatActivity() {
 
     private var bNavigation: AHBottomNavigation? = null
-    private var back_pressed: Long = 0
+    private var backPressed: Long = 0
     private var snack: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        supportActionBar?.title = getString(R.string.iksica)
-
+        setupActionBar()
         setContentView(R.layout.activity_home)
 
-        inicijalizacijaBottomNavigation()
-        inicijalizacijaIksicaFragmenta()
+        bottomNavigationInit()
+        cardFragmentInit()
     }
 
-    fun inicijalizacijaBottomNavigation() {
+    private fun setupActionBar() {
+        supportActionBar?.title = getString(R.string.iksica)
+    }
+
+    private fun bottomNavigationInit() {
 
         bNavigation = findViewById<View>(R.id.bottom_navigation) as AHBottomNavigation
 
@@ -44,13 +46,13 @@ class HomeActivity : AppCompatActivity() {
             currentItem = 1
         }
 
-        bNavigation?.setOnTabSelectedListener { position: Int, wasSelected: Boolean ->
+        bNavigation?.setOnTabSelectedListener { position: Int, _: Boolean ->
             switchFragment(position)
             true
         }
     }
 
-    fun inicijalizacijaIksicaFragmenta() {
+    private fun cardFragmentInit() {
         val ft = supportFragmentManager.beginTransaction()
         val cf = CardFragment.newInstance()
         ft.add(R.id.main_frame, cf)
@@ -58,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
         ft.commit()
     }
 
-    fun switchFragment(position: Int) {
+    private fun switchFragment(position: Int) {
         val ft = supportFragmentManager.beginTransaction()
 
         when (position) {
@@ -68,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
                 ft.addToBackStack(null)
                 ft.commit()
 
-                supportActionBar?.setTitle(getString(R.string.transactions))
+                supportActionBar?.title = getString(R.string.transactions)
                 supportActionBar?.elevation = 0f
             }
             1 -> {
@@ -77,7 +79,7 @@ class HomeActivity : AppCompatActivity() {
                 ft.addToBackStack(null)
                 ft.commit()
 
-                supportActionBar?.setTitle(getString(R.string.iksica))
+                supportActionBar?.title = getString(R.string.iksica)
                 supportActionBar?.elevation = 8f
             }
             2 -> {
@@ -86,22 +88,22 @@ class HomeActivity : AppCompatActivity() {
                 ft.addToBackStack(null)
                 ft.commit()
 
-                supportActionBar?.setTitle("")
+                supportActionBar?.title = getString(R.string.empty)
                 supportActionBar?.elevation = 0f
             }
         }
     }
 
     override fun onBackPressed() {
-        if (back_pressed + 2000 > System.currentTimeMillis()) {
+        if (backPressed + 2000 > System.currentTimeMillis()) {
             finish()
             return
         }
         showExitSnack()
-        back_pressed = System.currentTimeMillis()
+        backPressed = System.currentTimeMillis()
     }
 
-    fun showExitSnack() {
+    private fun showExitSnack() {
         snack = Snackbar.make(findViewById(R.id.relative_home), getString(R.string.exit_message), Snackbar.LENGTH_LONG)
         snack?.show()
     }

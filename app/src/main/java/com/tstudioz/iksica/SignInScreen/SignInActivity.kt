@@ -21,12 +21,10 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceBundle: Bundle?) {
         super.onCreate(savedInstanceBundle)
+        setContentView(R.layout.sign_in_layout)
+        supportActionBar?.hide()
 
         checkIfIsUserLogged()
-
-        supportActionBar?.hide()
-        setContentView(R.layout.sign_in_layout)
-
         setUpAimation()
     }
 
@@ -49,8 +47,8 @@ class SignInActivity : AppCompatActivity() {
 
     private fun checkIfIsUserLogged() {
         viewmodel.isUserLoggedAlready().observe(this, Observer {
-            it?.let {
-                if (it) {
+            it?.let { isUserLogged ->
+                if (isUserLogged) {
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 }
@@ -64,13 +62,13 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun listenForErrors() {
-        viewmodel.getErrors().observe(this, Observer {
+        viewmodel.getErrors().observe(this, Observer {errorMessage ->
             sign_in_button.visibility = View.VISIBLE
             progressBarLoading.visibility = View.INVISIBLE
 
-            it?.let {
+            errorMessage?.let { message ->
                 CookieBar.build(this)
-                        .setMessage(it)
+                        .setMessage(message)
                         .setCookiePosition(CookieBar.TOP)
                         .setBackgroundColor(R.color.darker_grey)
                         .setDuration(4000)
@@ -83,7 +81,7 @@ class SignInActivity : AppCompatActivity() {
         Timber.d("Closing aplication")
     }
 
-    fun setUpAimation() {
+    private fun setUpAimation() {
         animationDrawable = sign_in_relative?.background as AnimationDrawable
         animationDrawable?.setEnterFadeDuration(1500)
         animationDrawable?.setExitFadeDuration(1500)

@@ -8,23 +8,25 @@ import com.tstudioz.iksica.Data.Models.PaperUser
 /**
  * Created by etino7 on 12/10/2019.
  */
-class DatabaseHelper constructor(context: Context) {
-    private val prefs: SharedPreferences
+class DatabaseHelper(context: Context) {
 
-    init {
-        prefs = context.getSharedPreferences("DEFAULT_PREFS", Context.MODE_PRIVATE)
+    companion object {
+        private const val USER_KEY = "user"
+        private const val SHARED_PREFS_FILE = "DEFAULT_PREFS"
     }
 
+    private val prefs: SharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE)
+
     fun insertUserInPaper(user: PaperUser) {
-        Hawk.put("user", user)
+        Hawk.put(USER_KEY, user)
     }
 
     fun readUserFromPaper(): PaperUser? {
-        return Hawk.get("user")
+        return Hawk.get(USER_KEY)
     }
 
     fun deleteUserFromPaper() {
-        Hawk.delete("user")
+        Hawk.delete(USER_KEY)
     }
 
     fun writeStringInSharedPrefs(key: String, value: String) {

@@ -21,6 +21,8 @@ class TransactionsFragment : Fragment(), DetailClickListener {
     private val viewmodel: MainViewModel by sharedViewModel()
 
     companion object {
+        private const val BTM_SHT_FRAGMENT_TAG = "bottomsheet"
+
         fun newInstance(): TransactionsFragment {
             return TransactionsFragment()
         }
@@ -63,9 +65,9 @@ class TransactionsFragment : Fragment(), DetailClickListener {
 
     }
 
-    fun showBottomSheetDetail() {
+    private fun showBottomSheetDetail() {
         val btmSheet = BottomSheetTransactionDetails.newInstance()
-        btmSheet.show(fragmentManager!!, "bottomsheet")
+        btmSheet.show(childFragmentManager, BTM_SHT_FRAGMENT_TAG)
     }
 
     override fun onClicked(transaction: Transaction) {

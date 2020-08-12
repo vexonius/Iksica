@@ -25,6 +25,10 @@ class ProfileFragment : Fragment() {
 
     private val viewModel: MainViewModel by sharedViewModel()
 
+    companion object {
+        private const val RV_SPAN_COUNT = 2
+    }
+
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedBundleInstance: Bundle?): View? {
         return inflater.inflate(R.layout.profile_layout, parent, false)
     }
@@ -34,7 +38,7 @@ class ProfileFragment : Fragment() {
 
         val adapter = AdapterInfo(ArrayList())
 
-        recyclerProfile.layoutManager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
+        recyclerProfile.layoutManager = GridLayoutManager(view.context, RV_SPAN_COUNT, GridLayoutManager.VERTICAL, false)
         recyclerProfile.adapter = adapter
 
 
@@ -44,7 +48,7 @@ class ProfileFragment : Fragment() {
                         .load(it.avatarLink)
                         .into(avatar)
                 name_surname.text = it.name
-                user_desc.text = getString(R.string.student_desc).plus(" ").plus(it.university)
+                user_desc.text = getString(R.string.student_desc, it.university)
 
                 adapter.updateData(convertUserDataToList(it))
             }
@@ -65,7 +69,9 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        Glide.get(context!!).clearMemory()
+        context?.let {cntx ->
+            Glide.get(cntx).clearMemory()
+        }
         super.onDestroy()
     }
 

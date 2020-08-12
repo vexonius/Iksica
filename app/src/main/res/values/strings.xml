@@ -3,7 +3,7 @@
     <string name="prijava">button_login</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="odjava">ODJAVA</string>
-    <string name="student_desc">student @</string>
+    <string name="student_desc">student @ %1$s</string>
     <string name="potroseno_danas">Potrošeno danas</string>
     <string name="zero_kn">- 0,00 kn</string>
     <string name="default_sub">0,00 kn</string>
@@ -19,4 +19,5 @@
     <string name="rights_level">Razina prava</string>
     <string name="rights_from">Prava od</string>
     <string name="rights_until">Prava do</string>
+    <string name="empty"> </string>
 </resources>

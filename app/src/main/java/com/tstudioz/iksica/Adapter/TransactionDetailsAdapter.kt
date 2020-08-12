@@ -14,17 +14,10 @@ import com.tstudioz.iksica.R
 class TransactionDetailsAdapter(private var items: List<TransactionItem>?) : RecyclerView.Adapter<TransactionDetailsAdapter.DetailViewHolder>() {
 
     inner class DetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val quantity: TextView
-        val name: TextView
-        val price: TextView
-        val subvention: TextView
-
-        init {
-            quantity = itemView.findViewById<View>(R.id.item_quantity) as TextView
-            name = itemView.findViewById<View>(R.id.item_name) as TextView
-            price = itemView.findViewById<View>(R.id.item_price) as TextView
-            subvention = view.findViewById<View>(R.id.subvention_amount) as TextView
-        }
+        val quantity: TextView = itemView.findViewById<View>(R.id.item_quantity) as TextView
+        val name: TextView = itemView.findViewById<View>(R.id.item_name) as TextView
+        val price: TextView = itemView.findViewById<View>(R.id.item_price) as TextView
+        val subvention: TextView = view.findViewById<View>(R.id.subvention_amount) as TextView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
