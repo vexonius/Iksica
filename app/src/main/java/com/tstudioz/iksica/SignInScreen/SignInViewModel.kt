@@ -37,6 +37,10 @@ class SignInViewModel : ViewModel() {
         }
     }
 
+    companion object {
+        private const val USER_LOGGED_KEY = "user_logged"
+    }
+
     init {
         userData = repository.getUserData()
         userLogged = repository.getUserAlreadyLogged()
@@ -51,7 +55,7 @@ class SignInViewModel : ViewModel() {
                 val success = repository.verifyUserInput(data.first, data.second)
                 if (success) {
                     repository.insertUser(PaperUser(1, data.first, data.second))
-                    repository.setUserLogged("user_logged", true)
+                    repository.setUserLogged(USER_LOGGED_KEY, true)
                 }
             }
 
