@@ -15,5 +15,4 @@ class NetworkMonitor(private val context: Context) {
             return activeNetwork != null &&
                     activeNetwork.isConnectedOrConnecting
         }
-
 }

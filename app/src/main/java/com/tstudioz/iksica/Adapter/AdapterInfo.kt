@@ -12,13 +12,11 @@ import com.tstudioz.iksica.R
 class AdapterInfo(private var items: List<UserInfoItem>?) : RecyclerView.Adapter<InfoItemViewHolder>() {
 
     inner class InfoItemViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-        val title: TextView
-        val desc: TextView
+        val title: TextView = view.findViewById<View>(R.id.info_title_text) as TextView
+        val desc: TextView = view.findViewById<View>(R.id.info_desc_text) as TextView
 
 
         init {
-            title = view.findViewById<View>(R.id.info_title_text) as TextView
-            desc = view.findViewById<View>(R.id.info_desc_text) as TextView
             view.setOnClickListener(this)
         }
 

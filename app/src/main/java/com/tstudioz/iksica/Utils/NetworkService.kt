@@ -26,7 +26,7 @@ class NetworkService(private val okHttpClient: OkHttpClient) {
     fun getAuthState(token: String?): Response {
         val formBody: RequestBody = FormBody.Builder()
                 .add("submit", "Continue")
-                .add("SAMLRequest", token)
+                .add("SAMLRequest", token ?: "")
                 .build()
 
         val rq = Request.Builder()
@@ -35,7 +35,7 @@ class NetworkService(private val okHttpClient: OkHttpClient) {
                 .build()
 
         val response = okHttpClient.newCall(rq).execute()
-        currentUrl = response.request().url()
+        currentUrl = response.request.url
 
         return response
     }
@@ -43,10 +43,10 @@ class NetworkService(private val okHttpClient: OkHttpClient) {
     @Throws(IOException::class)
     fun postAuthState(username: String?, password: String?, authState: String?): Response {
         val formBody: RequestBody = FormBody.Builder()
-                .add("username", username)
-                .add("password", password)
+                .add("username", username ?: "")
+                .add("password", password ?: "")
                 .add("Submit", "Prijavi se")
-                .add("AuthState", authState)
+                .add("AuthState", authState ?: "")
                 .build()
 
         val request = Request.Builder()
@@ -60,7 +60,7 @@ class NetworkService(private val okHttpClient: OkHttpClient) {
     @Throws(IOException::class)
     fun getResponseToken(token: String?): Response {
         val formBody: RequestBody = FormBody.Builder()
-                .add("SAMLResponse", token)
+                .add("SAMLResponse", token ?: "")
                 .add("submit", "Submit")
                 .build()
 
@@ -75,7 +75,7 @@ class NetworkService(private val okHttpClient: OkHttpClient) {
     @Throws(IOException::class)
     fun postResponseToken(token: String?): Response {
         val formBody: RequestBody = FormBody.Builder()
-                .add("SAMLResponse", token)
+                .add("SAMLResponse", token ?: "")
                 .add("submit", "Submit")
                 .build()
 
@@ -85,7 +85,7 @@ class NetworkService(private val okHttpClient: OkHttpClient) {
                 .build()
 
         val response = okHttpClient.newCall(request).execute()
-        currentUrl = response.request().url()
+        currentUrl = response.request.url
 
         return response
     }

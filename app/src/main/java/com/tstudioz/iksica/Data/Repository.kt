@@ -18,10 +18,10 @@ class Repository constructor(private val service: NetworkService,
     var loginToken: String? = null
     var responseToken: String? = null
 
-    val isUserLogged: MutableLiveData<Boolean> = MutableLiveData()
-    val userdata: MutableLiveData<PaperUser> = MutableLiveData()
+    private val isUserLogged: MutableLiveData<Boolean> = MutableLiveData()
+    private val userdata: MutableLiveData<PaperUser> = MutableLiveData()
 
-    val transactionDetailsData: MutableLiveData<TransactionDetails> = MutableLiveData()
+    private val transactionDetailsData: MutableLiveData<TransactionDetails> = MutableLiveData()
 
     init {
         loadUserFromDb()
@@ -75,7 +75,7 @@ class Repository constructor(private val service: NetworkService,
         deleteUser()
     }
 
-    fun deleteAllRepoTokens() {
+    private fun deleteAllRepoTokens() {
         token = null
         authToken = null
         loginToken = null
@@ -126,7 +126,7 @@ class Repository constructor(private val service: NetworkService,
         return responseToken ?: throw WrongCredsException()
     }
 
-    fun loadUserFromDbAsync() {
+    private fun loadUserFromDbAsync() {
         val user: PaperUser? = dbHelper.readUserFromPaper()
         Timber.d("Loading user: ${user?.id}")
         user?.let {
@@ -171,6 +171,5 @@ class Repository constructor(private val service: NetworkService,
     fun clearTransactionDetails() {
         transactionDetailsData.postValue(null)
     }
-
 
 }

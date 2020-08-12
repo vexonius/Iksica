@@ -22,7 +22,7 @@ class DataParser {
 
     @Throws(IOException::class)
     fun parseSAMLToken(response: Response): String? {
-        val doc = Jsoup.parse(response.body()?.string())
+        val doc = Jsoup.parse(response.body?.string())
         val el = doc.getElementById("SAMLRequest")
         authToken = el.`val`()
         Timber.d("Parsan token iz coor %s", authToken)
@@ -31,7 +31,7 @@ class DataParser {
 
     @Throws(IOException::class)
     fun parseAuthToken(response: Response): String? {
-        val document = Jsoup.parse(response.body()?.string())
+        val document = Jsoup.parse(response.body?.string())
         token = document
                 .select("#aai_centerbox > div.aai_form_container > div.aai_login_form > form > input[type=\"hidden\"]:nth-child(7)")
                 .first().attr("value")
@@ -42,7 +42,7 @@ class DataParser {
 
     @Throws(IOException::class)
     fun parseLoginToken(response: Response): String? {
-        val document = Jsoup.parse(response.body()?.string())
+        val document = Jsoup.parse(response.body?.string())
         val el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)")
                 .first()
 
@@ -54,7 +54,7 @@ class DataParser {
 
     @Throws(IOException::class, NullPointerException::class)
     fun parseResponseToken(response: Response): String {
-        val document = Jsoup.parse(response.body()?.string())
+        val document = Jsoup.parse(response.body?.string())
 
         val el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)")
                 .first()
@@ -68,7 +68,7 @@ class DataParser {
     @Throws(IOException::class, NullPointerException::class)
     fun parseUserInfo(response: Response): PaperUser {
 
-        val document = Jsoup.parse(response.body()?.string())
+        val document = Jsoup.parse(response.body?.string())
 
         val slikaLink: String? = document
                 .select("#mainDivContent > div > section.text-center > div > div.avatar.mx-auto.white > img")
@@ -150,7 +150,7 @@ class DataParser {
     }
 
     fun parseUserTransactions(response: Response): ArrayList<Transaction> {
-        val document = Jsoup.parse(response.body()?.string())
+        val document = Jsoup.parse(response.body?.string())
         val transactions = ArrayList<Transaction>()
 
         val table = document
@@ -162,13 +162,13 @@ class DataParser {
         rows?.let {
 
             for (row in rows) {
-                var restourant: String = ""
-                var date: String = ""
-                var time: String = ""
-                var amount: String = ""
-                var subvention: String = ""
-                var authorization: String = ""
-                var linkOfReceipt: String = ""
+                var restourant = ""
+                var date = ""
+                var time = ""
+                var amount = ""
+                var subvention = ""
+                var authorization = ""
+                var linkOfReceipt = ""
 
                 val items = row.select("td")
 
@@ -201,7 +201,7 @@ class DataParser {
 
     fun parseTransactionDetails(response: Response): TransactionDetails {
         var transactionDetails = TransactionDetails("", "", ArrayList())
-        val document = Jsoup.parse(response.body()?.string())
+        val document = Jsoup.parse(response.body?.string())
 
         val mainDiv = document.getElementById("mainDivContent")
 
