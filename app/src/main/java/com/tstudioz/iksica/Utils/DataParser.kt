@@ -33,9 +33,10 @@ class DataParser {
     fun parseAuthToken(response: Response): String? {
         val document = Jsoup.parse(response.body?.string())
         token = document
-                .select("#aai_centerbox > div.aai_form_container > div.aai_login_form > form > input[type=\"hidden\"]:nth-child(7)")
-                .first().attr("value")
-        Timber.d("Auth token ${token} ")
+                .select("#login-form > div.error > input[type=hidden]")
+                .first()
+                .attr("value")
+        Timber.d("Auth token $token ")
 
         return token
     }
@@ -43,11 +44,11 @@ class DataParser {
     @Throws(IOException::class)
     fun parseLoginToken(response: Response): String? {
         val document = Jsoup.parse(response.body?.string())
-        val el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)")
+        val el = document.select("body > main > div > div > div.content > form > input[type=hidden]:nth-child(2)")
                 .first()
 
         loginToken = el?.attr("value")
-        Timber.d("Login token ${loginToken} ")
+        Timber.d("Login token $loginToken ")
 
         return loginToken ?: throw WrongCredsException()
     }
@@ -56,11 +57,11 @@ class DataParser {
     fun parseResponseToken(response: Response): String {
         val document = Jsoup.parse(response.body?.string())
 
-        val el = document.select("body > form > input[type=\"hidden\"]:nth-child(2)")
+        val el = document.select("body > main > div > div > div.content > form > input[type=hidden]:nth-child(2)")
                 .first()
 
         afterToken = el.attr("value")
-        Timber.d("After token ${afterToken} ")
+        Timber.d("After token $afterToken ")
 
         return afterToken ?: ""
     }

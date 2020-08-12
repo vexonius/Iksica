@@ -16,11 +16,13 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5944203368510130~6211911487"/>
-        <activity android:name="com.tstudioz.iksica.SignInScreen.SignInActivity"
-            android:windowSoftInputMode="adjustNothing"
+            android:value="ca-app-pub-5944203368510130~6211911487" />
+
+        <activity
+            android:name="com.tstudioz.iksica.SignInScreen.SignInActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transparent"
-            android:screenOrientation="portrait">
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,10 +31,8 @@
         </activity>
         <activity
             android:name="com.tstudioz.iksica.HomeScreen.HomeActivity"
-            android:label=" "
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

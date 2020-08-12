@@ -28,7 +28,7 @@ class MyApplication : Application() {
         }
 
         Hawk.init(applicationContext).build()
-        MobileAds.initialize(this, "ca-app-pub-5944203368510130~6211911487")
+        MobileAds.initialize(this)
     }
 
     override fun attachBaseContext(base: Context) {
